@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: 03ba71dce13d4f740b3d791bd3502ea1
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ultimate1_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 555
+        width: 16
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ba61f60646b71b448a533ee1cb25f23
+      internalID: 84116478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 561
+        width: 17
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69284f73aa7b75f498b08bfb587da3ad
+      internalID: -463237044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_2
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 562
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bd9555ed480c9346ab1d12618b1294a
+      internalID: 1981567640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_3
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 555
+        width: 17
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cd973d462f0f0b4da4e9c71a9682454
+      internalID: 397656133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_4
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 559
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf453cf3fc32aa647b957ab3f0f2ddc9
+      internalID: -1174783148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_5
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 559
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 312f8d2a5b10e314a8bd605ddfcdbe1f
+      internalID: -481208851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_6
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 561
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f5ed14c2ed074344b24a4051c22dedf
+      internalID: 760377472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_8
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 507
+        width: 19
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3e72ef9167e9d443b34d492531dbf64
+      internalID: 1403661757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_11
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 559
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8d6c2325fac5f64588705ee5b9e7dd2
+      internalID: 1260687306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ultimate1_12
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 507
+        width: 17
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3c69beec6a4c9c49ab8b7b1a229239f
+      internalID: -134637883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3561d9b3ba1233740941ce3babe66ef6
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":235.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      ultimate1_0: 84116478
+      ultimate1_1: -463237044
+      ultimate1_10: 2059955311
+      ultimate1_100: 1002132808
+      ultimate1_101: 1898356669
+      ultimate1_102: -579003444
+      ultimate1_103: -181915270
+      ultimate1_104: -128596596
+      ultimate1_105: -392356885
+      ultimate1_106: 1197347474
+      ultimate1_107: 2093811283
+      ultimate1_108: 447657178
+      ultimate1_109: -1899897463
+      ultimate1_11: 1260687306
+      ultimate1_110: -1692528521
+      ultimate1_111: 23887110
+      ultimate1_112: -616652775
+      ultimate1_113: -538544874
+      ultimate1_114: -1037297851
+      ultimate1_115: 1078390090
+      ultimate1_116: 1720668261
+      ultimate1_117: -496418002
+      ultimate1_118: -1655326579
+      ultimate1_119: 157976828
+      ultimate1_12: -134637883
+      ultimate1_120: 1826447102
+      ultimate1_121: 1782204972
+      ultimate1_122: -1150470378
+      ultimate1_123: -707847939
+      ultimate1_124: -1606530767
+      ultimate1_125: -1055132654
+      ultimate1_126: 1338642231
+      ultimate1_127: -379714952
+      ultimate1_128: -2119638360
+      ultimate1_129: -413298864
+      ultimate1_13: 734610911
+      ultimate1_130: -1493593796
+      ultimate1_131: 1386813216
+      ultimate1_132: -1511717775
+      ultimate1_133: 1560188459
+      ultimate1_134: 1044248504
+      ultimate1_135: 1727285563
+      ultimate1_136: 1461750112
+      ultimate1_137: 1538860730
+      ultimate1_138: -1437896586
+      ultimate1_139: 1383125302
+      ultimate1_14: -259701500
+      ultimate1_140: -282230455
+      ultimate1_141: -2121783191
+      ultimate1_15: -288637773
+      ultimate1_16: -1705552901
+      ultimate1_17: -1415167355
+      ultimate1_18: -787049744
+      ultimate1_19: 1280817962
+      ultimate1_2: 1981567640
+      ultimate1_20: -1721831354
+      ultimate1_21: -660612268
+      ultimate1_22: -810878290
+      ultimate1_23: -436786110
+      ultimate1_24: 1401801900
+      ultimate1_25: -1882517957
+      ultimate1_26: 1990767462
+      ultimate1_27: -1800976760
+      ultimate1_28: 364147393
+      ultimate1_29: -1845303985
+      ultimate1_3: 397656133
+      ultimate1_30: -447065416
+      ultimate1_31: 9738410
+      ultimate1_32: 480674565
+      ultimate1_33: 2011798388
+      ultimate1_34: -129928534
+      ultimate1_35: 1101003515
+      ultimate1_36: -1850571426
+      ultimate1_37: 1659402147
+      ultimate1_38: 1934722380
+      ultimate1_39: -1869476111
+      ultimate1_4: -1174783148
+      ultimate1_40: -291328734
+      ultimate1_41: 1983036945
+      ultimate1_42: 262574309
+      ultimate1_43: -1617725281
+      ultimate1_44: 1883966034
+      ultimate1_45: 1205973778
+      ultimate1_46: 678919206
+      ultimate1_47: 1204919312
+      ultimate1_48: -1025030040
+      ultimate1_49: 296303691
+      ultimate1_5: -481208851
+      ultimate1_50: -903598648
+      ultimate1_51: -2013564236
+      ultimate1_52: -1512448225
+      ultimate1_53: -1079658226
+      ultimate1_54: 1923156176
+      ultimate1_55: -1941814818
+      ultimate1_56: -1940976429
+      ultimate1_57: -922383589
+      ultimate1_58: -1006328570
+      ultimate1_59: 1837394507
+      ultimate1_6: 760377472
+      ultimate1_60: 232324641
+      ultimate1_61: -1244431210
+      ultimate1_62: -12433579
+      ultimate1_63: -492322372
+      ultimate1_64: 109519923
+      ultimate1_65: -1991748795
+      ultimate1_66: -1683843188
+      ultimate1_67: 184347475
+      ultimate1_68: -2099756910
+      ultimate1_69: 1337624587
+      ultimate1_7: -1880921484
+      ultimate1_70: -1018315987
+      ultimate1_71: 161479012
+      ultimate1_72: -269110751
+      ultimate1_73: 1828218551
+      ultimate1_74: 1702633597
+      ultimate1_75: -1046912883
+      ultimate1_76: 1190725626
+      ultimate1_77: 281001265
+      ultimate1_78: 1128830156
+      ultimate1_79: -1125826666
+      ultimate1_8: 1403661757
+      ultimate1_80: -1979452288
+      ultimate1_81: 1220778389
+      ultimate1_82: -1252153838
+      ultimate1_83: -1920126438
+      ultimate1_84: -744841516
+      ultimate1_85: -5441098
+      ultimate1_86: 98951456
+      ultimate1_87: 2089642135
+      ultimate1_88: -1871171575
+      ultimate1_89: 1418842299
+      ultimate1_9: -2138686468
+      ultimate1_90: -2058023162
+      ultimate1_91: -544248365
+      ultimate1_92: 655288270
+      ultimate1_93: 64502694
+      ultimate1_94: -616799210
+      ultimate1_95: 645553693
+      ultimate1_96: 826120966
+      ultimate1_97: 845275096
+      ultimate1_98: -2115155884
+      ultimate1_99: 383748283
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

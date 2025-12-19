@@ -1,0 +1,8 @@
+{
+  "Scripts/Player/Player.cs": {
+    "description": "Implementation of the procedural spine rotation in LateUpdate. It forces the assigned upper body bone to look at the aim position, overriding animation sway."
+  },
+  "Scripts/Enemy/EnemyAI.cs": {
+    "description": "Prevents NavMesh error spam by completely disabling the AI component if the agent is not on a valid NavMesh at start. This provides a single, clear error message instead of a constant flood."
+  }
+}

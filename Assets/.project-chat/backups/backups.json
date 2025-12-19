@@ -1,0 +1,820 @@
+[
+  {
+    "id": "backup_1763375413229",
+    "version": 1,
+    "name": "Auto-backup 2025-11-17_11-30-13",
+    "timestamp": "2025-11-17T10:30:16.990Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11667227,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763376165255",
+    "version": 2,
+    "name": "Auto-backup 2025-11-17_11-42-45",
+    "timestamp": "2025-11-17T10:42:49.578Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11667227,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763376567541",
+    "version": 3,
+    "name": "Auto-backup 2025-11-17_11-49-27",
+    "timestamp": "2025-11-17T10:49:28.161Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11669377,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763376602709",
+    "version": 4,
+    "name": "Auto-backup 2025-11-17_11-50-02",
+    "timestamp": "2025-11-17T10:50:03.368Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11669996,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763376659246",
+    "version": 5,
+    "name": "Auto-backup 2025-11-17_11-50-59",
+    "timestamp": "2025-11-17T10:50:59.944Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670003,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763376794382",
+    "version": 6,
+    "name": "Auto-backup 2025-11-17_11-53-14",
+    "timestamp": "2025-11-17T10:53:15.006Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673408,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763377140982",
+    "version": 7,
+    "name": "Auto-backup 2025-11-17_11-59-00",
+    "timestamp": "2025-11-17T10:59:01.659Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673682,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763377314609",
+    "version": 8,
+    "name": "Auto-backup 2025-11-17_12-01-54",
+    "timestamp": "2025-11-17T11:01:55.321Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671908,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763377773086",
+    "version": 9,
+    "name": "Auto-backup 2025-11-17_12-09-33",
+    "timestamp": "2025-11-17T11:09:33.692Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673342,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763377939585",
+    "version": 10,
+    "name": "Auto-backup 2025-11-17_12-12-19",
+    "timestamp": "2025-11-17T11:12:20.202Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673356,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378048301",
+    "version": 11,
+    "name": "Auto-backup 2025-11-17_12-14-08",
+    "timestamp": "2025-11-17T11:14:08.896Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673346,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378247440",
+    "version": 12,
+    "name": "Auto-backup 2025-11-17_12-17-27",
+    "timestamp": "2025-11-17T11:17:28.032Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11673996,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378421252",
+    "version": 13,
+    "name": "Auto-backup 2025-11-17_12-20-21",
+    "timestamp": "2025-11-17T11:20:21.971Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11667227,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378575552",
+    "version": 14,
+    "name": "Auto-backup 2025-11-17_12-22-55",
+    "timestamp": "2025-11-17T11:22:56.359Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11672896,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378787336",
+    "version": 15,
+    "name": "Auto-backup 2025-11-17_12-26-27",
+    "timestamp": "2025-11-17T11:26:28.030Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671778,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763378906803",
+    "version": 16,
+    "name": "Auto-backup 2025-11-17_12-28-26",
+    "timestamp": "2025-11-17T11:28:27.489Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671508,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763379061157",
+    "version": 17,
+    "name": "Auto-backup 2025-11-17_12-31-01",
+    "timestamp": "2025-11-17T11:31:01.722Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671546,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763379158426",
+    "version": 18,
+    "name": "Auto-backup 2025-11-17_12-32-38",
+    "timestamp": "2025-11-17T11:32:39.109Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671546,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763379292064",
+    "version": 19,
+    "name": "Auto-backup 2025-11-17_12-34-52",
+    "timestamp": "2025-11-17T11:34:52.654Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11669632,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763380291982",
+    "version": 20,
+    "name": "Auto-backup 2025-11-17_12-51-31",
+    "timestamp": "2025-11-17T11:51:32.612Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666353,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763380687389",
+    "version": 21,
+    "name": "Auto-backup 2025-11-17_12-58-07",
+    "timestamp": "2025-11-17T11:58:07.962Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666512,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763380980501",
+    "version": 22,
+    "name": "Auto-backup 2025-11-17_13-03-00",
+    "timestamp": "2025-11-17T12:03:01.016Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666518,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763381139812",
+    "version": 23,
+    "name": "Auto-backup 2025-11-17_13-05-39",
+    "timestamp": "2025-11-17T12:05:40.353Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666514,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763381339638",
+    "version": 24,
+    "name": "Auto-backup 2025-11-17_13-08-59",
+    "timestamp": "2025-11-17T12:09:00.239Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666635,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763381743964",
+    "version": 25,
+    "name": "Auto-backup 2025-11-17_13-15-43",
+    "timestamp": "2025-11-17T12:15:44.492Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666799,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763388617068",
+    "version": 26,
+    "name": "Auto-backup 2025-11-17_15-10-17",
+    "timestamp": "2025-11-17T14:10:19.132Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666703,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763389106721",
+    "version": 27,
+    "name": "Auto-backup 2025-11-17_15-18-26",
+    "timestamp": "2025-11-17T14:18:27.905Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666907,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763389453596",
+    "version": 28,
+    "name": "Auto-backup 2025-11-17_15-24-13",
+    "timestamp": "2025-11-17T14:24:14.885Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666979,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763389890048",
+    "version": 29,
+    "name": "Auto-backup 2025-11-17_15-31-30",
+    "timestamp": "2025-11-17T14:31:31.835Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666719,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763390833270",
+    "version": 30,
+    "name": "Auto-backup 2025-11-17_15-47-13",
+    "timestamp": "2025-11-17T14:47:14.220Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666854,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763391113343",
+    "version": 31,
+    "name": "Auto-backup 2025-11-17_15-51-53",
+    "timestamp": "2025-11-17T14:51:54.417Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666854,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763391506603",
+    "version": 32,
+    "name": "Auto-backup 2025-11-17_15-58-26",
+    "timestamp": "2025-11-17T14:58:28.025Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11667003,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763391833702",
+    "version": 33,
+    "name": "Auto-backup 2025-11-17_16-03-53",
+    "timestamp": "2025-11-17T15:03:55.102Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11666796,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763392071837",
+    "version": 34,
+    "name": "Auto-backup 2025-11-17_16-07-51",
+    "timestamp": "2025-11-17T15:07:52.675Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11667350,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763393582417",
+    "version": 35,
+    "name": "Auto-backup 2025-11-17_16-33-02",
+    "timestamp": "2025-11-17T15:33:03.494Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670511,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763396702581",
+    "version": 36,
+    "name": "Auto-backup 2025-11-17_17-25-02",
+    "timestamp": "2025-11-17T16:25:05.716Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670386,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763397237837",
+    "version": 37,
+    "name": "Auto-backup 2025-11-17_17-33-57",
+    "timestamp": "2025-11-17T16:33:59.603Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670527,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763397769014",
+    "version": 38,
+    "name": "Auto-backup 2025-11-17_17-42-49",
+    "timestamp": "2025-11-17T16:42:49.716Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670733,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763397935600",
+    "version": 39,
+    "name": "Auto-backup 2025-11-17_17-45-35",
+    "timestamp": "2025-11-17T16:45:36.276Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670471,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763398242319",
+    "version": 40,
+    "name": "Auto-backup 2025-11-17_17-50-42",
+    "timestamp": "2025-11-17T16:50:43.379Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11670656,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763399665037",
+    "version": 41,
+    "name": "Auto-backup 2025-11-17_18-14-25",
+    "timestamp": "2025-11-17T17:14:26.398Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671886,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763400073713",
+    "version": 42,
+    "name": "Auto-backup 2025-11-17_18-21-13",
+    "timestamp": "2025-11-17T17:21:15.301Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11671676,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763401160153",
+    "version": 43,
+    "name": "Auto-backup 2025-11-17_18-39-20",
+    "timestamp": "2025-11-17T17:39:21.146Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11672252,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763401313849",
+    "version": 44,
+    "name": "Auto-backup 2025-11-17_18-41-53",
+    "timestamp": "2025-11-17T17:41:55.062Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11672357,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763416258388",
+    "version": 45,
+    "name": "Auto-backup 2025-11-17_22-50-58",
+    "timestamp": "2025-11-17T21:51:02.941Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11784356,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763416597047",
+    "version": 46,
+    "name": "Auto-backup 2025-11-17_22-56-37",
+    "timestamp": "2025-11-17T21:56:38.089Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11784445,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763417049737",
+    "version": 47,
+    "name": "Auto-backup 2025-11-17_23-04-09",
+    "timestamp": "2025-11-17T22:04:13.902Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11784737,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763417193100",
+    "version": 48,
+    "name": "Auto-backup 2025-11-17_23-06-33",
+    "timestamp": "2025-11-17T22:06:34.075Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11784833,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763511514583",
+    "version": 49,
+    "name": "Auto-backup 2025-11-19_01-18-34",
+    "timestamp": "2025-11-19T00:18:37.662Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11809840,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763511924542",
+    "version": 50,
+    "name": "Auto-backup 2025-11-19_01-25-24",
+    "timestamp": "2025-11-19T00:25:25.091Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11809840,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763512381986",
+    "version": 51,
+    "name": "Auto-backup 2025-11-19_01-33-01",
+    "timestamp": "2025-11-19T00:33:02.511Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11809841,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763512666622",
+    "version": 52,
+    "name": "Auto-backup 2025-11-19_01-37-46",
+    "timestamp": "2025-11-19T00:37:47.175Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 11809870,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763513577189",
+    "version": 53,
+    "name": "Auto-backup 2025-11-19_01-52-57",
+    "timestamp": "2025-11-19T00:52:58.750Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237691,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763514295129",
+    "version": 54,
+    "name": "Auto-backup 2025-11-19_02-04-55",
+    "timestamp": "2025-11-19T01:04:56.073Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237812,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763514403057",
+    "version": 55,
+    "name": "Auto-backup 2025-11-19_02-06-43",
+    "timestamp": "2025-11-19T01:06:43.896Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12238058,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763514656660",
+    "version": 56,
+    "name": "Auto-backup 2025-11-19_02-10-56",
+    "timestamp": "2025-11-19T01:10:57.391Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237769,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763514760928",
+    "version": 57,
+    "name": "Auto-backup 2025-11-19_02-12-40",
+    "timestamp": "2025-11-19T01:12:41.493Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237239,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763514971547",
+    "version": 58,
+    "name": "Auto-backup 2025-11-19_02-16-11",
+    "timestamp": "2025-11-19T01:16:12.495Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12236943,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763515158233",
+    "version": 59,
+    "name": "Auto-backup 2025-11-19_02-19-18",
+    "timestamp": "2025-11-19T01:19:19.631Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237189,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763515552844",
+    "version": 60,
+    "name": "Auto-backup 2025-11-19_02-25-52",
+    "timestamp": "2025-11-19T01:25:53.684Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237117,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763515960039",
+    "version": 61,
+    "name": "Auto-backup 2025-11-19_02-32-40",
+    "timestamp": "2025-11-19T01:32:40.748Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237457,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763516474170",
+    "version": 62,
+    "name": "Auto-backup 2025-11-19_02-41-14",
+    "timestamp": "2025-11-19T01:41:15.023Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237591,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763516927259",
+    "version": 63,
+    "name": "Auto-backup 2025-11-19_02-48-47",
+    "timestamp": "2025-11-19T01:48:47.966Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237562,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763517207605",
+    "version": 64,
+    "name": "Auto-backup 2025-11-19_02-53-27",
+    "timestamp": "2025-11-19T01:53:28.321Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237748,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763517382836",
+    "version": 65,
+    "name": "Auto-backup 2025-11-19_02-56-22",
+    "timestamp": "2025-11-19T01:56:23.677Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237805,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763517931734",
+    "version": 66,
+    "name": "Auto-backup 2025-11-19_03-05-31",
+    "timestamp": "2025-11-19T02:05:32.916Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237748,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518003427",
+    "version": 67,
+    "name": "Auto-backup 2025-11-19_03-06-43",
+    "timestamp": "2025-11-19T02:06:44.621Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237559,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518160784",
+    "version": 68,
+    "name": "Auto-backup 2025-11-19_03-09-20",
+    "timestamp": "2025-11-19T02:09:22.075Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12236970,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518340726",
+    "version": 69,
+    "name": "Auto-backup 2025-11-19_03-12-20",
+    "timestamp": "2025-11-19T02:12:21.977Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12236968,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518441363",
+    "version": 70,
+    "name": "Auto-backup 2025-11-19_03-14-01",
+    "timestamp": "2025-11-19T02:14:02.519Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12236970,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518512533",
+    "version": 71,
+    "name": "Auto-backup 2025-11-19_03-15-12",
+    "timestamp": "2025-11-19T02:15:13.650Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237570,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763518657444",
+    "version": 72,
+    "name": "Auto-backup 2025-11-19_03-17-37",
+    "timestamp": "2025-11-19T02:17:38.440Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237570,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763521257681",
+    "version": 73,
+    "name": "Auto-backup 2025-11-19_04-00-57",
+    "timestamp": "2025-11-19T03:00:58.445Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237596,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763521883252",
+    "version": 74,
+    "name": "Auto-backup 2025-11-19_04-11-23",
+    "timestamp": "2025-11-19T03:11:23.922Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237599,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763522199539",
+    "version": 75,
+    "name": "Auto-backup 2025-11-19_04-16-39",
+    "timestamp": "2025-11-19T03:16:40.662Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237629,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763522365953",
+    "version": 76,
+    "name": "Auto-backup 2025-11-19_04-19-25",
+    "timestamp": "2025-11-19T03:19:26.593Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237629,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763522595920",
+    "version": 77,
+    "name": "Auto-backup 2025-11-19_04-23-15",
+    "timestamp": "2025-11-19T03:23:16.566Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237808,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763522763973",
+    "version": 78,
+    "name": "Auto-backup 2025-11-19_04-26-03",
+    "timestamp": "2025-11-19T03:26:04.606Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237723,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763585540819",
+    "version": 79,
+    "name": "Auto-backup 2025-11-19_21-52-20",
+    "timestamp": "2025-11-19T20:52:25.610Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12237991,
+    "fileDescriptions": {}
+  },
+  {
+    "id": "backup_1763586164010",
+    "version": 80,
+    "name": "Auto-backup 2025-11-19_22-02-44",
+    "timestamp": "2025-11-19T21:02:44.913Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12238172,
+    "fileDescriptions": {
+      "Scripts/Player/Player.cs": {
+        "description": "Fixes the leg twisting issue by squaring the input vector sent to the Animator, ensuring diagonal inputs reach (1,1) blending coordinates instead of (0.7,0.7)."
+      }
+    }
+  },
+  {
+    "id": "backup_1763586799736",
+    "version": 81,
+    "name": "Auto-backup 2025-11-19_22-13-19",
+    "timestamp": "2025-11-19T21:13:20.961Z",
+    "type": "partial",
+    "starColor": null,
+    "size": 12238289,
+    "fileDescriptions": {
+      "Scripts/Player/Player.cs": {
+        "description": "Stabilizes the shooting direction by calculating it from the player's center instead of the wobbling weapon muzzle. This prevents bullet spread caused by running animations."
+      }
+    }
+  }
+]
