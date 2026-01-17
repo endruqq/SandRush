@@ -1,0 +1,69 @@
+using UnityEngine;
+
+public class ExplosiveBarrel : MonoBehaviour
+{
+    [Header("Stats")]
+    [SerializeField] private float _health = 20f;
+    [SerializeField] private float _explosionDamage = 100f;
+    [SerializeField] private float _explosionRadius = 6f;
+    [SerializeField] private float _explosionForce = 10f;
+    
+    [Header("Visuals")]
+    [SerializeField] private GameObject _explosionVFX;
+
+    private bool _exploded = false;
+
+    // Called by Bullet via SendMessage
+    public void TakeDamage(float amount)
+    {
+        if (_exploded) return;
+
+        _health -= amount;
+        if (_health <= 0)
+        {
+            Explode();
+        }
+    }
+
+    private void Explode()
+    {
+        _exploded = true;
+
+        if (_explosionVFX != null)
+        {
+            Instantiate(_explosionVFX, transform.position, Quaternion.identity);
+        }
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+        foreach (var hit in hits)
+        {
+            if (hit.gameObject == gameObject) continue;
+
+            // Damage functionality
+            EnemyManager enemy = hit.GetComponentInParent<EnemyManager>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(_explosionDamage);
+            }
+            else
+            {
+                hit.SendMessage("TakeDamage", _explosionDamage, SendMessageOptions.DontRequireReceiver);
+            }
+
+            // Physics force
+            Rigidbody rb = hit.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            }
+        }
+
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+    }
+}
