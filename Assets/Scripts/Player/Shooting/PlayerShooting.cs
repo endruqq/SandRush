@@ -4,7 +4,7 @@ public class PlayerShooting
 {
     private readonly Transform _playerTransform;
     private readonly Transform _firePoint;
-    private readonly float _fireRate = 0.25f;
+    private float _fireRate = 0.25f;
     private readonly ParticleSystem _firePointParticles;
 
     private float _nextFireTime = 0f;
@@ -19,6 +19,12 @@ public class PlayerShooting
         _firePoint = firePoint;
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab);
         _firePointParticles = fireParticles;
+    }
+
+    public void ModifyFireRate(float multiplier)
+    {
+        // Lower is faster
+        _fireRate /= multiplier;
     }
 
     public void Tick(Vector3 aimDir)
@@ -36,6 +42,12 @@ public class PlayerShooting
 
             if (_firePointParticles != null) _firePointParticles.Play();
         }
+    }
+
+    public void FireImmediate(Vector3 aimDir)
+    {
+        _weapon.Fire(aimDir);
+        if (_firePointParticles != null) _firePointParticles.Play();
     }
 
     public void EquipWeapon(GameObject bulletPrefab)

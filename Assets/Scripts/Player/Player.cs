@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource _dashImpulseSource;
     [SerializeField] private CinemachineImpulseSource _gunshotImpulseSource;
     
+    [Header("Mask Ability")]
+    [SerializeField] private float _maskAbilityCooldown = 5f;
+    [SerializeField] private float _maskAbilityDamage = 50f;
+    
     [Header("Procedural Animation (Synthetik Style)")]
     [Tooltip("Assign the Spine or Chest bone here to lock it to the aim direction.")]
     [SerializeField] private Transform _upperBodyBone;
@@ -47,6 +51,12 @@ public class Player : MonoBehaviour
     private float _turnSpeed;
     private WorldSpaceCursor _worldCursor;
     private Camera _mainCamera;
+
+    private bool _hasMask = false;
+    private float _maskCooldownTimer = 0f;
+    // Event for UI to listen to
+    public System.Action<bool> OnMaskEquipped;
+    public System.Action<float> OnMaskCooldownChanged;
 
     private readonly int _moveXHash = Animator.StringToHash("MoveX");
     private readonly int _moveYHash = Animator.StringToHash("MoveY");
@@ -81,6 +91,20 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        if (_hasMask)
+        {
+            if (_maskCooldownTimer > 0)
+            {
+                _maskCooldownTimer -= Time.deltaTime;
+                OnMaskCooldownChanged?.Invoke(_maskCooldownTimer / _maskAbilityCooldown);
+            }
+            
+            if (Input.GetMouseButtonDown(1) && _maskCooldownTimer <= 0)
+            {
+                UseMaskAbility();
+            }
+        }
+
         _aiming.Tick();
         _movement.Tick(); 
 
@@ -225,5 +249,49 @@ public class Player : MonoBehaviour
     public void EquipWeapon(GameObject bulletPrefab)
     {
         _shooting.EquipWeapon(bulletPrefab);
+    }
+
+    public void EquipMask()
+    {
+        if (_hasMask) return;
+        
+        _hasMask = true;
+        // Passive: +10% fire rate (dividing delay by 1.1)
+        _shooting.ModifyFireRate(1.1f); 
+        OnMaskEquipped?.Invoke(true);
+        Debug.Log("Mask Equipped: +10% Fire Rate active.");
+    }
+
+    private void UseMaskAbility()
+    {
+        if (_maskCooldownTimer > 0) return;
+        
+        _maskCooldownTimer = _maskAbilityCooldown;
+        OnMaskCooldownChanged?.Invoke(1f);
+        
+        StartCoroutine(BurstFireRoutine());
+    }
+
+    private System.Collections.IEnumerator BurstFireRoutine()
+    {
+        int shots = 5;
+        float burstDelay = 0.08f; // Very fast burst
+        
+        for (int i = 0; i < shots; i++)
+        {
+            // Calculate direction same as LateUpdate
+            Vector3 stableOrigin = transform.position;
+            stableOrigin.y = _firePoint.position.y;
+            Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+
+            _shooting.FireImmediate(shootDirection);
+            
+            // Generate visual impulse for feedback
+            if (_gunshotImpulseSource != null) _gunshotImpulseSource.GenerateImpulse(0.5f);
+
+            yield return new WaitForSeconds(burstDelay);
+        }
+        
+        Debug.Log("Mask Ability: Burst Fire Complete");
     }
 }
