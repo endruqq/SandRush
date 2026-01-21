@@ -20463,6 +20463,7 @@ GameObject:
   - component: {fileID: 1541983161}
   - component: {fileID: 1541983160}
   - component: {fileID: 1541983159}
+  - component: {fileID: 1541983163}
   m_Layer: 0
   m_Name: mask
   m_TagString: Untagged
@@ -20562,6 +20563,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1642735264}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1541983163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541983158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c508616cca111bc4db4febfcba1c228b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaskPickup
+  _visualModel: {fileID: 1541983158}
 --- !u!1 &1546764023
 GameObject:
   m_ObjectHideFlags: 0
@@ -21965,7 +21979,6 @@ GameObject:
   - component: {fileID: 1642735263}
   - component: {fileID: 1642735262}
   - component: {fileID: 1642735261}
-  - component: {fileID: 1642735260}
   - component: {fileID: 1642735259}
   m_Layer: 0
   m_Name: MaskPickup
@@ -21995,19 +22008,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1642735260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642735258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c508616cca111bc4db4febfcba1c228b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MaskPickup
-  _visualModel: {fileID: 1541983158}
 --- !u!65 &1642735261
 BoxCollider:
   m_ObjectHideFlags: 0
