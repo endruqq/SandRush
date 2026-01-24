@@ -40,13 +40,12 @@ Material:
   m_Shader: {fileID: 4800000, guid: 8547ec39534635c4289065e5c5033f43, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _DISABLE_SSR_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -142,7 +141,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _DstBlend2: 0
     - _DstBlendAlpha: 0
     - _EnableBlendModePreserveSpecularLighting: 1
@@ -155,6 +154,7 @@ Material:
     - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _Metallic: 0
+    - _Mode: 3
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _Parallax: 0.005
@@ -194,16 +194,17 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
+    - _UVSec: 0
     - _UseShadowThreshold: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 0.94705105, b: 0.6462264, a: 1}
-    - _Color: {r: 1, g: 0.947051, b: 0.6462264, a: 1}
+    - _Color: {r: 0.8396226, g: 0.7650775, b: 0.36040404, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
