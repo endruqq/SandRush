@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{f788c0b0-2c23-4be4-a83f-ff1913df2070}">
+		<property name="assetPath">
+			<value>game-ui-sounds-14857.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>6.2640000000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9eada4eb-08e0-4c29-8e81-58eb25af3f1e}</destination>
+		</relationship>
+	</object>
+</objects>

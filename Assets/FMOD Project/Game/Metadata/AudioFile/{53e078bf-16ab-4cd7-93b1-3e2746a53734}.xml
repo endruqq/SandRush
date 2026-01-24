@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{53e078bf-16ab-4cd7-93b1-3e2746a53734}">
+		<property name="assetPath">
+			<value>Bluezone_BC0282_steampunk_mechanical_metal_element_heavy_015.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.6701874999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9eada4eb-08e0-4c29-8e81-58eb25af3f1e}</destination>
+		</relationship>
+	</object>
+</objects>

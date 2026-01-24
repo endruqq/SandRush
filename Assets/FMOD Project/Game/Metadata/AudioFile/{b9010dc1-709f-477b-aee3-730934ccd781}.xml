@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{b9010dc1-709f-477b-aee3-730934ccd781}">
+		<property name="assetPath">
+			<value>Bluezone_BC0268_switch_button_click_high_tech_interface_001.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.375</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9eada4eb-08e0-4c29-8e81-58eb25af3f1e}</destination>
+		</relationship>
+	</object>
+</objects>

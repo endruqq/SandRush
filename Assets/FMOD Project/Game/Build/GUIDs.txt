@@ -1,0 +1,5 @@
+{0bb2c400-e957-4e95-8b94-bbb4b6d41dd5} bank:/Master
+{93afe4d4-982c-02d7-0ddd-314a47271b4d} bank:/Master.strings
+{b5159da8-dc19-4866-9eee-231b186bf855} bus:/
+{af38f118-3b11-4a8b-931d-8906de32000d} bus:/Reverb
+{bcc7fa2a-867a-4fa4-b4bb-1a2431d95a47} event:/UpgradeTheme
