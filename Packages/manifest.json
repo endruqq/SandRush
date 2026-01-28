@@ -10,8 +10,6 @@
     "com.unity.inputsystem": "1.14.2",
     "com.unity.localization": "1.5.8",
     "com.unity.multiplayer.center": "1.0.0",
-    "com.unity.postprocessing": "2.0.3-preview",
-    "com.unity.render-pipelines.high-definition": "17.2.0",
     "com.unity.render-pipelines.universal": "17.2.0",
     "com.unity.services.authentication": "3.5.2",
     "com.unity.services.cloud-build": "2.0.6",
