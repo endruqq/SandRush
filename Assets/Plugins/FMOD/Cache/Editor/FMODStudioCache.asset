@@ -703,7 +703,7 @@ MonoBehaviour:
   Path: Assets/FMOD Project/Game/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639047791795213738
+  lastModified: 639048688100659739
   FileSizes:
   - Name: 
     Value: 1504
@@ -934,7 +934,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -2636315023832003156}
   cacheVersion: 131858
-  cacheTime: 639047791795213738
+  cacheTime: 639048688100659739
   SerializableEventsDict:
   - key: event:/Drone_Shooting
     index: 0
@@ -1759,6 +1759,6 @@ MonoBehaviour:
   Path: Assets/FMOD Project/Game/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639047791795167887
+  lastModified: 639048688100233052
   FileSizes: []
   Exists: 1
