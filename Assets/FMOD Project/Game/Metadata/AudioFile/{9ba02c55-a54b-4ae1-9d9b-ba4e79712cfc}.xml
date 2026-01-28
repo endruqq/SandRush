@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{9ba02c55-a54b-4ae1-9d9b-ba4e79712cfc}">
+		<property name="assetPath">
+			<value>wet_punch_#1-1769083735997 (mp3cut.net).wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.56810416666666663</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9eada4eb-08e0-4c29-8e81-58eb25af3f1e}</destination>
+		</relationship>
+	</object>
+</objects>
