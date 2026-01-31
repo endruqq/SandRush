@@ -8,6 +8,7 @@ public class ObjectFader : MonoBehaviour
     [SerializeField] private float _fadeSpeed = 10f;
     [SerializeField] private float _fadedAlpha = 0.2f;
     [SerializeField] private float _playerRadius = 2f; // Objects within this radius of player also fade (optional High Wall check)
+    [SerializeField] private bool _debugMode = false;
 
     [Header("References")]
     [SerializeField] private Transform _player;
@@ -45,11 +46,17 @@ public class ObjectFader : MonoBehaviour
         Vector3 dir = (playerPos - _cam.transform.position).normalized;
         float dist = Vector3.Distance(_cam.transform.position, playerPos);
 
+        if (_debugMode)
+        {
+            Debug.DrawLine(_cam.transform.position, playerPos, Color.green);
+        }
+
         // Raycast
         RaycastHit[] hits = Physics.RaycastAll(_cam.transform.position, dir, dist, _obstacleLayer);
 
         foreach (RaycastHit hit in hits)
         {
+            if (_debugMode) Debug.Log($"ObjectFader Hit: {hit.collider.name}");
             ProcessHit(hit.collider);
         }
 
