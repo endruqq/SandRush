@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1673c16357ec2d9469a7af3153a5f1fb
+guid: 1b2df1bb6ff777a4984fb85844957079
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -17,7 +17,11 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'mixamo.com' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'mixamorig:Hips' has translation animation
+      that will be discarded.\n\t'mixamorig:Hips' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -31,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Scene
-      takeName: Scene
-      internalID: -623603649343465320
-      firstFrame: 1
-      lastFrame: 16
+      name: mixamo.com
+      takeName: mixamo.com
+      internalID: -203655887218126122
+      firstFrame: 0
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -44,21 +48,21 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 00000000000000000000000001000000010000000000000000000000000000000000000001000000010000000000000000000000
       curves: []
       events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0.9
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -112,7 +116,7 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human:
-    - boneName: mixamorig:Hips
+    - boneName: Main_Character.001
       humanName: Hips
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -537,32 +541,32 @@ ModelImporter:
     - name: Arm_detail_01.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Arm_detail_02.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Arms.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Boots.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Boots_detail.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Clothes_mixed.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Main_Character.001
       parentName: F_Main_Character(Clone)
@@ -902,12 +906,17 @@ ModelImporter:
     - name: Mask.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: Shoulders.001
       parentName: F_Main_Character(Clone)
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.00000014106499, y: 0, z: -0, w: 1}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Standard_Gun.001
+      parentName: F_Main_Character(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.000000059604645, y: 0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
