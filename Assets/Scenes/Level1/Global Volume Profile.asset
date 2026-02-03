@@ -51,10 +51,10 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 4.8
+    m_Value: 5.35
   gaussianEnd:
     m_OverrideState: 1
     m_Value: 14.58
@@ -560,7 +560,7 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1.12
+    m_Value: 1.51
   intensity:
     m_OverrideState: 1
     m_Value: 1.26
@@ -601,16 +601,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LiftGammaGain
-  active: 1
+  active: 0
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.8850664, z: 0.8240513, w: 0}
+    m_Value: {x: 1, y: 0.9359299, z: 0.9990478, w: -0.04405286}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9911585, z: 0.9557447, w: 0}
+    m_Value: {x: 1, y: 0.97509444, z: 0.97509396, w: 0.022026435}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.8990928, y: 0.96800303, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.9139406, z: 0.77932113, w: 0.08810574}
 --- !u!114 &6314747793976809981
 MonoBehaviour:
   m_ObjectHideFlags: 3
