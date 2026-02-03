@@ -31321,6 +31321,72 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.21, y: 0.363254, z: 1.4199998}
   m_Center: {x: 0, y: 0.000000014901159, z: 0.7099999}
+--- !u!1001 &1561845720
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 543450653093330732}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_Name
+      value: gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0e8e4e860be9c514bb65cb3563661d7a, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+--- !u!4 &1609349511 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+  m_PrefabInstance: {fileID: 1561845720}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1668974837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52991,7 +53057,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -53924,7 +53990,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -54369,6 +54435,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1609349511}
   - {fileID: 1118287955881441079}
   - {fileID: 3258395637268246128}
   - {fileID: 2591163296375038571}
@@ -59483,21 +59550,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6952587618788301266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2142643395985213754
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2211927334100676895}
-  serializedVersion: 2
-  m_LocalRotation: {x: 1, y: 2.32233e-11, z: -0.000001744428, w: 0.000010208288}
-  m_LocalPosition: {x: -0.00010900816, y: 0.0824145, z: 0.022314934}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3011097201590107124}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2149762953963404527
 Transform:
   m_ObjectHideFlags: 0
@@ -59671,7 +59723,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -59739,22 +59791,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!1 &2211927334100676895
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2142643395985213754}
-  m_Layer: 3
-  m_Name: Weapon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!33 &2214325281542008115
 MeshFilter:
@@ -60089,7 +60125,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -61955,7 +61991,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -62452,7 +62488,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3103656366556617860}
-  - {fileID: 2142643395985213754}
   m_Father: {fileID: 543450653093330732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3045733629357481973
@@ -63118,7 +63153,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -63807,7 +63842,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -64800,7 +64835,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
@@ -78685,7 +78720,7 @@ SkinnedMeshRenderer:
   - {fileID: 4395821521968541879}
   - {fileID: 7285421345234911621}
   - {fileID: 7200515017398953152}
-  - {fileID: 2142643395985213754}
+  - {fileID: 0}
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3103656366556617860}
   m_AABB:
