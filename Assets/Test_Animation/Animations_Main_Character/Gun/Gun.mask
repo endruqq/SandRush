@@ -6,27 +6,27 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hands
-  m_Mask: 01000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
+  m_Name: Gun
+  m_Mask: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: Arm_detail_01.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Arm_detail_02.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Arms.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Boots.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Boots_detail.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Clothes_mixed.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Main_Character.001
     m_Weight: 1
   - m_Path: Main_Character.001/mixamorig:Hips
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Main_Character.001/mixamorig:Hips/mixamorig:LeftUpLeg
     m_Weight: 1
   - m_Path: Main_Character.001/mixamorig:Hips/mixamorig:LeftUpLeg/mixamorig:LeftLeg
@@ -156,10 +156,10 @@ AvatarMask:
   - m_Path: Main_Character.001/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand/mixamorig:RightHandThumb1/mixamorig:RightHandThumb2/mixamorig:RightHandThumb3/mixamorig:RightHandThumb4
     m_Weight: 1
   - m_Path: Main_Character.001/Weapon
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Mask.001
-    m_Weight: 1
-  - m_Path: Shoulders.001
-    m_Weight: 1
-  - m_Path: Standard_Gun.001
     m_Weight: 0
+  - m_Path: Shoulders.001
+    m_Weight: 0
+  - m_Path: Standard_Gun.001
+    m_Weight: 1
