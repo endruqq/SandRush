@@ -52,6 +52,7 @@ public class PlayerMovement
         WorldMoveDirection = (camForward * verticalInput + camRight * horizontalInput).normalized;
 
         HandleDashState(WorldMoveDirection);
+        ApplyGravity();
 
         if (_isDashing)
         {
@@ -61,7 +62,29 @@ public class PlayerMovement
 
         Vector3 targetVelocity = WorldMoveDirection * _moveSpeed;
         _currentMoveVelocity = Vector3.SmoothDamp(_currentMoveVelocity, targetVelocity, ref _velocityDamper, _accelerationTime);
-        _controller.Move(_currentMoveVelocity * Time.deltaTime);
+        
+        // Combine lateral movement with vertical gravity
+        Vector3 finalVelocity = _currentMoveVelocity;
+        finalVelocity.y = _verticalVelocity;
+        
+        _controller.Move(finalVelocity * Time.deltaTime);
+    }
+
+    // --- Gravity ---
+    private float _verticalVelocity;
+    private float _gravity = -20f; // Could be passed in constructor
+    private float _groundedGravity = -2f;
+
+    private void ApplyGravity()
+    {
+        if (_controller.isGrounded && _verticalVelocity < 0)
+        {
+            _verticalVelocity = _groundedGravity;
+        }
+
+        _verticalVelocity += _gravity * Time.deltaTime;
+        
+        // Optional: Terminal velocity cap could be added here
     }
 
     private void HandleDashState(Vector3 moveDirection)
