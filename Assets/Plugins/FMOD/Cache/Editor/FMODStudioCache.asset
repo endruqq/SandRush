@@ -1156,7 +1156,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 5426783367645474884}
   cacheVersion: 131858
-  cacheTime: 639052100821506540
+  cacheTime: 639054064231651186
   SerializableEventsDict:
   - key: event:/Explosions
     index: 0
@@ -1928,7 +1928,7 @@ MonoBehaviour:
   Path: Assets/FMOD Project/Game/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639052100821506540
+  lastModified: 639054064231651186
   FileSizes:
   - Name: 
     Value: 1776
@@ -2292,7 +2292,7 @@ MonoBehaviour:
   Path: Assets/FMOD Project/Game/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639052100821490716
+  lastModified: 639054064231620615
   FileSizes: []
   Exists: 1
 --- !u!114 &8081606358947163120
