@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Scene
+      name: gun_idle
       takeName: Scene
       internalID: -623603649343465320
       firstFrame: 1

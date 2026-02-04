@@ -7381,6 +7381,8 @@ MonoBehaviour:
   _rotationSpeed: 25
   _dashImpulseSource: {fileID: 0}
   _gunshotImpulseSource: {fileID: 0}
+  _maskAbilityCooldown: 5
+  _maskAbilityDamage: 50
   _upperBodyBone: {fileID: 0}
   _upperBodyOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &4449674425379609177

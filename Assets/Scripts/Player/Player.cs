@@ -72,8 +72,24 @@ public class Player : MonoBehaviour
     {
         _instance = this;
         _controller = GetComponent<CharacterController>();
-        _mainCamera = Camera.main;
         
+        // --- SAFE INITIALIZATION ---
+        if (_mainCamera == null) _mainCamera = Camera.main;
+        if (_mainCamera == null) _mainCamera = FindObjectOfType<Camera>();
+        
+        if (_mainCamera == null)
+        {
+            Debug.LogError("[Player] Critical Error: No Camera found! Script functionalities will be limited.");
+            enabled = false;
+            return;
+        }
+
+        if (_firePoint == null)
+        {
+            Debug.LogWarning("[Player] FirePoint not assigned. Using Player Transform.");
+            _firePoint = transform;
+        }
+
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
         _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles);
