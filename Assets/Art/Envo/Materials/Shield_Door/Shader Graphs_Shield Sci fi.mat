@@ -65,8 +65,8 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _BorderColor: {r: 588.1335, g: 192.2191, b: 0, a: 1}
-    - _DotsColor: {r: 0, g: 1.0939277, b: 1.6055584, a: 1}
+    - _BorderColor: {r: 383.4981, g: 125.33831, b: 0, a: 1}
+    - _DotsColor: {r: 0, g: 0.2551677, b: 0.44705883, a: 1}
     - _DotsTiling: {r: 25, g: 25, b: 0, a: 0}
     - _NoiseSpeed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
