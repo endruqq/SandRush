@@ -12,13 +12,17 @@ public class PlayerShooting
     private readonly float _maxShootAngle = 60f;
 
     private WeaponBase _weapon;
+    private readonly Animator _weaponAnimator;
+    private readonly string _recoilTrigger;
 
-    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, ParticleSystem fireParticles)
+    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, ParticleSystem fireParticles, Animator weaponAnimator, string recoilTrigger)
     {
         _playerTransform = playerTransform;
         _firePoint = firePoint;
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab);
         _firePointParticles = fireParticles;
+        _weaponAnimator = weaponAnimator;
+        _recoilTrigger = recoilTrigger;
     }
 
     public void ModifyFireRate(float multiplier)
@@ -27,12 +31,12 @@ public class PlayerShooting
         _fireRate /= multiplier;
     }
 
-    public void Tick(Vector3 aimDir)
+    public bool Tick(Vector3 aimDir)
     {
         float angle = Vector3.Angle(_playerTransform.forward, aimDir);
         if (angle > _maxShootAngle)
         {
-            return;
+            return false;
         }
 
         if (Input.GetMouseButton(0) && Time.time >= _nextFireTime)
@@ -41,13 +45,17 @@ public class PlayerShooting
             _weapon.Fire(aimDir);
 
             if (_firePointParticles != null) _firePointParticles.Play();
+            if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
+            return true;
         }
+        return false;
     }
 
     public void FireImmediate(Vector3 aimDir)
     {
         _weapon.Fire(aimDir);
         if (_firePointParticles != null) _firePointParticles.Play();
+        if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
     }
 
     public void EquipWeapon(GameObject bulletPrefab)

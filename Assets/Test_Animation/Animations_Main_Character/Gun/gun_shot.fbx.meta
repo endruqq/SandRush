@@ -34,7 +34,7 @@ ModelImporter:
       name: gun_shot
       takeName: Scene
       internalID: -623603649343465320
-      firstFrame: 1
+      firstFrame: 8
       lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
@@ -42,7 +42,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1

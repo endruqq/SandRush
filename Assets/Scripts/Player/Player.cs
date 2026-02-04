@@ -11,6 +11,16 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
+    [Header("Weapon Animation")]
+    [SerializeField] private Animator _weaponAnimator;
+    [SerializeField] private string _recoilAnimationTrigger = "Recoil";
+    [Header("Shooting Layer Override")]
+    [Tooltip("Name of the layer that plays shooting animations.")]
+    [SerializeField] private string _shootingLayerName = "ShootingGunLayer";
+    [Tooltip("Name of the upper body layer (idle aim).")]
+    [SerializeField] private string _upperBodyLayerName = "Upper Body";
+    [Tooltip("How fast the layer weights blend.")]
+    [SerializeField] private float _layerBlendSpeed = 10f;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3.5f;
@@ -51,6 +61,12 @@ public class Player : MonoBehaviour
     private float _turnSpeed;
     private WorldSpaceCursor _worldCursor;
     private Camera _mainCamera;
+    
+    // Shooting layer indices
+    private int _shootingLayerIndex = -1;
+    private int _upperBodyLayerIndex = -1;
+    private float _shootingLayerWeight = 0f;
+    private float _lastShotTime = -10f;
 
     private bool _hasMask = false;
     private float _maskCooldownTimer = 0f;
@@ -92,7 +108,19 @@ public class Player : MonoBehaviour
 
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles, _weaponAnimator, _recoilAnimationTrigger);
+        
+        // Get layer indices
+        if (_animator != null)
+        {
+            _shootingLayerIndex = _animator.GetLayerIndex(_shootingLayerName);
+            _upperBodyLayerIndex = _animator.GetLayerIndex(_upperBodyLayerName);
+            
+            if (_shootingLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_shootingLayerName}' not found in Animator.");
+            if (_upperBodyLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_upperBodyLayerName}' not found in Animator.");
+        }
         
         if (_dashCooldownText != null) _dashCooldownText.gameObject.SetActive(false);
         _lastRotation = transform.rotation;
@@ -156,8 +184,10 @@ public class Player : MonoBehaviour
         stableOrigin.y = _firePoint.position.y;
         Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
         
-        _shooting.Tick(shootDirection);
-
+        bool firedThisFrame = _shooting.Tick(shootDirection);
+        if (firedThisFrame) _lastShotTime = Time.time;
+        
+        UpdateShootingLayerWeights();
         CalculateTurnSpeed();
     }
 
@@ -173,6 +203,25 @@ public class Player : MonoBehaviour
         if (_instance == null) return;
         _instance.CurrentUltimate = Mathf.Clamp(_instance.CurrentUltimate + amount, 0, 10);
         UltimateUI.UpdateUltimate(_instance.CurrentUltimate);
+    }
+    
+    private void UpdateShootingLayerWeights()
+    {
+        if (_animator == null || _shootingLayerIndex == -1 || _upperBodyLayerIndex == -1)
+            return;
+        
+        // Check if player is currently holding fire button
+        bool isShooting = Input.GetMouseButton(0);
+        
+        // Target weight: 1 when shooting, 0 when not
+        float targetWeight = isShooting ? 1f : 0f;
+        
+        // Smoothly blend the weight
+        _shootingLayerWeight = Mathf.MoveTowards(_shootingLayerWeight, targetWeight, _layerBlendSpeed * Time.deltaTime);
+        
+        // Apply weights: ShootingGunLayer gets the shooting weight, Upper Body gets the inverse
+        _animator.SetLayerWeight(_shootingLayerIndex, _shootingLayerWeight);
+        _animator.SetLayerWeight(_upperBodyLayerIndex, 1f - _shootingLayerWeight);
     }
     
     private void CalculateTurnSpeed()
