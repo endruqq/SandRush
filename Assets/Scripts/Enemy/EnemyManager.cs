@@ -3,6 +3,11 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private float _maxHealth = 100f;
+    
+    [Header("Animation")]
+    [SerializeField] private Animator _animator;
+    [SerializeField] private string _deathTrigger = "Death";
+    [SerializeField] private float _deathAnimationDuration = 1f;
 
     private float _currentHealth;
     private bool _isDead;
@@ -38,6 +43,16 @@ public class EnemyManager : MonoBehaviour
 
         _isDead = true;
         
+        // Disable AI and movement
+        if (TryGetComponent<EnemyAI>(out var ai)) ai.enabled = false;
+        if (TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var nav)) nav.enabled = false;
+        
+        // Play death animation
+        if (_animator != null && !string.IsNullOrEmpty(_deathTrigger))
+        {
+            _animator.SetTrigger(_deathTrigger);
+        }
+        
         if (_mySpawner != null)
         {
             _mySpawner.OnEnemyDied(this);
@@ -45,6 +60,13 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log($"{gameObject.name} is dead!");
 
+        // Delay before disabling to allow animation to play
+        StartCoroutine(DisableAfterDelay(_deathAnimationDuration));
+    }
+    
+    private System.Collections.IEnumerator DisableAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         gameObject.SetActive(false);
     }
 }

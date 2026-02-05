@@ -1063,10 +1063,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   _firePoint: {fileID: 3063736368853360816}
-  _firePointParticles: {fileID: 0}
+  _firePointVFX:
+  - {fileID: 0}
   _bulletPrefab: {fileID: 4878847792637523488, guid: da8af512d525f7b439a1e0d16758de1f, type: 3}
   _animator: {fileID: 1972460812010939616}
   _dashCooldownText: {fileID: 0}
+  _bulletSpeed: 40
+  _weaponAnimator: {fileID: 1306789792610706076}
+  _recoilAnimationTrigger: Recoil
+  _shootingLayerName: ShootingGunLayer
+  _upperBodyLayerName: Upper Body
+  _layerBlendSpeed: 100
   moveSpeed: 5
   accelerationTime: 0.1
   animationSpeedMultiplier: 50
@@ -3246,7 +3253,7 @@ Transform:
   m_GameObject: {fileID: 8579721095687737055}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.436, z: 0.64}
+  m_LocalPosition: {x: 0.007, y: 1.674, z: 1.097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3641,15 +3648,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.17
+      value: 0.0239
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.114
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.16
+      value: 0.7419
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3692,6 +3699,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+--- !u!95 &1306789792610706076 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}
+  m_PrefabInstance: {fileID: 4848181956362002189}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4954675028812052710 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07d715d4a2ac00247a4a77cffd95d213, type: 3}

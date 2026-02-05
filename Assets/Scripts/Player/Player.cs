@@ -7,10 +7,14 @@ public class Player : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private Transform _firePoint;
-    [SerializeField] private ParticleSystem _firePointParticles;
+    [SerializeField] private GameObject[] _firePointVFX;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
+    
+    [Header("Shooting Stats")]
+    [SerializeField] private float _bulletSpeed = 25f;
+
     [Header("Weapon Animation")]
     [SerializeField] private Animator _weaponAnimator;
     [SerializeField] private string _recoilAnimationTrigger = "Recoil";
@@ -108,7 +112,7 @@ public class Player : MonoBehaviour
 
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles, _weaponAnimator, _recoilAnimationTrigger);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger);
         
         // Get layer indices
         if (_animator != null)
@@ -164,6 +168,19 @@ public class Player : MonoBehaviour
             _dashImpulseSource.GenerateImpulse();
         if (Input.GetMouseButtonDown(0) && _gunshotImpulseSource != null) 
             _gunshotImpulseSource.GenerateImpulse();
+
+        // --- SHOOTING LOGIC MOVED TO UPDATE FOR RESPONSIVENESS ---
+        // Calculate shoot direction
+        Vector3 stableOrigin = transform.position;
+        // Check for null just in case firepoint was destroyed or not assigned yet
+        if (_firePoint != null) stableOrigin.y = _firePoint.position.y;
+        
+        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        
+        bool firedThisFrame = _shooting.Tick(shootDirection);
+        if (firedThisFrame) _lastShotTime = Time.time;
+        
+        UpdateShootingLayerWeights();
     }
 
     void LateUpdate()
@@ -178,16 +195,8 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.deltaTime * _rotationSpeed);
         }
 
-        // FIX: Calculate shoot direction from player center (at weapon height) to aim target.
-        // This decouples the aiming accuracy from the running animation sway (upper body movement).
-        Vector3 stableOrigin = transform.position;
-        stableOrigin.y = _firePoint.position.y;
-        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        // Shooting logic moved to Update()
         
-        bool firedThisFrame = _shooting.Tick(shootDirection);
-        if (firedThisFrame) _lastShotTime = Time.time;
-        
-        UpdateShootingLayerWeights();
         CalculateTurnSpeed();
     }
 

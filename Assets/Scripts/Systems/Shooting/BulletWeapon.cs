@@ -3,11 +3,12 @@ using UnityEngine;
 public class BulletWeapon : WeaponBase
 {
     private readonly Transform _firePoint;
-    private readonly float _bulletSpeed = 25f;
+    private readonly float _bulletSpeed;
     private readonly ObjectPool<Bullet> _bulletPool;
 
-    public BulletWeapon(Transform owner, Transform firePoint, GameObject bulletPrefab, int poolSize = 20) : base(owner)
+    public BulletWeapon(Transform owner, Transform firePoint, GameObject bulletPrefab, float speed, int poolSize = 20) : base(owner)
     {
+        _bulletSpeed = speed;
         _firePoint = firePoint;
 
         Bullet bulletComp = bulletPrefab.GetComponent<Bullet>();

@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
     [Header("Bullet Stats")]
     [SerializeField] private float damage = 25f;
     [SerializeField] private GameObject _hitEffectPrefab;
+    [SerializeField] private TrailRenderer _trail;
 
     private Rigidbody _rb;
     private ObjectPool<Bullet> _pool;
@@ -38,6 +39,12 @@ public class Bullet : MonoBehaviour
         if(_rb != null) 
         {
             _rb.linearVelocity = dir * speed;
+        }
+
+        if (_trail != null)
+        {
+            _trail.Clear(); // Clear old trail from previous use
+            _trail.emitting = true;
         }
     }
 
