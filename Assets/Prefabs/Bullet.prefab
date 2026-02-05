@@ -2339,7 +2339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   damage: 25
-  _hitEffectPrefab: {fileID: 2043447703736466397, guid: 206a369fcbd232044891c286ca641585, type: 3}
+  _hitEffectPrefab: {fileID: 0}
   _trail: {fileID: -7537818326183604034}
   _hitLayers:
     serializedVersion: 2

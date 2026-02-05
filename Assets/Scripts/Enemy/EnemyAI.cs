@@ -19,8 +19,9 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Ranged Weapon Settings")]
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _firePoint;
+    [SerializeField] private Transform[] _firePoints;
     [SerializeField] private float _bulletSpeed = 20f;
+    [SerializeField] private GameObject[] _rangedVFXPrefabs;
     
     [Header("Melee Settings")]
     [SerializeField] private int _meleeDamage = 10;
@@ -175,13 +176,75 @@ public class EnemyAI : MonoBehaviour
     private void PerformRangedAttack()
     {
         TriggerAnimation(_attackTrigger);
-        if (_bulletPrefab == null || _firePoint == null) return;
-        GameObject bulletGO = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
-        if (bulletGO.TryGetComponent<Rigidbody>(out var rb))
+        if (_firePoints == null || _firePoints.Length == 0) return;
+        
+        // Fire from all fire points
+        foreach (var firePoint in _firePoints)
         {
-             Vector3 shootDirection = _playerTransform.position - _firePoint.position;
-             shootDirection.y = 0;
-             rb.linearVelocity = shootDirection.normalized * _bulletSpeed;
+            if (firePoint == null) continue;
+            
+            // Calculate direction to player
+            Vector3 shootDirection = _playerTransform.position - firePoint.position;
+            shootDirection.y = 0;
+            shootDirection.Normalize();
+            
+            // Use shared enemy bullet pool
+            if (EnemyBulletPool.Instance != null)
+            {
+                EnemyBulletPool.Instance.FireBullet(firePoint.position, shootDirection, _bulletSpeed);
+            }
+            else
+            {
+                // Fallback: instantiate directly if no pool exists
+                if (_bulletPrefab != null)
+                {
+                    GameObject bulletGO = Instantiate(_bulletPrefab, firePoint.position, Quaternion.LookRotation(shootDirection));
+                    if (bulletGO.TryGetComponent<Bullet>(out var bullet))
+                    {
+                        bullet.Fire(shootDirection, _bulletSpeed);
+                    }
+                }
+            }
+            
+            // Spawn VFX at this fire point
+            SpawnRangedVFX(firePoint);
+        }
+    }
+    
+    private void SpawnRangedVFX(Transform firePoint)
+    {
+        if (_rangedVFXPrefabs == null || firePoint == null) return;
+        
+        foreach (var prefab in _rangedVFXPrefabs)
+        {
+            if (prefab == null) continue;
+            
+            Quaternion correctedRotation = firePoint.rotation * Quaternion.Euler(0, 180, 0);
+            GameObject vfxInstance = Instantiate(prefab, firePoint.position, correctedRotation, firePoint);
+            
+            ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
+            if (rootPS != null)
+            {
+                rootPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                rootPS.Play(true);
+            }
+            else
+            {
+                foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
+                {
+                    ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    ps.Play(true);
+                }
+            }
+            
+            float maxDuration = 0f;
+            foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
+            {
+                float duration = ps.main.duration + ps.main.startLifetime.constantMax;
+                if (duration > maxDuration) maxDuration = duration;
+            }
+            
+            Destroy(vfxInstance, maxDuration + 0.5f);
         }
     }
 

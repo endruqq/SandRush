@@ -120,8 +120,11 @@ public class Bullet : MonoBehaviour
 
     private void Deactivate()
     {
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
+        if (_rb != null)
+        {
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+        }
         
         if (_pool != null)
         {
