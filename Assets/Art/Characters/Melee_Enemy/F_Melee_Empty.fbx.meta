@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 77b4bf11f8d6dab4681841772578c423
+guid: 45f5b7afe39f0f440bbb76e1023a6f01
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -92,15 +92,15 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: Melee_Armature
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
