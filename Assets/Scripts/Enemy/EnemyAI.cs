@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     
     [Header("Melee Settings")]
     [SerializeField] private int _meleeDamage = 10;
+    [SerializeField] private float _meleeHitDelay = 0.3f; // Delay before damage/VFX (sync with animation)
     [SerializeField] private Transform _meleeVFXPoint;
     [SerializeField] private GameObject[] _meleeVFXPrefabs;
     
@@ -125,6 +126,9 @@ public class EnemyAI : MonoBehaviour
         
         if (_distanceToPlayer <= _attackRange)
         {
+            // Rotate to face player ONCE before switching to attack
+            RotateTowardsPlayer();
+            SetWalking(false);
             _currentState = State.Attacking;
         }
         else if (_distanceToPlayer > _detectionRadius)
@@ -137,9 +141,10 @@ public class EnemyAI : MonoBehaviour
     private void HandleAttackingState()
     {
         _navAgent.isStopped = true;
-        Vector3 lookDirection = (_playerTransform.position - transform.position).normalized;
-        lookDirection.y = 0;
-        transform.rotation = Quaternion.LookRotation(lookDirection);
+        SetWalking(false);
+        
+        // Only rotate when NOT playing attack animation (between attacks)
+        // This prevents rotation from overriding attack animation
 
         // For all attack types, if player is out of range, go back to chasing.
         if (_distanceToPlayer > _attackRange) {
@@ -251,7 +256,16 @@ public class EnemyAI : MonoBehaviour
     private void PerformMeleeAttack()
     {
         TriggerAnimation(_attackTrigger);
-        if (_distanceToPlayer <= _attackRange)
+        StartCoroutine(MeleeHitCoroutine());
+    }
+    
+    private System.Collections.IEnumerator MeleeHitCoroutine()
+    {
+        // Wait for animation to reach hit moment
+        yield return new WaitForSeconds(_meleeHitDelay);
+        
+        // Check if still in range (player might have moved)
+        if (_distanceToPlayer <= _attackRange && _playerTransform != null)
         {
             _playerTransform.SendMessage("TakeDamage", _meleeDamage, SendMessageOptions.DontRequireReceiver);
             SpawnMeleeVFX();
@@ -341,6 +355,22 @@ public class EnemyAI : MonoBehaviour
         if (_animator != null && !string.IsNullOrEmpty(_isWalkingBool))
         {
             _animator.SetBool(_isWalkingBool, isWalking);
+            Debug.Log($"{gameObject.name} SetWalking: {isWalking}", this);
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} SetWalking failed: Animator={_animator}, BoolName={_isWalkingBool}", this);
+        }
+    }
+    
+    private void RotateTowardsPlayer()
+    {
+        if (_playerTransform == null) return;
+        Vector3 lookDirection = (_playerTransform.position - transform.position).normalized;
+        lookDirection.y = 0;
+        if (lookDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(lookDirection);
         }
     }
 }
