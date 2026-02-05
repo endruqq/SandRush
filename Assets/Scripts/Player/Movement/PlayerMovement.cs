@@ -56,7 +56,10 @@ public class PlayerMovement
 
         if (_isDashing)
         {
-            _controller.Move(WorldMoveDirection * _dashSpeed * Time.deltaTime);
+            // Apply gravity even during dash
+            Vector3 dashMove = WorldMoveDirection * _dashSpeed * Time.deltaTime;
+            dashMove.y = _verticalVelocity * Time.deltaTime;
+            _controller.Move(dashMove);
             return;
         }
 
