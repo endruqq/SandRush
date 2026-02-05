@@ -1259,6 +1259,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 944659960}
   m_LocalEulerAnglesHint: {x: 45, y: 60, z: 0}
+--- !u!1001 &196083665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5379999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -90.82
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000005066394
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      propertyPath: m_Name
+      value: F_Melee
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1773066940}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1773066939}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1773066938}
+  m_SourcePrefab: {fileID: 100100000, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
 --- !u!1 &252822958
 GameObject:
   m_ObjectHideFlags: 0
@@ -9770,6 +9836,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 944659960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1395285942 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3260327398025190913, guid: 005f3eb120b4221419a7dd9b45c970d6, type: 3}
+  m_PrefabInstance: {fileID: 1376382778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1401188879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12328,6 +12399,88 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.8876457, y: 0.5206213, z: 1.7254033}
   m_Center: {x: -0.115926325, y: -0.2170434, z: 0.22296587}
+--- !u!1 &1773066937 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2f87a449b446abf4b833b92016816c1d, type: 3}
+  m_PrefabInstance: {fileID: 196083665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1773066938
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773066937}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: d9119363e9c44d643a1724917af15d1f, type: 3}
+  m_Controller: {fileID: 9100000, guid: 7096621bb5b78704ca2bcc1490e83166, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1773066939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773066937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba08bd008a162ca4da4f0b7299b71292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  _attackType: 1
+  _playerTransform: {fileID: 1231638233}
+  _detectionRadius: 15
+  _attackRange: 10
+  _attackRate: 1
+  _bulletPrefab: {fileID: 0}
+  _firePoints: []
+  _bulletSpeed: 20
+  _rangedVFXPrefabs: []
+  _meleeDamage: 10
+  _meleeHitDelay: 0.3
+  _meleeVFXPoint: {fileID: 1231638233}
+  _meleeVFXPrefabs:
+  - {fileID: 1395285942}
+  _explosionDamage: 50
+  _explosionRadius: 5
+  _explosionFuseTime: 1.5
+  _explosionVFX: {fileID: 0}
+  _animator: {fileID: 0}
+  _isWalkingBool: IsWalking
+  _attackTrigger: Attack
+--- !u!195 &1773066940
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773066937}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.5691179
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 5.2676983
+  m_BaseOffset: 2.6338491
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1781425143
 GameObject:
   m_ObjectHideFlags: 0
@@ -176850,3 +177003,4 @@ SceneRoots:
   - {fileID: 1550607748}
   - {fileID: 457345640}
   - {fileID: 1648493308}
+  - {fileID: 196083665}
