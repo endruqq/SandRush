@@ -21,6 +21,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform[] _firePoints;
     [SerializeField] private float _bulletSpeed = 20f;
+    [SerializeField] private float _rangedDamage = 25f;
     [SerializeField] private GameObject[] _rangedVFXPrefabs;
     
     [Header("Melee Settings")]
@@ -225,7 +226,7 @@ public class EnemyAI : MonoBehaviour
             // Use shared enemy bullet pool
             if (EnemyBulletPool.Instance != null)
             {
-                EnemyBulletPool.Instance.FireBullet(firePoint.position, shootDirection, _bulletSpeed);
+                EnemyBulletPool.Instance.FireBullet(firePoint.position, shootDirection, _bulletSpeed, _rangedDamage, transform);
             }
             else
             {
@@ -235,6 +236,8 @@ public class EnemyAI : MonoBehaviour
                     GameObject bulletGO = Instantiate(_bulletPrefab, firePoint.position, Quaternion.LookRotation(shootDirection));
                     if (bulletGO.TryGetComponent<Bullet>(out var bullet))
                     {
+                        bullet.SetDamage(_rangedDamage);
+                        bullet.SetOwner(transform);
                         bullet.Fire(shootDirection, _bulletSpeed);
                     }
                 }
@@ -296,7 +299,7 @@ public class EnemyAI : MonoBehaviour
         // Check if still in range (player might have moved)
         if (_distanceToPlayer <= _attackRange && _playerTransform != null)
         {
-            _playerTransform.SendMessage("TakeDamage", _meleeDamage, SendMessageOptions.DontRequireReceiver);
+            Player.TakeDamage(_meleeDamage);
             SpawnMeleeVFX();
         }
     }
@@ -347,7 +350,7 @@ public class EnemyAI : MonoBehaviour
         
         if(_distanceToPlayer <= _explosionRadius)
         {
-             _playerTransform.SendMessage("TakeDamage", _explosionDamage, SendMessageOptions.DontRequireReceiver);
+             Player.TakeDamage(_explosionDamage);
         }
         
         if(TryGetComponent<EnemyManager>(out var manager))

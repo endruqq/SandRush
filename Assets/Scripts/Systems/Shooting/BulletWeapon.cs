@@ -21,6 +21,7 @@ public class BulletWeapon : WeaponBase
 
         bullet.transform.SetPositionAndRotation(_firePoint.position, Quaternion.LookRotation(direction));
         bullet.Init(_bulletPool);
+        bullet.SetOwner(Owner); // Prevents self-damage using Transform
         bullet.Fire(direction, _bulletSpeed);
     }
 }

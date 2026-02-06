@@ -35,7 +35,7 @@ public class EnemyBulletPool : MonoBehaviour
     /// <summary>
     /// Get a bullet from the pool and fire it.
     /// </summary>
-    public void FireBullet(Vector3 position, Vector3 direction, float speed)
+    public void FireBullet(Vector3 position, Vector3 direction, float speed, float damage = 25f, Transform owner = null)
     {
         if (_pool == null)
         {
@@ -46,6 +46,8 @@ public class EnemyBulletPool : MonoBehaviour
         Bullet bullet = _pool.GetObject();
         bullet.transform.SetPositionAndRotation(position, Quaternion.LookRotation(direction));
         bullet.Init(_pool);
+        bullet.SetDamage(damage); 
+        bullet.SetOwner(owner); // Set owner transform
         bullet.Fire(direction, speed);
     }
 }

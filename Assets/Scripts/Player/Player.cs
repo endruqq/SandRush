@@ -18,6 +18,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float _reloadTime = 1.5f;
     [SerializeField] private AmmoUI _ammoUI;
 
+    [Header("Health & Stats")]
+    [SerializeField] private int _maxHealth = 100;
+
+
     [Header("Weapon Animation")]
     [SerializeField] private Animator _weaponAnimator;
     [SerializeField] private string _recoilAnimationTrigger = "Recoil";
@@ -146,6 +150,14 @@ public class Player : MonoBehaviour
         Cursor.visible = false;
     }
     
+    void Start()
+    {
+        // Initialize Health in Start to ensure UI is ready
+        CurrentHealth = _maxHealth;
+        HealthUI.Initialize(CurrentHealth, _maxHealth);
+        Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
+    }
+    
     void Update()
     {
         if (_hasMask)
@@ -212,7 +224,10 @@ public class Player : MonoBehaviour
     public static void TakeDamage(int amount)
     {
         if (_instance == null) return;
-        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, 100);
+        
+        Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}, Stack: {System.Environment.StackTrace}");
+        
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, _instance._maxHealth);
         HealthUI.UpdateHealth(_instance.CurrentHealth);
     }
     

@@ -42,6 +42,24 @@ public class HealthUI : MonoBehaviour
     }
     
     /// <summary>
+    /// Initialize health bar with specific max health
+    /// </summary>
+    public static void Initialize(int currentHealth, int maxHealth)
+    {
+        if (_instance == null) return;
+
+        _instance._maxHealth = maxHealth;
+        _instance._targetHealth = currentHealth;
+        _instance._currentDisplayedHealth = currentHealth;
+        
+        if (_instance._healthSlider != null)
+        {
+            _instance._healthSlider.maxValue = maxHealth;
+            _instance._healthSlider.value = currentHealth;
+        }
+    }
+    
+    /// <summary>
     /// Set health immediately without animation (for initialization)
     /// </summary>
     public static void SetHealthImmediate(int health)

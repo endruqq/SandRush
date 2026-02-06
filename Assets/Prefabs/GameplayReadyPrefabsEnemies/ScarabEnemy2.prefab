@@ -1264,12 +1264,12 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 0}
   _firePoints: []
   _bulletSpeed: 20
+  _rangedDamage: 25
   _rangedVFXPrefabs: []
   _meleeDamage: 10
   _meleeHitDelay: 0.6
   _meleeVFXPoint: {fileID: 0}
-  _meleeVFXPrefabs:
-  - {fileID: 0}
+  _meleeVFXPrefabs: []
   _explosionDamage: 50
   _explosionRadius: 5
   _explosionFuseTime: 1.5
