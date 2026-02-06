@@ -63,9 +63,26 @@ public class EnemyAI : MonoBehaviour
     {
         _currentState = State.Idle;
         _previousState = State.Idle;
+        
+        // Check if on NavMesh, try to warp if not
         if (!_navAgent.isOnNavMesh)
         {
-            Debug.LogError($"{gameObject.name} is not on a NavMesh! Please check its position.", this);
+            Debug.LogWarning($"{gameObject.name} is not on a NavMesh! Trying to find nearest NavMesh point...", this);
+            
+            // Try to find nearest point on NavMesh
+            if (UnityEngine.AI.NavMesh.SamplePosition(transform.position, out UnityEngine.AI.NavMeshHit hit, 5f, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                _navAgent.Warp(hit.position);
+                Debug.Log($"{gameObject.name} warped to NavMesh at {hit.position}", this);
+            }
+            else
+            {
+                Debug.LogError($"{gameObject.name} could not find nearby NavMesh! Enemy will not move.", this);
+            }
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} is on NavMesh and ready.", this);
         }
     }
 
@@ -73,8 +90,17 @@ public class EnemyAI : MonoBehaviour
     {
         if (_playerTransform == null)
         {
-            if(_navAgent.isOnNavMesh) _navAgent.isStopped = true;
-            return;
+            // Try to find player again (might have spawned after enemy)
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                _playerTransform = playerObj.transform;
+            }
+            else
+            {
+                if(_navAgent.isOnNavMesh) _navAgent.isStopped = true;
+                return;
+            }
         }
         _distanceToPlayer = Vector3.Distance(transform.position, _playerTransform.position);
 
@@ -143,8 +169,11 @@ public class EnemyAI : MonoBehaviour
         _navAgent.isStopped = true;
         SetWalking(false);
         
-        // Only rotate when NOT playing attack animation (between attacks)
-        // This prevents rotation from overriding attack animation
+        // Ranged enemies rotate continuously to face player
+        if (_attackType == AttackType.Ranged)
+        {
+            RotateTowardsPlayer();
+        }
 
         // For all attack types, if player is out of range, go back to chasing.
         if (_distanceToPlayer > _attackRange) {

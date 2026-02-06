@@ -16,6 +16,14 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("Set to 0 for infinite waves.")]
     [SerializeField] private int _maxWaves = 0;
     [SerializeField] private bool _autoStart = false;
+    
+    [Header("Portal VFX")]
+    [Tooltip("VFX prefab to spawn before each enemy appears")]
+    [SerializeField] private GameObject _portalVFXPrefab;
+    [Tooltip("Delay between portal appearing and enemy spawning")]
+    [SerializeField] private float _portalSpawnDelay = 0.5f;
+    [Tooltip("How long the portal VFX stays before being destroyed")]
+    [SerializeField] private float _portalLifetime = 2f;
 
     private List<EnemyManager> _activeEnemies = new List<EnemyManager>();
     private bool _isSpawning = false;
@@ -84,7 +92,31 @@ public class EnemySpawner : MonoBehaviour
             spawnPos = hit.position;
         }
 
+        // Start spawn with portal effect
+        StartCoroutine(SpawnEnemyWithPortal(spawnPos));
+    }
+    
+    private IEnumerator SpawnEnemyWithPortal(Vector3 spawnPos)
+    {
+        // Spawn portal VFX first
+        if (_portalVFXPrefab != null)
+        {
+            GameObject portal = Instantiate(_portalVFXPrefab, spawnPos, Quaternion.identity);
+            Destroy(portal, _portalLifetime);
+            
+            // Wait for portal to appear before spawning enemy
+            yield return new WaitForSeconds(_portalSpawnDelay);
+        }
+        
+        // Now spawn the enemy
         GameObject enemyObj = Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);
+        
+        // Force NavMeshAgent to proper position
+        if (enemyObj.TryGetComponent<NavMeshAgent>(out var navAgent))
+        {
+            navAgent.Warp(spawnPos);
+            Debug.Log($"[EnemySpawner] Warped {enemyObj.name} to {spawnPos}");
+        }
         
         if (enemyObj.TryGetComponent<EnemyManager>(out var manager))
         {

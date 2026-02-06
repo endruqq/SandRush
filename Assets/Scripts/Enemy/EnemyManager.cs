@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log($"{gameObject.name} is dead!");
 
-        // Delay before disabling to allow animation to play
+        // Disable after animation
         StartCoroutine(DisableAfterDelay(_deathAnimationDuration));
     }
     
@@ -68,5 +68,14 @@ public class EnemyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         gameObject.SetActive(false);
+    }
+    
+    /// <summary>
+    /// Reset enemy for object pooling
+    /// </summary>
+    public void ResetEnemy()
+    {
+        _currentHealth = _maxHealth;
+        _isDead = false;
     }
 }

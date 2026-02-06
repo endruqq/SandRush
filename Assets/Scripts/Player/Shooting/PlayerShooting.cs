@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class PlayerShooting
 {
@@ -15,8 +16,29 @@ public class PlayerShooting
     private WeaponBase _weapon;
     private readonly Animator _weaponAnimator;
     private readonly string _recoilTrigger;
+    
+    // --- Ammo System ---
+    private readonly int _magazineSize;
+    private int _currentAmmo;
+    private readonly float _reloadTime;
+    private float _reloadTimer;
+    private bool _isReloading;
+    
+    /// <summary>
+    /// Event fired when ammo count changes. Parameters: currentAmmo, maxAmmo
+    /// </summary>
+    public event Action<int, int> OnAmmoChanged;
+    
+    /// <summary>
+    /// Event fired when reload starts/ends. Parameter: isReloading
+    /// </summary>
+    public event Action<bool> OnReloadStateChanged;
 
-    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, float bulletSpeed, GameObject[] fireVFXPrefabs, Animator weaponAnimator, string recoilTrigger)
+    public int CurrentAmmo => _currentAmmo;
+    public int MagazineSize => _magazineSize;
+    public bool IsReloading => _isReloading;
+
+    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, float bulletSpeed, GameObject[] fireVFXPrefabs, Animator weaponAnimator, string recoilTrigger, int magazineSize = 25, float reloadTime = 1.5f)
     {
         _playerTransform = playerTransform;
         _firePoint = firePoint;
@@ -25,6 +47,11 @@ public class PlayerShooting
         _firePointVFXPrefabs = fireVFXPrefabs;
         _weaponAnimator = weaponAnimator;
         _recoilTrigger = recoilTrigger;
+        
+        // Initialize ammo
+        _magazineSize = magazineSize;
+        _reloadTime = reloadTime;
+        _currentAmmo = _magazineSize;
     }
 
     public void ModifyFireRate(float multiplier)
@@ -35,27 +62,76 @@ public class PlayerShooting
 
     public bool Tick(Vector3 aimDir)
     {
+        // Handle reload input
+        if (Input.GetKeyDown(KeyCode.R) && !_isReloading && _currentAmmo < _magazineSize)
+        {
+            StartReload();
+        }
+        
+        // Handle reload timer
+        if (_isReloading)
+        {
+            _reloadTimer -= Time.deltaTime;
+            if (_reloadTimer <= 0)
+            {
+                FinishReload();
+            }
+            return false; // Can't shoot while reloading
+        }
+        
         float angle = Vector3.Angle(_playerTransform.forward, aimDir);
         if (angle > _maxShootAngle)
         {
             return false;
         }
 
-        if (Input.GetMouseButton(0) && Time.time >= _nextFireTime)
+        // Check if can shoot
+        if (Input.GetMouseButton(0) && Time.time >= _nextFireTime && _currentAmmo > 0)
         {
             _nextFireTime = Time.time + _fireRate;
             _weapon.Fire(aimDir);
+            
+            // Consume ammo
+            _currentAmmo--;
+            OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
 
             SpawnVFX();
             if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
+            
+            // Auto-reload when empty
+            if (_currentAmmo <= 0)
+            {
+                StartReload();
+            }
+            
             return true;
         }
         return false;
     }
+    
+    private void StartReload()
+    {
+        _isReloading = true;
+        _reloadTimer = _reloadTime;
+        OnReloadStateChanged?.Invoke(true);
+    }
+    
+    private void FinishReload()
+    {
+        _currentAmmo = _magazineSize;
+        _isReloading = false;
+        OnReloadStateChanged?.Invoke(false);
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+    }
 
     public void FireImmediate(Vector3 aimDir)
     {
+        if (_currentAmmo <= 0 || _isReloading) return;
+        
         _weapon.Fire(aimDir);
+        _currentAmmo--;
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+        
         SpawnVFX();
         if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
     }
@@ -70,7 +146,7 @@ public class PlayerShooting
             
             // Instantiate at fire point position with corrected rotation (180 flip) and parent to firePoint
             Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
-            GameObject vfxInstance = Object.Instantiate(prefab, _firePoint.position, correctedRotation, _firePoint);
+            GameObject vfxInstance = UnityEngine.Object.Instantiate(prefab, _firePoint.position, correctedRotation, _firePoint);
             
             // Get root particle system and play with all children
             ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
@@ -99,7 +175,7 @@ public class PlayerShooting
             }
             
             // Auto-destroy after VFX finishes (with small buffer)
-            Object.Destroy(vfxInstance, maxDuration + 0.5f);
+            UnityEngine.Object.Destroy(vfxInstance, maxDuration + 0.5f);
         }
     }
 

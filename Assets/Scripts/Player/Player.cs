@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     
     [Header("Shooting Stats")]
     [SerializeField] private float _bulletSpeed = 25f;
+    [SerializeField] private int _magazineSize = 25;
+    [SerializeField] private float _reloadTime = 1.5f;
+    [SerializeField] private AmmoUI _ammoUI;
 
     [Header("Weapon Animation")]
     [SerializeField] private Animator _weaponAnimator;
@@ -112,7 +115,13 @@ public class Player : MonoBehaviour
 
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _magazineSize, _reloadTime);
+        
+        // Initialize ammo UI
+        if (_ammoUI != null)
+        {
+            _ammoUI.Initialize(_shooting);
+        }
         
         // Get layer indices
         if (_animator != null)
