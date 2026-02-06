@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
+    [SerializeField] private DashUI _dashUI;
     
     [Header("Shooting Stats")]
     [SerializeField] private float _bulletSpeed = 25f;
@@ -330,17 +331,19 @@ public class Player : MonoBehaviour
     
     private void UpdateDashCooldownUI()
     {
-        if (_dashCooldownText == null) return;
-
-        float cooldown = _movement.DashCooldownTimer;
-        if (cooldown > 0)
+        // Update new visual UI
+        if (_dashUI != null)
         {
-            _dashCooldownText.gameObject.SetActive(true);
-            _dashCooldownText.text = cooldown.ToString("F1");
+            _dashUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
         }
-        else
+        
+        // Update legacy text if assigned (optional fallback)
+        if (_dashCooldownText != null)
         {
-            _dashCooldownText.gameObject.SetActive(false);
+             if (_movement.CurrentDashCharges > 0)
+                _dashCooldownText.text = _movement.CurrentDashCharges.ToString();
+             else
+                _dashCooldownText.text = _movement.DashRechargeProgress.ToString("F1");
         }
     }
 
