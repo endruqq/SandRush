@@ -6,16 +6,23 @@ using System.Collections.Generic;
 public class EnemySpawner : MonoBehaviour
 {
     public enum SpawnMode { Timer, WaveClear }
+    public enum SpawnPositionMode { Random, Center, CustomPoints }
 
     [Header("Settings")]
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private float _spawnRadius = 5f;
     [SerializeField] private SpawnMode _spawnMode = SpawnMode.Timer;
     [SerializeField] private int _enemiesPerWave = 1;
     [SerializeField] private float _timeBetweenWaves = 10f;
     [Tooltip("Set to 0 for infinite waves.")]
     [SerializeField] private int _maxWaves = 0;
     [SerializeField] private bool _autoStart = false;
+    
+    [Header("Spawn Position")]
+    [SerializeField] private SpawnPositionMode _spawnPositionMode = SpawnPositionMode.Random;
+    [Tooltip("Radius for random spawning")]
+    [SerializeField] private float _spawnRadius = 5f;
+    [Tooltip("Custom spawn points (used when mode is CustomPoints)")]
+    [SerializeField] private Transform[] _customSpawnPoints;
     
     [Header("Portal VFX")]
     [Tooltip("VFX prefab to spawn before each enemy appears")]
@@ -28,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
     private List<EnemyManager> _activeEnemies = new List<EnemyManager>();
     private bool _isSpawning = false;
     private int _wavesSpawned = 0;
+    private int _customSpawnIndex = 0;
 
     public bool IsCleared { get; private set; }
     public event System.Action OnSpawnerCleared;
@@ -45,6 +53,7 @@ public class EnemySpawner : MonoBehaviour
         if (_isSpawning) return;
         _isSpawning = true;
         _wavesSpawned = 0;
+        _customSpawnIndex = 0;
         IsCleared = false;
         StartCoroutine(SpawnLoop());
     }
@@ -56,10 +65,17 @@ public class EnemySpawner : MonoBehaviour
             _wavesSpawned++;
             
             // Spawn Wave
-            for (int i = 0; i < _enemiesPerWave; i++)
+            int enemiesToSpawn = _enemiesPerWave;
+            for (int i = 0; i < enemiesToSpawn; i++)
             {
                 SpawnEnemy();
                 yield return new WaitForSeconds(0.2f); // Slight stagger
+            }
+            
+            // Wait for portal delay to ensure all enemies are actually spawned
+            if (_portalVFXPrefab != null)
+            {
+                yield return new WaitForSeconds(_portalSpawnDelay + 0.1f);
             }
 
             if (_spawnMode == SpawnMode.WaveClear)
@@ -83,17 +99,40 @@ public class EnemySpawner : MonoBehaviour
     {
         if (_enemyPrefab == null) return;
 
-        Vector3 spawnPos = transform.position;
-        Vector3 randomPoint = transform.position + Random.insideUnitSphere * _spawnRadius;
-        randomPoint.y = transform.position.y;
-
-        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, _spawnRadius, NavMesh.AllAreas))
-        {
-            spawnPos = hit.position;
-        }
+        Vector3 spawnPos = GetSpawnPosition();
 
         // Start spawn with portal effect
         StartCoroutine(SpawnEnemyWithPortal(spawnPos));
+    }
+    
+    private Vector3 GetSpawnPosition()
+    {
+        switch (_spawnPositionMode)
+        {
+            case SpawnPositionMode.Center:
+                return transform.position;
+                
+            case SpawnPositionMode.CustomPoints:
+                if (_customSpawnPoints != null && _customSpawnPoints.Length > 0)
+                {
+                    // Cycle through custom points
+                    Vector3 pos = _customSpawnPoints[_customSpawnIndex].position;
+                    _customSpawnIndex = (_customSpawnIndex + 1) % _customSpawnPoints.Length;
+                    return pos;
+                }
+                return transform.position; // Fallback to center
+                
+            case SpawnPositionMode.Random:
+            default:
+                Vector3 randomPoint = transform.position + Random.insideUnitSphere * _spawnRadius;
+                randomPoint.y = transform.position.y;
+
+                if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, _spawnRadius, NavMesh.AllAreas))
+                {
+                    return hit.position;
+                }
+                return transform.position;
+        }
     }
     
     private IEnumerator SpawnEnemyWithPortal(Vector3 spawnPos)
