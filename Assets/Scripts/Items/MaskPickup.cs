@@ -3,6 +3,17 @@ using UnityEngine;
 public class MaskPickup : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject _visualModel;
+    [SerializeField] private GameObject _loopVFXPrefab;
+    private ParticleSystem _spawnedVFX;
+
+    private void Start()
+    {
+        if (_loopVFXPrefab != null)
+        {
+            GameObject vfx = Instantiate(_loopVFXPrefab, transform.position, Quaternion.identity, transform);
+            _spawnedVFX = vfx.GetComponent<ParticleSystem>();
+        }
+    }
 
     public void Interact(Player player)
     {
@@ -16,8 +27,16 @@ public class MaskPickup : MonoBehaviour, IInteractable
         // Disable collider to prevent re-pickup
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
+        // Fade out VFX (Stop emission)
+        if (_spawnedVFX != null)
+        {
+            _spawnedVFX.transform.SetParent(null); // Detach so it doesn't vanish instantly
+            _spawnedVFX.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            Destroy(_spawnedVFX.gameObject, 3f); // Clean up detached VFX later
+        }
         
-        // Destroy this object after a short delay or keep it disabled
-        Destroy(gameObject, 0.5f);
+        // Destroy the pickup object
+        Destroy(gameObject);
     }
 }

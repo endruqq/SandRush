@@ -39,6 +39,8 @@ public class EnemySpawner : MonoBehaviour
 
     public bool IsCleared { get; private set; }
     public event System.Action OnSpawnerCleared;
+    
+    private Player _cachedPlayer;
 
     private void Start()
     {
@@ -147,8 +149,22 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(_portalSpawnDelay);
         }
         
+        // Calculate rotation towards player
+        Quaternion spawnRotation = Quaternion.identity;
+        if (_cachedPlayer == null) _cachedPlayer = FindFirstObjectByType<Player>(); // Retry find if null
+        
+        if (_cachedPlayer != null)
+        {
+            Vector3 direction = (_cachedPlayer.transform.position - spawnPos);
+            direction.y = 0; // Keep horizontal
+            if (direction.sqrMagnitude > 0.01f)
+            {
+                spawnRotation = Quaternion.LookRotation(direction);
+            }
+        }
+
         // Now spawn the enemy
-        GameObject enemyObj = Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);
+        GameObject enemyObj = Instantiate(_enemyPrefab, spawnPos, spawnRotation);
         
         // Force NavMeshAgent to proper position
         if (enemyObj.TryGetComponent<NavMeshAgent>(out var navAgent))
