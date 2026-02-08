@@ -1851,8 +1851,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _attackType: 0
   _playerTransform: {fileID: 1231638233}
-  _detectionRadius: 7
-  _attackRange: 5
+  _detectionRadius: 15
+  _attackRange: 7
   _attackRate: 5
   _bulletPrefab: {fileID: 7043720130884026749, guid: af9c0eb9ff25dce449c9c3dd842b33a4, type: 3}
   _firePoints:
@@ -7546,7 +7546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2328864372295776110, guid: df4b720d2325d554cb01cfe447e69dd8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -43.44
+      value: -41.96
       objectReference: {fileID: 0}
     - target: {fileID: 2328864372295776110, guid: df4b720d2325d554cb01cfe447e69dd8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8386,6 +8386,80 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199760775}
   m_Mesh: {fileID: 4122070578226212140, guid: f743c21df32baa14fb644fc8643c6378, type: 3}
+--- !u!1 &1202655026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1202655029}
+  - component: {fileID: 1202655028}
+  - component: {fileID: 1202655027}
+  m_Layer: 0
+  m_Name: PickupMaskTutorialArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1202655027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202655026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d4882597fab7e479833dff10a8c8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialTrigger
+  _steps:
+  - Text: 'Pickup your Mask ability from this shrine using [E]'
+    Image: {fileID: 0}
+  - Text: Try using your ability by clicking right click on your mouse.
+    Image: {fileID: 0}
+  OnTutorialClosed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!65 &1202655028
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202655026}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.169444, y: 1, z: 1}
+  m_Center: {x: -0.11062431, y: 0, z: 0}
+--- !u!4 &1202655029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202655026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.68, y: 3.688, z: -32.57}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1208844365
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13195,9 +13269,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartGameTutorial
   _steps:
-  - Text: Move with wasd on yokrgowrg
+  - Text: Move with [WASD], and shoot using left click on your mouse. [R] to reload
+      weapon.
     Image: {fileID: 0}
-  - Text: and shppt woith
+  - Text: Get rid of Drones that will spawn throught portal. Try dashing with [SPACE]
+      to dodge bullets.
     Image: {fileID: 0}
   OnTutorialClosed:
     m_PersistentCalls:
@@ -13251,6 +13327,78 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03, y: 0.029999994, z: 1.2705492e-23}
   m_Center: {x: 0.0150000295, y: -0.014999997, z: -9.313226e-10}
+--- !u!1 &1601545451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1601545454}
+  - component: {fileID: 1601545453}
+  - component: {fileID: 1601545452}
+  m_Layer: 0
+  m_Name: SecondTutorialArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1601545452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601545451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d4882597fab7e479833dff10a8c8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialTrigger
+  _steps:
+  - Text: Try to defeat Scarab that will try to attack you
+    Image: {fileID: 0}
+  OnTutorialClosed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!65 &1601545453
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601545451}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.1858497, y: 1, z: 1.4433556}
+  m_Center: {x: 0.72208047, y: 0, z: -3.2861576}
+--- !u!4 &1601545454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601545451}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.49256, y: 3.688, z: -41.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1624947442
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93548,8 +93696,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 6538678607749482011}
     m_Modifications:
     - target: {fileID: 1091096786033116019, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
+      propertyPath: m_Size.y
+      value: 0.6022095
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091096786033116019, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091096786033116019, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
+      propertyPath: m_Center.y
+      value: -0.3356878
       objectReference: {fileID: 0}
     - target: {fileID: 1160480172989254999, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
       propertyPath: m_Name
@@ -93558,6 +93714,10 @@ PrefabInstance:
     - target: {fileID: 4205347674719150641, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4205347674719150641, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8188854372220236855, guid: 2ac858bd9f239fc498ef9ff42fd9ae21, type: 3}
       propertyPath: m_LocalPosition.x
@@ -181278,3 +181438,5 @@ SceneRoots:
   - {fileID: 743123009}
   - {fileID: 484458206}
   - {fileID: 1587641526}
+  - {fileID: 1601545454}
+  - {fileID: 1202655029}
