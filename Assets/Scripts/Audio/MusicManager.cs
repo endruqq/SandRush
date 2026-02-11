@@ -54,6 +54,7 @@ public class MusicManager : MonoBehaviour
         // Music is 2D — no need for 3D attributes, but override distance just in case
         _currentMusicInstance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 0f);
         _currentMusicInstance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 10000f);
+        _currentMusicInstance.setVolume(0.7f); // 70% volume
         _currentMusicInstance.start();
         _currentEventPath = eventPath;
 

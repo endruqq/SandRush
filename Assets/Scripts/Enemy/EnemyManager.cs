@@ -96,14 +96,21 @@ public class EnemyManager : MonoBehaviour
             }
 
             // Raycast down to find ground for perfect placement
-            if (Physics.Raycast(spawnPos + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 5f))
+            // Use a mask to avoid hitting the enemy itself or other enemies
+            int layerMask = LayerMask.GetMask("Default", "Ground", "Terrain");
+            
+            if (Physics.Raycast(spawnPos + Vector3.up * 3f, Vector3.down, out RaycastHit hit, 10f, layerMask))
             {
-                spawnPos = hit.point + Vector3.up * 0.01f; // Slightly above ground
+                spawnPos = hit.point + Vector3.up * 0.05f; // Slightly above ground (increased from 0.01f)
+                
+                // Align to ground normal (optional but looks better on slopes)
+                // Quaternion groundRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                // finalRotation *= groundRotation; // This might conflict with the specific prefab rotation logic below, keeping simple for now.
             }
             else
             {
-                 // Fallback if raycast fails (e.g. over void), just reset to transform y
-                 spawnPos.y = transform.position.y + 0.01f;
+                 // Fallback: If over void, just place at feet level
+                 spawnPos.y = transform.position.y + 0.05f;
             }
             // Random rotation for variety ? NO, we want directional.
             // Texture moves "UP" (Y+). We want UP to point in HitDirection on the ground.

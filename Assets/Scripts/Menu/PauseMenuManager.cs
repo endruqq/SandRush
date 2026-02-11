@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using FMOD.Studio;
 
 public class PauseMenuManager : MonoBehaviour
 {
@@ -13,10 +15,12 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private GameObject _graphicsPanel;
     [SerializeField] private GameObject _controlsPanel;
 
-    [Header("Audio Settings")]
-    [SerializeField] private UnityEngine.Audio.AudioMixer _audioMixer;
-    [SerializeField] private string _musicVolumeParam = "MusicVol";
-    [SerializeField] private string _sfxVolumeParam = "SFXVol";
+    [Header("FMOD Audio Settings")]
+    [SerializeField] private Slider _masterVolumeSlider;
+
+    private FMOD.Studio.Bus _masterBus;
+    private const string PREF_MASTER_VOL = "MasterVolume";
+    private bool _audioInitialized = false;
 
     [Header("Graphics Settings")]
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
@@ -28,13 +32,18 @@ public class PauseMenuManager : MonoBehaviour
     private bool isPaused = false;
     private Resolution[] _resolutions;
 
-    private void Start()
+    public static bool HasResetOnLaunch = false;
+
+    private System.Collections.IEnumerator Start()
     {
         // Make sure menus are hidden at start
         if (pauseMenuCanvas != null) pauseMenuCanvas.SetActive(false);
         if (optionsMenuCanvas != null) optionsMenuCanvas.SetActive(false);
 
-        // --- RESOLUTION SETUP ---
+        // 1. --- FMOD BUS SETUP ---
+        _masterBus = FMODUnity.RuntimeManager.GetBus("bus:/");
+
+        // 2. --- RESOLUTION & QUALITY SETUP (Must be done before ResetOptions) ---
         if (_resolutionDropdown != null)
         {
             _resolutions = Screen.resolutions;
@@ -56,18 +65,63 @@ public class PauseMenuManager : MonoBehaviour
             }
 
             _resolutionDropdown.AddOptions(options);
-            _resolutionDropdown.value = currentResolutionIndex;
+            _resolutionDropdown.SetValueWithoutNotify(currentResolutionIndex);
             _resolutionDropdown.RefreshShownValue();
         }
+        else
+        {
+            Debug.LogError("[PauseMenu] CRITICAL: '_resolutionDropdown' NOT ASSIGNED in Inspector!");
+        }
 
-        // --- QUALITY SETUP ---
         if (_qualityDropdown != null)
         {
             _qualityDropdown.ClearOptions();
             List<string> qualityOptions = new List<string>(QualitySettings.names);
             _qualityDropdown.AddOptions(qualityOptions);
-            _qualityDropdown.value = QualitySettings.GetQualityLevel();
+            _qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
             _qualityDropdown.RefreshShownValue();
+        }
+        else
+        {
+            Debug.LogError("[PauseMenu] CRITICAL: '_qualityDropdown' NOT ASSIGNED in Inspector!");
+        }
+
+        // 3. --- WAIT FOR UI TO SETTLE (Skip initial events) ---
+        yield return null; 
+        
+        // 4. --- AUDIO INITIALIZED (Allow SetMasterVolume callbacks) ---
+        _audioInitialized = true;
+
+        // 5. --- SESSION RESET LOGIC ---
+        // On first launch: Force Defaults (Volume 100%, Max Res, High Quality)
+        // On reload: Keep current settings
+        if (!HasResetOnLaunch)
+        {
+            Debug.Log("[PauseMenu] First Launch Detected: Resetting Options to Defaults.");
+            ResetOptions();
+            HasResetOnLaunch = true;
+            yield break; // Stop here, ResetOptions handled everything
+        }
+
+        // 6. --- NORMAL LOAD (From PlayerPrefs) ---
+        // Load saved volume (default = full volume)
+        float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
+        if (savedVol <= 0.01f) savedVol = 1f; // Fix corrupted save from previous bug
+        
+        FMOD.RESULT result = _masterBus.setVolume(savedVol);
+        Debug.Log($"[PauseMenu] FMOD Master Bus setVolume({savedVol}) result: {result}");
+
+        // Set slider WITHOUT triggering OnValueChanged
+        if (_masterVolumeSlider != null)
+        {
+            _masterVolumeSlider.minValue = 0f;
+            _masterVolumeSlider.maxValue = 1f;
+            _masterVolumeSlider.SetValueWithoutNotify(savedVol);
+            Debug.Log($"[PauseMenu] Slider set to: {savedVol}");
+        }
+        else
+        {
+            Debug.LogError("[PauseMenu] CRITICAL: '_masterVolumeSlider' NOT ASSIGNED in Inspector! Slider will start at 0 and overwrite volume!");
         }
     }
     
@@ -141,28 +195,30 @@ public class PauseMenuManager : MonoBehaviour
         if (tabToOpen != null) tabToOpen.SetActive(true);
     }
 
-    // --- AUDIO ---
-    public void SetMusicVolume(float volume)
+    // --- FMOD AUDIO ---
+    public void SetMasterVolume(float volume)
     {
-        // Convert 0-1 slider value to decibels (-80 to 0)
-        // Formula: Mathf.Log10(volume) * 20
-        // Use a small epsilon to avoid Log10(0)
-        float volumedB = Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20;
-
-        if (_audioMixer != null)
+        // Ignore callbacks BEFORE Start() has initialized the saved value
+        if (!_audioInitialized) 
         {
-            _audioMixer.SetFloat(_musicVolumeParam, volumedB);
+            Debug.Log($"[PauseMenu] Ignored SetMasterVolume({volume}) - Not Initialized");
+            return;
         }
-    }
 
-    public void SetSFXVolume(float volume)
-    {
-        float volumedB = Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20;
+        // FORCE READ FROM SLIDER (Fix for bad Event Wiring)
+        // If user wired "Static Parameter 0" instead of "Dynamic Float", 'volume' will be 0 always.
+        // Reading .value directly bypasses this mistake.
+        float sliderValue = (_masterVolumeSlider != null) ? _masterVolumeSlider.value : volume;
 
-        if (_audioMixer != null)
+        // 1. Force Unmute if volume is > 0 (fixes "stuck at mute" issue)
+        if (sliderValue > 0)
         {
-            _audioMixer.SetFloat(_sfxVolumeParam, volumedB);
+            _masterBus.setMute(false);
         }
+
+        _masterBus.setVolume(sliderValue);
+        PlayerPrefs.SetFloat(PREF_MASTER_VOL, sliderValue);
+        Debug.Log($"[PauseMenu] SetMasterVolume: {sliderValue} (Unmuted)");
     }
 
     // --- GRAPHICS ---
@@ -190,6 +246,59 @@ public class PauseMenuManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    public void ResetOptions()
+    {
+        // 1. Reset Volume
+        if (_masterVolumeSlider != null) 
+        {
+            _masterVolumeSlider.value = 1f; // This will trigger OnValueChanged -> SetMasterVolume(1f)
+        }
+        else
+        {
+            SetMasterVolume(1f); // Fallback if slider missing
+        }
+
+        // 3. Reset Fullscreen (Default true)
+        SetFullscreen(true);
+
+        // 2. Reset Resolution (Default to highest available)
+        if (_resolutions != null && _resolutions.Length > 0)
+        {
+            // Simple max index is usually best, but let's be robust
+            int maxResIndex = _resolutions.Length - 1;
+            Resolution res = _resolutions[maxResIndex];
+            
+            Debug.Log($"[PauseMenu] ResetOptions: Setting Resolution to Index {maxResIndex} ({res.width}x{res.height})");
+            SetResolution(maxResIndex);
+            
+            if (_resolutionDropdown != null)
+            {
+                _resolutionDropdown.value = maxResIndex;
+                _resolutionDropdown.RefreshShownValue();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[PauseMenu] ResetOptions: No resolutions found in _resolutions array!");
+        }
+
+        // 3. Reset Quality (Default to High/Highest)
+        string[] names = QualitySettings.names;
+        if (names != null && names.Length > 0)
+        {
+            int highQualityIndex = names.Length - 1; // Pick highest
+            SetQuality(highQualityIndex);
+            
+            if (_qualityDropdown != null)
+            {
+                _qualityDropdown.value = highQualityIndex;
+                _qualityDropdown.RefreshShownValue();
+            }
+        }
+        
+        Debug.Log("[PauseMenu] Options Reset to Defaults");
     }
     
     public void FullRestart()

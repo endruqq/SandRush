@@ -101,6 +101,7 @@ public class Player : MonoBehaviour
     public int CurrentHealth { get; set; } = 100;
     public int CurrentUltimate { get; set; } = 0;
     public PlayerShooting Shooting => _shooting;
+    public PlayerAiming Aiming => _aiming;
     private static Player _instance;
 
     void Awake()
