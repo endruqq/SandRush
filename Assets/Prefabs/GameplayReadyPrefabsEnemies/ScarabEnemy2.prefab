@@ -1166,6 +1166,8 @@ GameObject:
   - component: {fileID: 6612941361091125894}
   - component: {fileID: 5241171692644506769}
   - component: {fileID: 5098282613052989514}
+  - component: {fileID: 17122632270309488}
+  - component: {fileID: 3884083323265062890}
   m_Layer: 0
   m_Name: ScarabEnemy2
   m_TagString: Untagged
@@ -1269,7 +1271,8 @@ MonoBehaviour:
   _meleeDamage: 10
   _meleeHitDelay: 0.6
   _meleeVFXPoint: {fileID: 0}
-  _meleeVFXPrefabs: []
+  _meleeVFXPrefabs:
+  - {fileID: 7894642917772054156, guid: 2c2d00398232a2245a542485a796a0a8, type: 3}
   _explosionDamage: 50
   _explosionRadius: 5
   _explosionFuseTime: 1.5
@@ -1314,6 +1317,43 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _deathTrigger: Death
   _deathAnimationDuration: 1
+  _bloodSplatPrefab: {fileID: 5129652101402271953, guid: 26fd16bba0727004cbea9be28dce2a15, type: 3}
+  _bodyPartExploder: {fileID: 17122632270309488}
+  _modelRenderers: []
+--- !u!114 &17122632270309488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334812692944313596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ed95d0e6b4c1348b4d08f6fde5b5f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BodyPartExploder
+  _knockbackForce: 1
+  _torqueAmount: 5
+  _partLifetime: 5
+  _excludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  _debrisScale: 0.01
+--- !u!114 &3884083323265062890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334812692944313596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769d72ea59b8c3b4eb4399c924980a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFlash
+  _flashMaterial: {fileID: 2100000, guid: 2d676949a60bedf44acf956c9ccebda7, type: 2}
+  _duration: 0.1
+  _renderers: []
 --- !u!1 &5362342516205154946
 GameObject:
   m_ObjectHideFlags: 0

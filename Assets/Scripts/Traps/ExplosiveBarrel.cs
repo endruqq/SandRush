@@ -11,6 +11,9 @@ public class ExplosiveBarrel : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private GameObject _explosionVFX;
 
+    [Header("FMOD Sound")]
+    [SerializeField] private string _explosionSound = "event:/Explosions";
+
     private bool _exploded = false;
 
     // Called by Bullet via SendMessage
@@ -28,6 +31,10 @@ public class ExplosiveBarrel : MonoBehaviour
     private void Explode()
     {
         _exploded = true;
+
+        // Play explosion sound
+        if (!string.IsNullOrEmpty(_explosionSound))
+            FMODHelper.PlayOneShot(_explosionSound, transform.position);
 
         if (_explosionVFX != null)
         {

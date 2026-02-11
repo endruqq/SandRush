@@ -177,7 +177,8 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             Debug.Log($"Dealing {damage} damage to ENEMY: {enemy.name}");
-            enemy.TakeDamage(damage);
+            // Pass the bullet's current forward direction as the hit direction
+            enemy.TakeDamage(damage, transform.forward);
         }
         else if (isPlayer)
         {

@@ -73,6 +73,12 @@ public class Player : MonoBehaviour
     private float _turnSpeed;
     private WorldSpaceCursor _worldCursor;
     private Camera _mainCamera;
+    private CursorCross _cursorCross;
+    private DashGhostEffect _dashGhost;
+    private PlayerDeathEffect _deathEffect;
+    private HitFlash _hitFlash;
+    private static bool _isDead = false;
+    private static Vector3 _lastHitDirection = Vector3.forward;
     
     // Shooting layer indices
     private int _shootingLayerIndex = -1;
@@ -94,6 +100,7 @@ public class Player : MonoBehaviour
     // Restored public access for UI scripts
     public int CurrentHealth { get; set; } = 100;
     public int CurrentUltimate { get; set; } = 0;
+    public PlayerShooting Shooting => _shooting;
     private static Player _instance;
 
     void Awake()
@@ -122,6 +129,18 @@ public class Player : MonoBehaviour
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
         _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _magazineSize, _reloadTime);
         
+        // Subscribe to shooting events
+        _shooting.OnShoot += OnShootHandler;
+
+        // Wire up crosshair feedback
+        _cursorCross = FindObjectOfType<CursorCross>();
+        if (_cursorCross != null)
+        {
+            _shooting.OnShoot += _cursorCross.OnShoot;
+            _shooting.OnReloadStateChanged += (isReloading) =>
+                _cursorCross.OnReloadStateChanged(isReloading, _reloadTime);
+        }
+
         // Initialize ammo UI
         if (_ammoUI != null)
         {
@@ -149,6 +168,28 @@ public class Player : MonoBehaviour
             _worldCursor = cursorInstance.GetComponent<WorldSpaceCursor>();
         }
         Cursor.visible = false;
+
+        // Get optional effects
+        _dashGhost = GetComponent<DashGhostEffect>();
+        _deathEffect = GetComponent<PlayerDeathEffect>();
+        _hitFlash = GetComponent<HitFlash>();
+        _isDead = false;
+    }
+    
+    private void OnDestroy()
+    {
+        if (_shooting != null)
+        {
+            _shooting.OnShoot -= OnShootHandler;
+            if (_cursorCross != null)
+                _shooting.OnShoot -= _cursorCross.OnShoot;
+        }
+    }
+
+    private void OnShootHandler()
+    {
+        if (_gunshotImpulseSource != null) 
+            _gunshotImpulseSource.GenerateImpulse();
     }
     
     void Start()
@@ -163,6 +204,7 @@ public class Player : MonoBehaviour
     {
         if (_hasMask)
         {
+            // ... (Mask logic unchanged) ...
             if (_maskCooldownTimer > 0)
             {
                 _maskCooldownTimer -= Time.deltaTime;
@@ -186,10 +228,13 @@ public class Player : MonoBehaviour
         UpdateAnimator();
         UpdateDashCooldownUI();
 
-        if (_movement.JustDashed && _dashImpulseSource != null) 
-            _dashImpulseSource.GenerateImpulse();
-        if (Input.GetMouseButtonDown(0) && _gunshotImpulseSource != null) 
-            _gunshotImpulseSource.GenerateImpulse();
+        if (_movement.JustDashed)
+        {
+            if (_dashImpulseSource != null) _dashImpulseSource.GenerateImpulse();
+            if (_dashGhost != null) _dashGhost.SpawnGhostTrail();
+        }
+        
+        // REMOVED manual impulse check here - driven by _shooting.OnShoot
 
         // --- SHOOTING LOGIC MOVED TO UPDATE FOR RESPONSIVENESS ---
         // Calculate shoot direction
@@ -224,12 +269,35 @@ public class Player : MonoBehaviour
 
     public static void TakeDamage(int amount)
     {
-        if (_instance == null) return;
+        if (_instance == null || _isDead) return;
         
-        Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}, Stack: {System.Environment.StackTrace}");
+        Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
         
         _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, _instance._maxHealth);
         HealthUI.UpdateHealth(_instance.CurrentHealth);
+
+        // Trigger hit flash
+        if (_instance._hitFlash != null)
+        {
+            _instance._hitFlash.Flash();
+        }
+
+        if (_instance.CurrentHealth <= 0)
+        {
+            _isDead = true;
+            if (_instance._deathEffect != null)
+            {
+                _instance._deathEffect.TriggerDeath(_lastHitDirection);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Call this to set the direction of the last hit (for ragdoll knockback).
+    /// </summary>
+    public static void SetLastHitDirection(Vector3 direction)
+    {
+        _lastHitDirection = direction;
     }
     
     public static void GetUltimate(int amount)
@@ -387,8 +455,7 @@ public class Player : MonoBehaviour
 
             _shooting.FireImmediate(shootDirection);
             
-            // Generate visual impulse for feedback
-            if (_gunshotImpulseSource != null) _gunshotImpulseSource.GenerateImpulse(0.5f);
+
 
             yield return new WaitForSeconds(burstDelay);
         }

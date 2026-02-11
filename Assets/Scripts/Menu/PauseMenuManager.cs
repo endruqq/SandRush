@@ -192,6 +192,21 @@ public class PauseMenuManager : MonoBehaviour
 #endif
     }
     
+    public void FullRestart()
+    {
+        // Clear Persistence
+        PlayerPrefs.DeleteKey("TutorialCompleted");
+        PlayerPrefs.DeleteKey("MaskCollected");
+        PlayerPrefs.Save();
+        
+        // Reset Time
+        Time.timeScale = 1f;
+        isPaused = false;
+        
+        // Reload Scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;

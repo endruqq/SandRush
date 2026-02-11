@@ -36,6 +36,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float _explosionFuseTime = 1.5f;
     [SerializeField] private GameObject _explosionVFX;
     
+    [Header("FMOD Sounds")]
+    [SerializeField] private string _attackSound = "event:/Scarab_Attack";
+    [SerializeField] private string _detectionSound = "event:/Detection_Alert";
+    [SerializeField] private string _explosionSound = "event:/Explosions";
+
     [Header("Animation")]
     [SerializeField] private Animator _animator;
     [SerializeField] private string _isWalkingBool = "IsWalking";
@@ -127,7 +132,13 @@ public class EnemyAI : MonoBehaviour
     private void HandleIdleState()
     {
         SetWalking(false);
-        if (_distanceToPlayer <= _detectionRadius) _currentState = State.Chasing;
+        if (_distanceToPlayer <= _detectionRadius)
+        {
+            _currentState = State.Chasing;
+            // Play detection alert sound
+            if (!string.IsNullOrEmpty(_detectionSound))
+                FMODHelper.PlayOneShot(_detectionSound, transform.position);
+        }
     }
 
     private void HandleChasingState()
@@ -211,6 +222,9 @@ public class EnemyAI : MonoBehaviour
     private void PerformRangedAttack()
     {
         TriggerAnimation(_attackTrigger);
+        // Play ranged attack sound
+        if (!string.IsNullOrEmpty(_attackSound))
+            FMODHelper.PlayOneShot(_attackSound, transform.position);
         if (_firePoints == null || _firePoints.Length == 0) return;
         
         // Fire from all fire points
@@ -288,6 +302,9 @@ public class EnemyAI : MonoBehaviour
     private void PerformMeleeAttack()
     {
         TriggerAnimation(_attackTrigger);
+        // Play melee attack sound
+        if (!string.IsNullOrEmpty(_attackSound))
+            FMODHelper.PlayOneShot(_attackSound, transform.position);
         StartCoroutine(MeleeHitCoroutine());
     }
     
@@ -299,6 +316,9 @@ public class EnemyAI : MonoBehaviour
         // Check if still in range (player might have moved)
         if (_distanceToPlayer <= _attackRange && _playerTransform != null)
         {
+            // Set hit direction for ragdoll knockback
+            Vector3 hitDir = (_playerTransform.position - transform.position).normalized;
+            Player.SetLastHitDirection(hitDir);
             Player.TakeDamage(_meleeDamage);
             SpawnMeleeVFX();
         }
@@ -308,7 +328,18 @@ public class EnemyAI : MonoBehaviour
     {
         if (_meleeVFXPrefabs == null) return;
         
-        Transform spawnPoint = _meleeVFXPoint != null ? _meleeVFXPoint : transform;
+        // Use assigned point, or try player position (where hit lands), or fallback to self
+        Transform spawnPoint = _meleeVFXPoint;
+        if (spawnPoint == null && _playerTransform != null)
+        {
+            spawnPoint = _playerTransform; // Spawn VFX at player (hit target)
+        }
+        if (spawnPoint == null)
+        {
+            // Last resort: find by tag
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            spawnPoint = playerObj != null ? playerObj.transform : transform;
+        }
         
         foreach (var prefab in _meleeVFXPrefabs)
         {
@@ -316,7 +347,8 @@ public class EnemyAI : MonoBehaviour
             
             // Rotate 180 degrees to face correct direction
             Quaternion correctedRotation = spawnPoint.rotation * Quaternion.Euler(0, 180, 0);
-            GameObject vfxInstance = Instantiate(prefab, spawnPoint.position, correctedRotation, spawnPoint);
+            // Spawn in world space (null parent) to avoid scaling issues if enemy is scaled weirdly
+            GameObject vfxInstance = Instantiate(prefab, spawnPoint.position, correctedRotation, null);
             
             ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
             if (rootPS != null)
@@ -346,10 +378,15 @@ public class EnemyAI : MonoBehaviour
 
     private void Explode()
     {
+        // Play explosion sound
+        if (!string.IsNullOrEmpty(_explosionSound))
+            FMODHelper.PlayOneShot(_explosionSound, transform.position);
         if (_explosionVFX != null) Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         
         if(_distanceToPlayer <= _explosionRadius)
         {
+             Vector3 hitDir = (_playerTransform.position - transform.position).normalized;
+             Player.SetLastHitDirection(hitDir);
              Player.TakeDamage(_explosionDamage);
         }
         

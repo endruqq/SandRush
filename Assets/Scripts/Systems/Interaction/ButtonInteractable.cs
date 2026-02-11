@@ -15,6 +15,9 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
     [Header("Events")]
     public UnityEvent OnActivated;
 
+    [Header("FMOD Sound")]
+    [SerializeField] private string _pressSound = "event:/Button_Press_To_Open";
+
     private bool _hasBeenActivated = false;
     private GameObject _spawnedVFXObject;
 
@@ -33,6 +36,10 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
         if (_isOneTimeOnly && _hasBeenActivated) return;
 
         _hasBeenActivated = true;
+
+        // Play button press sound
+        if (!string.IsNullOrEmpty(_pressSound))
+            FMODHelper.PlayOneShot(_pressSound, transform.position);
 
         // Visual Feedback
         if (_animator != null)

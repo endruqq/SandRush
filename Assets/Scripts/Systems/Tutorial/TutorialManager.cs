@@ -14,6 +14,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Button _mainButton;
     [SerializeField] private TextMeshProUGUI _mainButtonText;
 
+    [Header("Animation")]
+    [SerializeField] private float _slideSpeed = 5f;
+
+    private RectTransform _panelRect;
+    private Vector2 _targetAnchorPos;
+    private Vector2 _hiddenAnchorPos;
+    private Coroutine _animationRoutine;
+
     private Action _onCloseCallback;
     private bool _isTutorialActive;
     
@@ -25,7 +33,17 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        if (_tutorialPanel != null) _tutorialPanel.SetActive(false);
+        if (_tutorialPanel != null)
+        {
+            _panelRect = _tutorialPanel.GetComponent<RectTransform>();
+            if (_panelRect != null)
+            {
+                _targetAnchorPos = _panelRect.anchoredPosition;
+                // Start below the screen (assuming bottom anchor or screen height calculation)
+                _hiddenAnchorPos = new Vector2(_targetAnchorPos.x, -Screen.height);
+            }
+            _tutorialPanel.SetActive(false);
+        }
         
         if (_mainButton != null)
         {
@@ -49,7 +67,16 @@ public class TutorialManager : MonoBehaviour
         ShowStep(_currentStepIndex);
         
         // Show Panel
-        if (_tutorialPanel != null) _tutorialPanel.SetActive(true);
+        if (_tutorialPanel != null)
+        {
+            _tutorialPanel.SetActive(true);
+            if (_panelRect != null)
+            {
+                _panelRect.anchoredPosition = _hiddenAnchorPos;
+                if (_animationRoutine != null) StopCoroutine(_animationRoutine);
+                _animationRoutine = StartCoroutine(AnimatePanelRoutine(_targetAnchorPos, null));
+            }
+        }
         if (_mainButton != null) _mainButton.gameObject.SetActive(true);
 
         // Pause Game
@@ -101,6 +128,20 @@ public class TutorialManager : MonoBehaviour
 
     private void CloseTutorial()
     {
+        // Animate Out first
+        if (_panelRect != null && _tutorialPanel.activeSelf)
+        {
+            if (_animationRoutine != null) StopCoroutine(_animationRoutine);
+            _animationRoutine = StartCoroutine(AnimatePanelRoutine(_hiddenAnchorPos, OnCloseAnimationComplete));
+        }
+        else
+        {
+            OnCloseAnimationComplete();
+        }
+    }
+
+    private void OnCloseAnimationComplete()
+    {
         _isTutorialActive = false;
         _currentSteps = null;
 
@@ -112,13 +153,32 @@ public class TutorialManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Reset Cursor (Top-Down Shooter Style)
-        // Cursor should be invisible but NOT locked, so mouse can move freely on screen for raycasting
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None; // Changed from Locked to None
+        Cursor.lockState = CursorLockMode.None;
 
         // Trigger callback
         _onCloseCallback?.Invoke();
         _onCloseCallback = null;
+    }
+
+    private System.Collections.IEnumerator AnimatePanelRoutine(Vector2 targetPos, Action onComplete)
+    {
+        float timer = 0f;
+        Vector2 startPos = _panelRect.anchoredPosition;
+        float duration = 0.5f;
+
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime; // Use unscaled time because game is paused
+            float t = timer / duration;
+            t = Mathf.SmoothStep(0f, 1f, t);
+            
+            _panelRect.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+
+        _panelRect.anchoredPosition = targetPos;
+        onComplete?.Invoke();
     }
 }
 

@@ -2338,7 +2338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d4587f38043f5488de710f40796db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  damage: 25
+  damage: 10
   _hitEffectPrefab: {fileID: 0}
   _trail: {fileID: -7537818326183604034}
   _hitLayers:
@@ -2370,7 +2370,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 095ed1008c5d7354aa236a8234f413ae, type: 2}
+  - {fileID: 2100000, guid: a11d34e15be59fb4e8b85110f5099565, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2402,7 +2402,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.10784912
+        value: 0.4914093
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2423,7 +2423,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.9339623, g: 0.6278372, b: 0.18062477, a: 1}
+      key0: {r: 0, g: 0.94149876, b: 0.9811321, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}

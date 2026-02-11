@@ -32,6 +32,9 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("How long the portal VFX stays before being destroyed")]
     [SerializeField] private float _portalLifetime = 2f;
 
+    [Header("FMOD Sound")]
+    [SerializeField] private string _spawnSound = "event:/Drone_Spawn_Tutorial";
+
     private List<EnemyManager> _activeEnemies = new List<EnemyManager>();
     private bool _isSpawning = false;
     private int _wavesSpawned = 0;
@@ -144,6 +147,10 @@ public class EnemySpawner : MonoBehaviour
         {
             GameObject portal = Instantiate(_portalVFXPrefab, spawnPos, Quaternion.identity);
             Destroy(portal, _portalLifetime);
+            
+            // Play spawn sound
+            if (!string.IsNullOrEmpty(_spawnSound))
+                FMODHelper.PlayOneShot(_spawnSound, spawnPos);
             
             // Wait for portal to appear before spawning enemy
             yield return new WaitForSeconds(_portalSpawnDelay);

@@ -34,9 +34,15 @@ public class PlayerShooting
     /// </summary>
     public event Action<bool> OnReloadStateChanged;
 
+    /// <summary>
+    /// Event fired when a shot is successfully fired.
+    /// </summary>
+    public event Action OnShoot;
+
     public int CurrentAmmo => _currentAmmo;
     public int MagazineSize => _magazineSize;
     public bool IsReloading => _isReloading;
+    public bool IsEnabled { get; set; } = true;
 
     public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, float bulletSpeed, GameObject[] fireVFXPrefabs, Animator weaponAnimator, string recoilTrigger, int magazineSize = 25, float reloadTime = 1.5f)
     {
@@ -62,6 +68,8 @@ public class PlayerShooting
 
     public bool Tick(Vector3 aimDir)
     {
+        if (!IsEnabled) return false;
+
         // Handle reload input
         if (Input.GetKeyDown(KeyCode.R) && !_isReloading && _currentAmmo < _magazineSize)
         {
@@ -85,15 +93,19 @@ public class PlayerShooting
             return false;
         }
 
-        // Check if can shoot
-        if (Input.GetMouseButton(0) && Time.time >= _nextFireTime && _currentAmmo > 0)
+        // Check if can shoot - SEMI-AUTO (GetMouseButtonDown)
+        if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && _currentAmmo > 0)
         {
             _nextFireTime = Time.time + _fireRate;
             _weapon.Fire(aimDir);
             
+            // Play gunshot sound
+            FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position);
+            
             // Consume ammo
             _currentAmmo--;
             OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+            OnShoot?.Invoke();
 
             SpawnVFX();
             if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
@@ -114,6 +126,9 @@ public class PlayerShooting
         _isReloading = true;
         _reloadTimer = _reloadTime;
         OnReloadStateChanged?.Invoke(true);
+        
+        // Play reload sound
+        FMODHelper.PlayOneShot("event:/Gun_Auto_Reload", _playerTransform.position);
     }
     
     private void FinishReload()
@@ -129,9 +144,14 @@ public class PlayerShooting
         if (_currentAmmo <= 0 || _isReloading) return;
         
         _weapon.Fire(aimDir);
+        
+        // Play gunshot sound
+        FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position);
+        
         _currentAmmo--;
         OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
-        
+        OnShoot?.Invoke();
+
         SpawnVFX();
         if (_weaponAnimator != null) _weaponAnimator.SetTrigger(_recoilTrigger);
     }

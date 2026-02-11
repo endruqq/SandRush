@@ -19,6 +19,10 @@ public class MaskPickup : MonoBehaviour, IInteractable
     {
         player.EquipMask();
         
+        // Save state
+        PlayerPrefs.SetInt(StartGameTutorial.PREF_MASK_COLLECTED, 1);
+        PlayerPrefs.Save();
+        
         if (_visualModel != null)
         {
             _visualModel.SetActive(false);

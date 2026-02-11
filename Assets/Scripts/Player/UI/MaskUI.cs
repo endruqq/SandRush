@@ -13,6 +13,12 @@ public class MaskUI : MonoBehaviour
         // Don't hide the icon initially, assuming it shows the '?' placeholder
         if (_cooldownImage != null) _cooldownImage.fillAmount = 0;
         
+        // Check if mask is already collected (from previous session)
+        if (PlayerPrefs.GetInt(StartGameTutorial.PREF_MASK_COLLECTED, 0) == 1)
+        {
+            HandleMaskEquipped(true);
+        }
+
         // Find player and subscribe to events
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
