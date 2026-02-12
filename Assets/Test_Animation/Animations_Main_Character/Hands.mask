@@ -156,10 +156,10 @@ AvatarMask:
   - m_Path: Main_Character.001/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand/mixamorig:RightHandThumb1/mixamorig:RightHandThumb2/mixamorig:RightHandThumb3/mixamorig:RightHandThumb4
     m_Weight: 1
   - m_Path: Main_Character.001/Weapon
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Mask.001
     m_Weight: 1
   - m_Path: Shoulders.001
     m_Weight: 1
   - m_Path: Standard_Gun.001
-    m_Weight: 1
+    m_Weight: 0

@@ -3,15 +3,22 @@ using UnityEngine.UI;
 
 public class MaskUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _maskIconObject;
+    [SerializeField] private Image _maskIconImage;
+    [SerializeField] private Sprite _equippedMaskSprite;
     [SerializeField] private Image _cooldownImage;
     [SerializeField] private GameObject _activeEffectVisual;
 
     private void Start()
     {
-        if (_maskIconObject != null) _maskIconObject.SetActive(false);
+        // Don't hide the icon initially, assuming it shows the '?' placeholder
         if (_cooldownImage != null) _cooldownImage.fillAmount = 0;
         
+        // Check if mask is already collected (from previous session)
+        if (PlayerPrefs.GetInt(StartGameTutorial.PREF_MASK_COLLECTED, 0) == 1)
+        {
+            HandleMaskEquipped(true);
+        }
+
         // Find player and subscribe to events
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
@@ -23,7 +30,10 @@ public class MaskUI : MonoBehaviour
 
     private void HandleMaskEquipped(bool equipped)
     {
-        if (_maskIconObject != null) _maskIconObject.SetActive(equipped);
+        if (equipped && _maskIconImage != null && _equippedMaskSprite != null)
+        {
+            _maskIconImage.sprite = _equippedMaskSprite;
+        }
     }
 
     private void HandleCooldownChanged(float progress)

@@ -7,10 +7,32 @@ public class Player : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private Transform _firePoint;
-    [SerializeField] private ParticleSystem _firePointParticles;
+    [SerializeField] private GameObject[] _firePointVFX;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
+    [SerializeField] private DashUI _dashUI;
+    
+    [Header("Shooting Stats")]
+    [SerializeField] private float _bulletSpeed = 25f;
+    [SerializeField] private int _magazineSize = 25;
+    [SerializeField] private float _reloadTime = 1.5f;
+    [SerializeField] private AmmoUI _ammoUI;
+
+    [Header("Health & Stats")]
+    [SerializeField] private int _maxHealth = 100;
+
+
+    [Header("Weapon Animation")]
+    [SerializeField] private Animator _weaponAnimator;
+    [SerializeField] private string _recoilAnimationTrigger = "Recoil";
+    [Header("Shooting Layer Override")]
+    [Tooltip("Name of the layer that plays shooting animations.")]
+    [SerializeField] private string _shootingLayerName = "ShootingGunLayer";
+    [Tooltip("Name of the upper body layer (idle aim).")]
+    [SerializeField] private string _upperBodyLayerName = "Upper Body";
+    [Tooltip("How fast the layer weights blend.")]
+    [SerializeField] private float _layerBlendSpeed = 10f;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3.5f;
@@ -51,6 +73,18 @@ public class Player : MonoBehaviour
     private float _turnSpeed;
     private WorldSpaceCursor _worldCursor;
     private Camera _mainCamera;
+    private CursorCross _cursorCross;
+    private DashGhostEffect _dashGhost;
+    private PlayerDeathEffect _deathEffect;
+    private HitFlash _hitFlash;
+    private static bool _isDead = false;
+    private static Vector3 _lastHitDirection = Vector3.forward;
+    
+    // Shooting layer indices
+    private int _shootingLayerIndex = -1;
+    private int _upperBodyLayerIndex = -1;
+    private float _shootingLayerWeight = 0f;
+    private float _lastShotTime = -10f;
 
     private bool _hasMask = false;
     private float _maskCooldownTimer = 0f;
@@ -66,17 +100,65 @@ public class Player : MonoBehaviour
     // Restored public access for UI scripts
     public int CurrentHealth { get; set; } = 100;
     public int CurrentUltimate { get; set; } = 0;
+    public PlayerShooting Shooting => _shooting;
+    public PlayerAiming Aiming => _aiming;
     private static Player _instance;
 
     void Awake()
     {
         _instance = this;
         _controller = GetComponent<CharacterController>();
-        _mainCamera = Camera.main;
         
+        // --- SAFE INITIALIZATION ---
+        if (_mainCamera == null) _mainCamera = Camera.main;
+        if (_mainCamera == null) _mainCamera = FindObjectOfType<Camera>();
+        
+        if (_mainCamera == null)
+        {
+            Debug.LogError("[Player] Critical Error: No Camera found! Script functionalities will be limited.");
+            enabled = false;
+            return;
+        }
+
+        if (_firePoint == null)
+        {
+            Debug.LogWarning("[Player] FirePoint not assigned. Using Player Transform.");
+            _firePoint = transform;
+        }
+
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _magazineSize, _reloadTime);
+        
+        // Subscribe to shooting events
+        _shooting.OnShoot += OnShootHandler;
+
+        // Wire up crosshair feedback
+        _cursorCross = FindObjectOfType<CursorCross>();
+        if (_cursorCross != null)
+        {
+            _shooting.OnShoot += _cursorCross.OnShoot;
+            _shooting.OnReloadStateChanged += (isReloading) =>
+                _cursorCross.OnReloadStateChanged(isReloading, _reloadTime);
+        }
+
+        // Initialize ammo UI
+        if (_ammoUI != null)
+        {
+            _ammoUI.Initialize(_shooting);
+        }
+        
+        // Get layer indices
+        if (_animator != null)
+        {
+            _shootingLayerIndex = _animator.GetLayerIndex(_shootingLayerName);
+            _upperBodyLayerIndex = _animator.GetLayerIndex(_upperBodyLayerName);
+            
+            if (_shootingLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_shootingLayerName}' not found in Animator.");
+            if (_upperBodyLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_upperBodyLayerName}' not found in Animator.");
+        }
         
         if (_dashCooldownText != null) _dashCooldownText.gameObject.SetActive(false);
         _lastRotation = transform.rotation;
@@ -87,12 +169,43 @@ public class Player : MonoBehaviour
             _worldCursor = cursorInstance.GetComponent<WorldSpaceCursor>();
         }
         Cursor.visible = false;
+
+        // Get optional effects
+        _dashGhost = GetComponent<DashGhostEffect>();
+        _deathEffect = GetComponent<PlayerDeathEffect>();
+        _hitFlash = GetComponent<HitFlash>();
+        _isDead = false;
+    }
+    
+    private void OnDestroy()
+    {
+        if (_shooting != null)
+        {
+            _shooting.OnShoot -= OnShootHandler;
+            if (_cursorCross != null)
+                _shooting.OnShoot -= _cursorCross.OnShoot;
+        }
+    }
+
+    private void OnShootHandler()
+    {
+        if (_gunshotImpulseSource != null) 
+            _gunshotImpulseSource.GenerateImpulse();
+    }
+    
+    void Start()
+    {
+        // Initialize Health in Start to ensure UI is ready
+        CurrentHealth = _maxHealth;
+        HealthUI.Initialize(CurrentHealth, _maxHealth);
+        Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
     }
     
     void Update()
     {
         if (_hasMask)
         {
+            // ... (Mask logic unchanged) ...
             if (_maskCooldownTimer > 0)
             {
                 _maskCooldownTimer -= Time.deltaTime;
@@ -116,10 +229,26 @@ public class Player : MonoBehaviour
         UpdateAnimator();
         UpdateDashCooldownUI();
 
-        if (_movement.JustDashed && _dashImpulseSource != null) 
-            _dashImpulseSource.GenerateImpulse();
-        if (Input.GetMouseButtonDown(0) && _gunshotImpulseSource != null) 
-            _gunshotImpulseSource.GenerateImpulse();
+        if (_movement.JustDashed)
+        {
+            if (_dashImpulseSource != null) _dashImpulseSource.GenerateImpulse();
+            if (_dashGhost != null) _dashGhost.SpawnGhostTrail();
+        }
+        
+        // REMOVED manual impulse check here - driven by _shooting.OnShoot
+
+        // --- SHOOTING LOGIC MOVED TO UPDATE FOR RESPONSIVENESS ---
+        // Calculate shoot direction
+        Vector3 stableOrigin = transform.position;
+        // Check for null just in case firepoint was destroyed or not assigned yet
+        if (_firePoint != null) stableOrigin.y = _firePoint.position.y;
+        
+        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        
+        bool firedThisFrame = _shooting.Tick(shootDirection);
+        if (firedThisFrame) _lastShotTime = Time.time;
+        
+        UpdateShootingLayerWeights();
     }
 
     void LateUpdate()
@@ -134,22 +263,42 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.deltaTime * _rotationSpeed);
         }
 
-        // FIX: Calculate shoot direction from player center (at weapon height) to aim target.
-        // This decouples the aiming accuracy from the running animation sway (upper body movement).
-        Vector3 stableOrigin = transform.position;
-        stableOrigin.y = _firePoint.position.y;
-        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        // Shooting logic moved to Update()
         
-        _shooting.Tick(shootDirection);
-
         CalculateTurnSpeed();
     }
 
     public static void TakeDamage(int amount)
     {
-        if (_instance == null) return;
-        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, 100);
+        if (_instance == null || _isDead) return;
+        
+        Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
+        
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, _instance._maxHealth);
         HealthUI.UpdateHealth(_instance.CurrentHealth);
+
+        // Trigger hit flash
+        if (_instance._hitFlash != null)
+        {
+            _instance._hitFlash.Flash();
+        }
+
+        if (_instance.CurrentHealth <= 0)
+        {
+            _isDead = true;
+            if (_instance._deathEffect != null)
+            {
+                _instance._deathEffect.TriggerDeath(_lastHitDirection);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Call this to set the direction of the last hit (for ragdoll knockback).
+    /// </summary>
+    public static void SetLastHitDirection(Vector3 direction)
+    {
+        _lastHitDirection = direction;
     }
     
     public static void GetUltimate(int amount)
@@ -157,6 +306,25 @@ public class Player : MonoBehaviour
         if (_instance == null) return;
         _instance.CurrentUltimate = Mathf.Clamp(_instance.CurrentUltimate + amount, 0, 10);
         UltimateUI.UpdateUltimate(_instance.CurrentUltimate);
+    }
+    
+    private void UpdateShootingLayerWeights()
+    {
+        if (_animator == null || _shootingLayerIndex == -1 || _upperBodyLayerIndex == -1)
+            return;
+        
+        // Check if player is currently holding fire button
+        bool isShooting = Input.GetMouseButton(0);
+        
+        // Target weight: 1 when shooting, 0 when not
+        float targetWeight = isShooting ? 1f : 0f;
+        
+        // Smoothly blend the weight
+        _shootingLayerWeight = Mathf.MoveTowards(_shootingLayerWeight, targetWeight, _layerBlendSpeed * Time.deltaTime);
+        
+        // Apply weights: ShootingGunLayer gets the shooting weight, Upper Body gets the inverse
+        _animator.SetLayerWeight(_shootingLayerIndex, _shootingLayerWeight);
+        _animator.SetLayerWeight(_upperBodyLayerIndex, 1f - _shootingLayerWeight);
     }
     
     private void CalculateTurnSpeed()
@@ -232,17 +400,19 @@ public class Player : MonoBehaviour
     
     private void UpdateDashCooldownUI()
     {
-        if (_dashCooldownText == null) return;
-
-        float cooldown = _movement.DashCooldownTimer;
-        if (cooldown > 0)
+        // Update new visual UI
+        if (_dashUI != null)
         {
-            _dashCooldownText.gameObject.SetActive(true);
-            _dashCooldownText.text = cooldown.ToString("F1");
+            _dashUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
         }
-        else
+        
+        // Update legacy text if assigned (optional fallback)
+        if (_dashCooldownText != null)
         {
-            _dashCooldownText.gameObject.SetActive(false);
+             if (_movement.CurrentDashCharges > 0)
+                _dashCooldownText.text = _movement.CurrentDashCharges.ToString();
+             else
+                _dashCooldownText.text = _movement.DashRechargeProgress.ToString("F1");
         }
     }
 
@@ -286,8 +456,7 @@ public class Player : MonoBehaviour
 
             _shooting.FireImmediate(shootDirection);
             
-            // Generate visual impulse for feedback
-            if (_gunshotImpulseSource != null) _gunshotImpulseSource.GenerateImpulse(0.5f);
+
 
             yield return new WaitForSeconds(burstDelay);
         }
