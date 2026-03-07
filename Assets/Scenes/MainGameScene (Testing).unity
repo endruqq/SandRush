@@ -1172,7 +1172,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -7502,6 +7502,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7270185161530494341, guid: 0c69038ed00b0ff438253576aaa0966c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.5859375
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270185161530494341, guid: 0c69038ed00b0ff438253576aaa0966c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.171631
+      objectReference: {fileID: 0}
     - target: {fileID: 7396639440262756479, guid: 0c69038ed00b0ff438253576aaa0966c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -11685,10 +11693,10 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: 3
     m_CustomResolution: -1
-    m_Strength: 0.801
+    m_Strength: 1
     m_Bias: 0
     m_NormalBias: 0.4
     m_NearPlane: 0.76
