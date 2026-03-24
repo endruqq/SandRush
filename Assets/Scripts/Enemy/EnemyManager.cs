@@ -72,6 +72,14 @@ public class EnemyManager : MonoBehaviour
         Player.GetUltimate(1);
 
         _isDead = true;
+
+        // Light slow-motion and heavier screen shake on death
+        if (HitStopManager.Instance != null)
+        {
+            HitStopManager.Instance.TriggerSlowMo(0.5f, 0.3f);
+        }
+        
+        Player.TriggerHeavyCameraShake();
         
         // Play death sound
         if (!string.IsNullOrEmpty(_deathSound))

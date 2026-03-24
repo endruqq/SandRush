@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     [Header("Shooting Stats")]
     [SerializeField] private float _bulletSpeed = 25f;
     [SerializeField] private int _magazineSize = 25;
+    [SerializeField] private float _fireRate = 0.2f;
+    [SerializeField] private bool _isAutomatic = true;
     [SerializeField] private float _reloadTime = 1.5f;
     [SerializeField] private AmmoUI _ammoUI;
 
@@ -54,6 +56,10 @@ public class Player : MonoBehaviour
     [Header("Impulse Sources")]
     [SerializeField] private CinemachineImpulseSource _dashImpulseSource;
     [SerializeField] private CinemachineImpulseSource _gunshotImpulseSource;
+
+    [Header("Effects Settings")]
+    [SerializeField] private float _screenFlashDuration = 0.03f;
+    [SerializeField] private float _screenFlashAlpha = 0.03f;
     
     [Header("Mask Ability")]
     [SerializeField] private float _maskAbilityCooldown = 5f;
@@ -128,7 +134,7 @@ public class Player : MonoBehaviour
 
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _magazineSize, _reloadTime);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _fireRate, _isAutomatic, _magazineSize, _reloadTime);
         
         // Subscribe to shooting events
         _shooting.OnShoot += OnShootHandler;
@@ -191,6 +197,11 @@ public class Player : MonoBehaviour
     {
         if (_gunshotImpulseSource != null) 
             _gunshotImpulseSource.GenerateImpulse();
+
+        if (ScreenFlash.Instance != null)
+        {
+            ScreenFlash.Instance.Flash(_screenFlashDuration, _screenFlashAlpha);
+        }
     }
     
     void Start()
@@ -306,6 +317,14 @@ public class Player : MonoBehaviour
         if (_instance == null) return;
         _instance.CurrentUltimate = Mathf.Clamp(_instance.CurrentUltimate + amount, 0, 10);
         UltimateUI.UpdateUltimate(_instance.CurrentUltimate);
+    }
+    
+    public static void TriggerHeavyCameraShake()
+    {
+        if (_instance != null && _instance._gunshotImpulseSource != null)
+        {
+            _instance._gunshotImpulseSource.GenerateImpulseWithForce(3f);
+        }
     }
     
     private void UpdateShootingLayerWeights()

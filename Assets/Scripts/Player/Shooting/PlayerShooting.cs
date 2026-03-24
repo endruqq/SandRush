@@ -8,6 +8,7 @@ public class PlayerShooting
     private float _fireRate = 0.25f;
     private readonly float _bulletSpeed;
     private readonly GameObject[] _firePointVFXPrefabs;
+    private readonly bool _isAutomatic;
 
     private float _nextFireTime = 0f;
     
@@ -44,11 +45,13 @@ public class PlayerShooting
     public bool IsReloading => _isReloading;
     public bool IsEnabled { get; set; } = true;
 
-    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, float bulletSpeed, GameObject[] fireVFXPrefabs, Animator weaponAnimator, string recoilTrigger, int magazineSize = 25, float reloadTime = 1.5f)
+    public PlayerShooting(Transform playerTransform, Transform firePoint, GameObject bulletPrefab, float bulletSpeed, GameObject[] fireVFXPrefabs, Animator weaponAnimator, string recoilTrigger, float fireRate = 0.25f, bool isAutomatic = false, int magazineSize = 25, float reloadTime = 1.5f)
     {
         _playerTransform = playerTransform;
         _firePoint = firePoint;
         _bulletSpeed = bulletSpeed;
+        _fireRate = fireRate;
+        _isAutomatic = isAutomatic;
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
         _firePointVFXPrefabs = fireVFXPrefabs;
         _weaponAnimator = weaponAnimator;
@@ -93,8 +96,10 @@ public class PlayerShooting
             return false;
         }
 
-        // Check if can shoot - SEMI-AUTO (GetMouseButtonDown)
-        if (Input.GetMouseButtonDown(0) && Time.time >= _nextFireTime && _currentAmmo > 0)
+        // Check if can shoot
+        bool inputDetected = _isAutomatic ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+
+        if (inputDetected && Time.time >= _nextFireTime && _currentAmmo > 0)
         {
             _nextFireTime = Time.time + _fireRate;
             _weapon.Fire(aimDir);

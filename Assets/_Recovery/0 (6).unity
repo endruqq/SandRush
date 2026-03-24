@@ -2190,6 +2190,9 @@ MonoBehaviour:
   _rangedDamage: 5
   _rangedVFXPrefabs:
   - {fileID: 457345638}
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
   _meleeDamage: 10
   _meleeHitDelay: 0.3
   _meleeVFXPoint: {fileID: 0}
@@ -10489,6 +10492,9 @@ MonoBehaviour:
   _bulletSpeed: 20
   _rangedDamage: 25
   _rangedVFXPrefabs: []
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
   _meleeDamage: 10
   _meleeHitDelay: 0.3
   _meleeVFXPoint: {fileID: 1231638233}
@@ -16203,6 +16209,9 @@ MonoBehaviour:
   _bulletSpeed: 20
   _rangedDamage: 25
   _rangedVFXPrefabs: []
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
   _meleeDamage: 10
   _meleeHitDelay: 0.3
   _meleeVFXPoint: {fileID: 1231638233}
@@ -157346,6 +157355,9 @@ MonoBehaviour:
   _bulletSpeed: 20
   _rangedDamage: 25
   _rangedVFXPrefabs: []
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
   _meleeDamage: 10
   _meleeHitDelay: 0.6
   _meleeVFXPoint: {fileID: 0}

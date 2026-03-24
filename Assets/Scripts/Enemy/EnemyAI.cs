@@ -23,6 +23,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float _bulletSpeed = 20f;
     [SerializeField] private float _rangedDamage = 25f;
     [SerializeField] private GameObject[] _rangedVFXPrefabs;
+    [SerializeField] private bool _enableStrafing = true;
+    [SerializeField] private float _strafeSpeed = 2f;
+    [SerializeField] private float _strafeChangeInterval = 2f;
     
     [Header("Melee Settings")]
     [SerializeField] private int _meleeDamage = 10;
@@ -54,6 +57,8 @@ public class EnemyAI : MonoBehaviour
     private float _nextAttackTime;
     private float _fuseTimer;
     private bool _isFuseLit;
+    private float _originalSpeed;
+    private float _strafeTimer;
     
     // --- DEBUG ---
     private State _previousState;
@@ -61,6 +66,7 @@ public class EnemyAI : MonoBehaviour
     void Awake()
     {
         _navAgent = GetComponent<NavMeshAgent>();
+        if (_navAgent != null) _originalSpeed = _navAgent.speed;
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if(playerObj != null) _playerTransform = playerObj.transform;
     }
@@ -143,6 +149,8 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleChasingState()
     {
+        _navAgent.updateRotation = true;
+        _navAgent.speed = _originalSpeed;
         SetWalking(true);
         _navAgent.isStopped = false;
         _navAgent.SetDestination(_playerTransform.position);
@@ -178,13 +186,33 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleAttackingState()
     {
-        _navAgent.isStopped = true;
-        SetWalking(false);
-        
-        // Ranged enemies rotate continuously to face player
         if (_attackType == AttackType.Ranged)
         {
             RotateTowardsPlayer();
+            
+            if (_enableStrafing)
+            {
+                _navAgent.updateRotation = false; // Manually look at player while moving sideways
+                _navAgent.isStopped = false;
+                _navAgent.speed = _strafeSpeed;
+                SetWalking(true);
+                
+                _strafeTimer -= Time.deltaTime;
+                if (_strafeTimer <= 0f)
+                {
+                    ChangeStrafeDirection();
+                }
+            }
+            else
+            {
+                _navAgent.isStopped = true;
+                SetWalking(false);
+            }
+        }
+        else
+        {
+            _navAgent.isStopped = true;
+            SetWalking(false);
         }
 
         // For all attack types, if player is out of range, go back to chasing.
@@ -216,6 +244,31 @@ public class EnemyAI : MonoBehaviour
                 else PerformMeleeAttack();
                 _nextAttackTime = Time.time + 1f / _attackRate;
             }
+        }
+    }
+
+    private void ChangeStrafeDirection()
+    {
+        _strafeTimer = _strafeChangeInterval + Random.Range(-0.5f, 0.5f);
+        
+        if (_playerTransform == null) return;
+
+        // Choose random direction: 1 (right) or -1 (left)
+        int dir = Random.value > 0.5f ? 1 : -1;
+        
+        // Direction from player to enemy
+        Vector3 dirFromPlayer = (transform.position - _playerTransform.position).normalized;
+        dirFromPlayer.y = 0; // Keep movement on flat plane
+        
+        // Find tangent vector for left/right strafe
+        Vector3 strafeDir = Vector3.Cross(dirFromPlayer, Vector3.up).normalized * dir;
+        
+        // Attempt to find a valid navmesh point 4 units in the strafe direction
+        Vector3 targetPos = transform.position + strafeDir * 4f;
+        
+        if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out UnityEngine.AI.NavMeshHit hit, 4f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            _navAgent.SetDestination(hit.position);
         }
     }
 
