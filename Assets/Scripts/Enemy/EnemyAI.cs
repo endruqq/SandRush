@@ -60,6 +60,10 @@ public class EnemyAI : MonoBehaviour
     private float _originalSpeed;
     private float _strafeTimer;
     
+    // AI enhancements
+    private float _randomAngleOffset;
+    private float _speedVariance;
+    
     // --- DEBUG ---
     private State _previousState;
 
@@ -69,6 +73,9 @@ public class EnemyAI : MonoBehaviour
         if (_navAgent != null) _originalSpeed = _navAgent.speed;
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if(playerObj != null) _playerTransform = playerObj.transform;
+        
+        _randomAngleOffset = Random.Range(0f, 360f);
+        _speedVariance = Random.Range(0.85f, 1.25f); // 15-25% variation so they don't form identical lines!
     }
 
     void Start()
@@ -150,10 +157,21 @@ public class EnemyAI : MonoBehaviour
     private void HandleChasingState()
     {
         _navAgent.updateRotation = true;
-        _navAgent.speed = _originalSpeed;
+        
+        // Melee enemies chase faster, and all enemies use speed variance to avoid walking in sync
+        float chaseSpeed = _attackType == AttackType.Melee ? (_originalSpeed * 1.5f) * _speedVariance : _originalSpeed * _speedVariance;
+        _navAgent.speed = chaseSpeed;
         SetWalking(true);
         _navAgent.isStopped = false;
+        
         _navAgent.SetDestination(_playerTransform.position);
+        
+        if (_attackType == AttackType.Melee)
+        {
+            // Minor push to avoid walking exactly inside each other
+            // Also handles encircling the player when close
+            SeparateFromPeers();
+        }
         
         // --- DEBUG ---
         if (_navAgent.pathPending)
@@ -162,7 +180,7 @@ public class EnemyAI : MonoBehaviour
         }
         else if (_navAgent.hasPath)
         {
-            Debug.Log($"{gameObject.name} is moving along its path. Velocity: {_navAgent.velocity.magnitude}", this);
+            // Debug.Log($"{gameObject.name} is moving along its path. Velocity: {_navAgent.velocity.magnitude}", this);
         }
         else
         {
@@ -183,12 +201,68 @@ public class EnemyAI : MonoBehaviour
             _navAgent.isStopped = true;
         }
     }
+    
+    private void SeparateFromPeers()
+    {
+        if (!_navAgent.isOnNavMesh) return;
+        
+        // Find nearby enemies to push away from
+        Collider[] nearby = Physics.OverlapSphere(transform.position, 2.0f);
+        Vector3 separationForce = Vector3.zero;
+        int count = 0;
+        
+        foreach (var col in nearby)
+        {
+            // Use TryGetComponent instead of CompareTag to avoid "Tag not defined" errors
+            if (col.gameObject != gameObject && col.TryGetComponent<EnemyAI>(out _))
+            {
+                Vector3 away = transform.position - col.transform.position;
+                away.y = 0; // Keep push horizontal
+                
+                float dist = away.magnitude;
+                if (dist < 1.5f && dist > 0.01f) // They are crowding
+                {
+                    // Stronger push the closer they are
+                    separationForce += away.normalized * (1.5f - dist);
+                    count++;
+                }
+            }
+        }
+        
+        if (count > 0)
+        {
+            // Manually shove the agent so they slide apart while chasing.
+            // Reduced by ~80% for a much more subtle, natural shift rather than an aggressive slide.
+            _navAgent.Move(separationForce * Time.deltaTime * 1.2f);
+        }
+        
+        // Close-range Encirclement
+        // Only start wrapping around when they get close to the player (e.g., within 6 units)
+        // This ensures they always charge forward from far away, but fan out wide when closing in for the kill
+        if (_distanceToPlayer < 6.0f && _distanceToPlayer > _attackRange * 0.5f)
+        {
+            Vector3 dirFromPlayer = (transform.position - _playerTransform.position).normalized;
+            dirFromPlayer.y = 0;
+            
+            // Tangent vector for lateral movement (sidestepping around player)
+            Vector3 tangent = Vector3.Cross(dirFromPlayer, Vector3.up).normalized;
+            
+            // RandomAngleOffset determines if they prefer flanking left or right forever
+            float strafeDir = Mathf.Sin(_randomAngleOffset) > 0 ? 1f : -1f;
+            
+            // Move sideways while pathing forward. This balloons out the crowd into a wide half-circle front.
+            // Reduced by 80% to be very subtle and look organic.
+            _navAgent.Move(tangent * strafeDir * Time.deltaTime * 0.9f);
+        }
+    }
 
     private void HandleAttackingState()
     {
+        // Continuously face the player while attacking (winds up)
+        RotateTowardsPlayer();
+
         if (_attackType == AttackType.Ranged)
         {
-            RotateTowardsPlayer();
             
             if (_enableStrafing)
             {
@@ -358,7 +432,54 @@ public class EnemyAI : MonoBehaviour
         // Play melee attack sound
         if (!string.IsNullOrEmpty(_attackSound))
             FMODHelper.PlayOneShot(_attackSound, transform.position);
+            
+        // Trigger a short dash/lunge towards the player
+        StartCoroutine(MeleeLungeCoroutine());
         StartCoroutine(MeleeHitCoroutine());
+    }
+    
+    private System.Collections.IEnumerator MeleeLungeCoroutine()
+    {
+        if (_playerTransform == null || !_navAgent.isOnNavMesh) yield break;
+        
+        // Save original agent settings
+        float originalAccel = _navAgent.acceleration;
+        float originalSpeed = _navAgent.speed;
+        
+        float lungeTime = 0.25f; // Slightly longer for a smoother feel
+        float maxLungeSpeed = 12f;
+        
+        _navAgent.isStopped = false;
+        _navAgent.acceleration = 100f; // High acceleration for instant response
+        
+        float timer = 0f;
+        while (timer < lungeTime)
+        {
+            RotateTowardsPlayer();
+            
+            // Only lunge if not practically touching the player, preventing clipping
+            if (_playerTransform != null && _distanceToPlayer > 1.2f)
+            {
+                Vector3 dir = (_playerTransform.position - transform.position).normalized;
+                
+                // Ease-out the speed so it smoothly halts instead of stopping abruptly
+                float easeOut = 1f - (timer / lungeTime); 
+                _navAgent.velocity = dir * (maxLungeSpeed * easeOut);
+            }
+            else
+            {
+                _navAgent.velocity = Vector3.zero;
+            }
+            
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Restore settings
+        _navAgent.velocity = Vector3.zero;
+        _navAgent.speed = originalSpeed;
+        _navAgent.acceleration = originalAccel;
+        _navAgent.isStopped = true;
     }
     
     private System.Collections.IEnumerator MeleeHitCoroutine()
@@ -367,7 +488,8 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(_meleeHitDelay);
         
         // Check if still in range (player might have moved)
-        if (_distanceToPlayer <= _attackRange && _playerTransform != null)
+        // More forgiving check: 1.5x interaction range so it's harder to step out during 0.3s delay.
+        if (_distanceToPlayer <= _attackRange * 1.5f && _playerTransform != null)
         {
             // Set hit direction for ragdoll knockback
             Vector3 hitDir = (_playerTransform.position - transform.position).normalized;
