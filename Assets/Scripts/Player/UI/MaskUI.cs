@@ -10,7 +10,12 @@ public class MaskUI : MonoBehaviour
 
     private void Start()
     {
-        // Don't hide the icon initially, assuming it shows the '?' placeholder
+        // Don't hide the icon initially ONLY if a placeholder sprite is set
+        if (_maskIconImage != null)
+        {
+            _maskIconImage.enabled = _maskIconImage.sprite != null;
+        }
+        
         if (_cooldownImage != null) _cooldownImage.fillAmount = 0;
         
         // Check if mask is already collected (from previous session)
@@ -25,6 +30,16 @@ public class MaskUI : MonoBehaviour
         {
             player.OnMaskEquipped += HandleMaskEquipped;
             player.OnMaskCooldownChanged += HandleCooldownChanged;
+            player.OnMaskChanged += HandleMaskChanged;
+        }
+    }
+
+    private void HandleMaskChanged(Sprite newSprite)
+    {
+        if (_maskIconImage != null && newSprite != null)
+        {
+            _maskIconImage.sprite = newSprite;
+            _maskIconImage.enabled = true; // Włącz obrazek po przypisaniu maski
         }
     }
 
@@ -33,6 +48,7 @@ public class MaskUI : MonoBehaviour
         if (equipped && _maskIconImage != null && _equippedMaskSprite != null)
         {
             _maskIconImage.sprite = _equippedMaskSprite;
+            _maskIconImage.enabled = true; // Włącz obrazek po zebraniu maski
         }
     }
 
@@ -51,6 +67,7 @@ public class MaskUI : MonoBehaviour
         {
             player.OnMaskEquipped -= HandleMaskEquipped;
             player.OnMaskCooldownChanged -= HandleCooldownChanged;
+            player.OnMaskChanged -= HandleMaskChanged;
         }
     }
 }

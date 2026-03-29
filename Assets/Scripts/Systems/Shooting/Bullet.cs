@@ -179,12 +179,6 @@ public class Bullet : MonoBehaviour
             Debug.Log($"Dealing {damage} damage to ENEMY: {enemy.name}");
             // Pass the bullet's current forward direction as the hit direction
             enemy.TakeDamage(damage, transform.forward);
-
-            // Trigger Hit Stop effect
-            if (HitStopManager.Instance != null)
-            {
-                HitStopManager.Instance.TriggerHitStop(0.05f);
-            }
         }
         else if (isPlayer)
         {

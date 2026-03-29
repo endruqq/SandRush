@@ -69,8 +69,6 @@ public class EnemyManager : MonoBehaviour
 
     private void Die()
     {
-        Player.GetUltimate(1);
-
         _isDead = true;
 
         // Light slow-motion and heavier screen shake on death

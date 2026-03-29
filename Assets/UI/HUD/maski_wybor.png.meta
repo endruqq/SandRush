@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e8faaa0be3a4458449cc31dff2b45865
+guid: 54cd34a40079db549b8742b1446eff37
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hp_anim_0
+      name: maski_wybor_0
       rect:
         serializedVersion: 2
-        x: 139
-        y: 50
-        width: 637
-        height: 54
+        x: 2
+        y: 399
+        width: 525
+        height: 704
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,118 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1217bc755b5f0044abeaad5245497d2
-      internalID: 1018468474
+      spriteID: 90cbf80673b504648a012acfa69902fd
+      internalID: 1365792672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maski_wybor_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 3
+        width: 1003
+        height: 436
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b526d2b4f9e7b44f83110727b2bc567
+      internalID: 1584504670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maski_wybor_2
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 402
+        width: 525
+        height: 701
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85f87e13631c51b4a95bc8dddc95ff0f
+      internalID: -891751503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maski_wybor_3
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 398
+        width: 525
+        height: 706
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7241a028c34e7db45bab43806e8b2551
+      internalID: -1900962512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maski_wybor_4
+      rect:
+        serializedVersion: 2
+        x: 1274
+        y: 3
+        width: 1004
+        height: 437
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e17ed389be957543a87e45eb87847d4
+      internalID: 1550204746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: maski_wybor_5
+      rect:
+        serializedVersion: 2
+        x: 1802
+        y: 401
+        width: 525
+        height: 703
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16df256869fc76148a90f80fba4b9b6c
+      internalID: 753767040
       vertices: []
       indices: 
       edges: []
@@ -122,8 +232,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 0a4f92c3c4de2d84d82dbb61d7a12049
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -134,7 +244,12 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      hp_anim_0: 1018468474
+      maski_wybor_0: 1365792672
+      maski_wybor_1: 1584504670
+      maski_wybor_2: -891751503
+      maski_wybor_3: -1900962512
+      maski_wybor_4: 1550204746
+      maski_wybor_5: 753767040
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
