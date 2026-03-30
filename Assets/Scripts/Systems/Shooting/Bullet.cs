@@ -185,6 +185,11 @@ public class Bullet : MonoBehaviour
             Debug.Log($"Dealing {damage} damage to PLAYER");
             Player.TakeDamage((int)damage);
         }
+        else
+        {
+            // Generic damage call for objects like ExplosiveBarrel
+            other.SendMessageUpwards("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+        }
 
         if (_hitEffectPrefab != null)
         {

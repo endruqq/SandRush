@@ -27,6 +27,8 @@ public class PlayerMovement
     private bool _isDashing;
 
     // --- Public State ---
+    public float SpeedMultiplier { get; set; } = 1f;
+    public bool IsDashEnabled { get; set; } = true;
     public bool JustDashed { get; private set; }
     public int CurrentDashCharges => _currentDashCharges;
     public float DashRechargeProgress => 1f - (_dashRechargeTimer / _dashRechargeTime); // 0..1
@@ -72,7 +74,7 @@ public class PlayerMovement
             return;
         }
 
-        Vector3 targetVelocity = WorldMoveDirection * _moveSpeed;
+        Vector3 targetVelocity = WorldMoveDirection * (_moveSpeed * SpeedMultiplier);
         _currentMoveVelocity = Vector3.SmoothDamp(_currentMoveVelocity, targetVelocity, ref _velocityDamper, _accelerationTime);
         
         // Combine lateral movement with vertical gravity
@@ -129,7 +131,7 @@ public class PlayerMovement
 
         // 3. Handle Input
         // Must have charges, input direction, and not be currently dashing (optional, but prevents overlapping dashes)
-        if (Input.GetKeyDown(KeyCode.Space) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
+        if (IsDashEnabled && Input.GetKeyDown(KeyCode.Space) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
         {
             JustDashed = true; 
             _isDashing = true;

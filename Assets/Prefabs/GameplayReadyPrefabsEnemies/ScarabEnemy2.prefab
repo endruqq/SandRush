@@ -1234,7 +1234,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1268,6 +1268,9 @@ MonoBehaviour:
   _bulletSpeed: 20
   _rangedDamage: 25
   _rangedVFXPrefabs: []
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
   _meleeDamage: 10
   _meleeHitDelay: 0.6
   _meleeVFXPoint: {fileID: 0}
@@ -1277,6 +1280,9 @@ MonoBehaviour:
   _explosionRadius: 5
   _explosionFuseTime: 1.5
   _explosionVFX: {fileID: 0}
+  _attackSound: event:/Scarab_Attack
+  _detectionSound: event:/Detection_Alert
+  _explosionSound: event:/Explosions
   _animator: {fileID: 4205472889280871364}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
@@ -1320,6 +1326,7 @@ MonoBehaviour:
   _bloodSplatPrefab: {fileID: 5129652101402271953, guid: 26fd16bba0727004cbea9be28dce2a15, type: 3}
   _bodyPartExploder: {fileID: 17122632270309488}
   _modelRenderers: []
+  _deathSound: event:/Scarab_Death
 --- !u!114 &17122632270309488
 MonoBehaviour:
   m_ObjectHideFlags: 0

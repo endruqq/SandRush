@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // Added for Image
+using UnityEngine.UI;
 
 public class CursorCross : MonoBehaviour
 {
@@ -48,12 +48,33 @@ public class CursorCross : MonoBehaviour
             _baseScale = _cursorImage.localScale.x;
             _currentScale = _baseScale;
             _targetScale = _baseScale;
+
+            // Disable raycastTarget so the crosshair doesn't block UI raycasts
+            Image img = _cursorImage.GetComponent<Image>();
+            if (img != null) img.raycastTarget = false;
+            // Also disable on all children
+            foreach (var childImg in _cursorImage.GetComponentsInChildren<Image>())
+                childImg.raycastTarget = false;
         }
     }
 
     void Update()
     {
         if (!_turnOnCursor || _cursorImage == null) return;
+
+        bool isUIMode = Player.IsUIModeActive || Time.timeScale == 0f;
+
+        if (isUIMode)
+        {
+            if (_cursorImage.gameObject.activeSelf) _cursorImage.gameObject.SetActive(false);
+            if (!Cursor.visible) Cursor.visible = true;
+            return; // Skip position/scale updates while hidden
+        }
+        else
+        {
+            if (!_cursorImage.gameObject.activeSelf) _cursorImage.gameObject.SetActive(true);
+            if (Cursor.visible) Cursor.visible = false;
+        }
 
         // --- Position ---
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
