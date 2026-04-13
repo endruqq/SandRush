@@ -312,7 +312,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: -16
 --- !u!114 &-3191254158479120238
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   color:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0.16607201, b: 0.2924528, a: 1}
