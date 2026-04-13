@@ -4357,7 +4357,7 @@ PrefabInstance:
     - target: {fileID: 9057393636008096918, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
       propertyPath: _enemyPrefab
       value: 
-      objectReference: {fileID: 5334812692944313596, guid: c2f5728f180efa141ba905022ece49bc, type: 3}
+      objectReference: {fileID: 2912525611066733528, guid: ec64c711153c4834e9be24a9282404d6, type: 3}
     - target: {fileID: 9057393636008096918, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
       propertyPath: _portalVFXPrefab
       value: 
@@ -4774,7 +4774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 5334812692944313596, guid: c2f5728f180efa141ba905022ece49bc, type: 3}
+  _enemyPrefab: {fileID: 2912525611066733528, guid: ec64c711153c4834e9be24a9282404d6, type: 3}
   _spawnMode: 1
   _enemiesPerWave: 2
   _timeBetweenWaves: 3
@@ -11199,7 +11199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 5334812692944313596, guid: c2f5728f180efa141ba905022ece49bc, type: 3}
+  _enemyPrefab: {fileID: 2912525611066733528, guid: ec64c711153c4834e9be24a9282404d6, type: 3}
   _spawnMode: 1
   _enemiesPerWave: 2
   _timeBetweenWaves: 3
@@ -19661,7 +19661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 5334812692944313596, guid: c2f5728f180efa141ba905022ece49bc, type: 3}
+  _enemyPrefab: {fileID: 2912525611066733528, guid: ec64c711153c4834e9be24a9282404d6, type: 3}
   _spawnMode: 1
   _enemiesPerWave: 2
   _timeBetweenWaves: 3
@@ -22216,7 +22216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 5334812692944313596, guid: c2f5728f180efa141ba905022ece49bc, type: 3}
+  _enemyPrefab: {fileID: 2912525611066733528, guid: ec64c711153c4834e9be24a9282404d6, type: 3}
   _spawnMode: 1
   _enemiesPerWave: 3
   _timeBetweenWaves: 3
