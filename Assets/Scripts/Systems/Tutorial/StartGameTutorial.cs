@@ -110,6 +110,10 @@ public class StartGameTutorial : MonoBehaviour
         if (showTutorial)
         {
             Debug.Log("[StartGameTutorial] Starting Tutorial...");
+            
+            // Unlock controls so the player can actually do the tutorial tasks!
+            SetPlayerControls(true);
+
             if (TutorialManager.Instance != null && _steps.Length > 0)
             {
                 TutorialManager.Instance.ShowTutorial(_steps, OnTutorialFinished);
