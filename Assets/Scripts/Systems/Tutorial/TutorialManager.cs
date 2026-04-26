@@ -11,11 +11,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject _tutorialPanel;
     [SerializeField] private TextMeshProUGUI _contentTextField;
     [SerializeField] private Image _contentImageField;
-    [SerializeField] private Button _mainButton;
-    [SerializeField] private TextMeshProUGUI _mainButtonText;
-
-    [Header("Animation")]
-    [SerializeField] private float _slideSpeed = 5f;
 
     private RectTransform _panelRect;
     private Vector2 _targetAnchorPos;
@@ -28,6 +23,10 @@ public class TutorialManager : MonoBehaviour
     private TutorialStep[] _currentSteps;
     private int _currentStepIndex;
 
+    private float _actionTimer = 0f;
+    private bool _waitingForSpawner = false;
+    private EnemySpawner _currentSpawner;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -39,19 +38,10 @@ public class TutorialManager : MonoBehaviour
             if (_panelRect != null)
             {
                 _targetAnchorPos = _panelRect.anchoredPosition;
-                // Start below the screen (assuming bottom anchor or screen height calculation)
-                _hiddenAnchorPos = new Vector2(_targetAnchorPos.x, -Screen.height);
+                // Move off-screen to the left
+                _hiddenAnchorPos = new Vector2(-Screen.width * 2f, _targetAnchorPos.y);
             }
             _tutorialPanel.SetActive(false);
-        }
-        
-        if (_mainButton != null)
-        {
-            _mainButton.onClick.AddListener(OnMainButtonClicked);
-        }
-        else
-        {
-            Debug.LogError("TutorialManager: Main Button is NOT assigned in Inspector!");
         }
     }
 
@@ -63,28 +53,19 @@ public class TutorialManager : MonoBehaviour
         _onCloseCallback = onClosed;
         _currentSteps = steps;
         _currentStepIndex = 0;
+        _actionTimer = 0f;
+        _waitingForSpawner = false;
 
-        ShowStep(_currentStepIndex);
-        
-        // Show Panel
         if (_tutorialPanel != null)
         {
             _tutorialPanel.SetActive(true);
             if (_panelRect != null)
             {
                 _panelRect.anchoredPosition = _hiddenAnchorPos;
-                if (_animationRoutine != null) StopCoroutine(_animationRoutine);
-                _animationRoutine = StartCoroutine(AnimatePanelRoutine(_targetAnchorPos, null));
             }
         }
-        if (_mainButton != null) _mainButton.gameObject.SetActive(true);
 
-        // Pause Game
-        Time.timeScale = 0f;
-
-        // Unlock Cursor
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        ShowStep(_currentStepIndex);
     }
 
     private void ShowStep(int index)
@@ -93,27 +74,158 @@ public class TutorialManager : MonoBehaviour
 
         TutorialStep step = _currentSteps[index];
 
-        // Update Content
         if (_contentTextField != null) _contentTextField.text = step.Text;
         if (_contentImageField != null)
         {
             _contentImageField.sprite = step.Image;
             _contentImageField.gameObject.SetActive(step.Image != null);
         }
-
-        // Update Button Text
-        if (_mainButtonText != null)
-        {
-            bool isLastStep = index == _currentSteps.Length - 1;
-            _mainButtonText.text = isLastStep ? "OK" : "Next";
-        }
         
-        Debug.Log($"TutorialManager: Showing Step {index + 1}/{_currentSteps.Length}");
+        _actionTimer = 0f;
+        _waitingForSpawner = false;
+
+        // Perform specific init logic based on action type
+        if (step.ActionType == TutorialActionType.KillEnemies)
+        {
+            if (step.Spawner != null)
+            {
+                _currentSpawner = step.Spawner;
+                _waitingForSpawner = true;
+                _currentSpawner.OnSpawnerCleared += OnSpawnerClearedHandler;
+                _currentSpawner.StartSpawning();
+            }
+            else
+            {
+                Debug.LogWarning("TutorialManager: KillEnemies step has no spawner assigned! Skipping.");
+                AdvanceStep();
+                return;
+            }
+        }
+        else if (step.ActionType == TutorialActionType.SelectMask)
+        {
+            Player player = FindFirstObjectByType<Player>();
+            if (player != null)
+            {
+                player.OnMaskChanged += OnMaskSelectedHandler;
+            }
+            else
+            {
+                Debug.LogWarning("TutorialManager: Could not find Player for SelectMask step! Skipping.");
+                AdvanceStep();
+                return;
+            }
+        }
+
+        Debug.Log($"TutorialManager: Showing Step {index + 1}/{_currentSteps.Length} - {step.ActionType}");
+
+        // Slide in
+        if (_panelRect != null && _tutorialPanel != null && _tutorialPanel.activeSelf)
+        {
+            if (_animationRoutine != null) StopCoroutine(_animationRoutine);
+            _animationRoutine = StartCoroutine(AnimatePanelRoutine(_targetAnchorPos, null));
+        }
     }
 
-    private void OnMainButtonClicked()
+    private void Update()
     {
-        Debug.Log("TutorialManager: Main Button Clicked!");
+        if (!_isTutorialActive) return;
+
+        TutorialStep currentStep = _currentSteps[_currentStepIndex];
+
+        switch (currentStep.ActionType)
+        {
+            case TutorialActionType.Move:
+                // Check if user is pressing movement keys (WASD)
+                if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
+                {
+                    _actionTimer += Time.deltaTime;
+                    // Require 1 second of moving to avoid accidental touches clearing the task
+                    if (_actionTimer >= 1f) 
+                    {
+                        AdvanceStep();
+                    }
+                }
+                break;
+
+            case TutorialActionType.Shoot:
+                // Check for primary fire
+                if (Input.GetMouseButtonDown(0))
+                {
+                    AdvanceStep();
+                }
+                break;
+
+            case TutorialActionType.KillEnemies:
+                // Relies on event callback `OnSpawnerClearedHandler` 
+                break;
+
+            case TutorialActionType.Custom:
+                // Check custom actions manually
+                break;
+        }
+    }
+
+    private void OnSpawnerClearedHandler()
+    {
+        if (_currentSpawner != null)
+        {
+            _currentSpawner.OnSpawnerCleared -= OnSpawnerClearedHandler;
+            _currentSpawner = null;
+        }
+        
+        if (_isTutorialActive && _waitingForSpawner && _currentSteps[_currentStepIndex].ActionType == TutorialActionType.KillEnemies)
+        {
+            _waitingForSpawner = false;
+            AdvanceStep();
+        }
+    }
+
+    private void OnMaskSelectedHandler(Sprite _)
+    {
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null)
+        {
+            player.OnMaskChanged -= OnMaskSelectedHandler;
+        }
+
+        if (_isTutorialActive && _currentSteps[_currentStepIndex].ActionType == TutorialActionType.SelectMask)
+        {
+            AdvanceStep();
+        }
+    }
+
+    public void AdvanceStep()
+    {
+        if (!_isTutorialActive) return;
+
+        if (_currentSpawner != null)
+        {
+            _currentSpawner.OnSpawnerCleared -= OnSpawnerClearedHandler;
+            _currentSpawner = null;
+        }
+
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null)
+        {
+            player.OnMaskChanged -= OnMaskSelectedHandler;
+        }
+
+        _actionTimer = 0f;
+
+        // Animate out before progressing
+        if (_panelRect != null && _tutorialPanel.activeSelf)
+        {
+            if (_animationRoutine != null) StopCoroutine(_animationRoutine);
+            _animationRoutine = StartCoroutine(AnimatePanelRoutine(_hiddenAnchorPos, OnStepHidden));
+        }
+        else
+        {
+            OnStepHidden();
+        }
+    }
+
+    private void OnStepHidden()
+    {
         _currentStepIndex++;
 
         if (_currentStepIndex < _currentSteps.Length)
@@ -122,13 +234,13 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            CloseTutorial();
+            // If it's the last step, finish it setup
+            OnCloseAnimationComplete();
         }
     }
 
-    private void CloseTutorial()
+    private void CloseTutorial() // Can be called externally to force close
     {
-        // Animate Out first
         if (_panelRect != null && _tutorialPanel.activeSelf)
         {
             if (_animationRoutine != null) StopCoroutine(_animationRoutine);
@@ -145,18 +257,8 @@ public class TutorialManager : MonoBehaviour
         _isTutorialActive = false;
         _currentSteps = null;
 
-        // Hide Panel
         if (_tutorialPanel != null) _tutorialPanel.SetActive(false);
-        if (_mainButton != null) _mainButton.gameObject.SetActive(false);
 
-        // Resume Game
-        Time.timeScale = 1f;
-
-        // Reset Cursor (Top-Down Shooter Style)
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
-
-        // Trigger callback
         _onCloseCallback?.Invoke();
         _onCloseCallback = null;
     }
@@ -165,11 +267,11 @@ public class TutorialManager : MonoBehaviour
     {
         float timer = 0f;
         Vector2 startPos = _panelRect.anchoredPosition;
-        float duration = 0.5f;
+        float duration = 0.35f;
 
         while (timer < duration)
         {
-            timer += Time.unscaledDeltaTime; // Use unscaled time because game is paused
+            timer += Time.deltaTime; 
             float t = timer / duration;
             t = Mathf.SmoothStep(0f, 1f, t);
             
@@ -182,9 +284,20 @@ public class TutorialManager : MonoBehaviour
     }
 }
 
+public enum TutorialActionType 
+{ 
+    Move, 
+    Shoot, 
+    KillEnemies, 
+    SelectMask,
+    Custom 
+}
+
 [System.Serializable]
 public struct TutorialStep
 {
+    public TutorialActionType ActionType;
     [TextArea(3, 10)] public string Text;
     public Sprite Image;
+    public EnemySpawner Spawner;
 }

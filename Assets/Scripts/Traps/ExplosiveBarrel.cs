@@ -42,7 +42,7 @@ public class ExplosiveBarrel : MonoBehaviour
             {
                 if (vfx != null)
                 {
-                    Instantiate(vfx, transform.position, Quaternion.identity);
+                    Instantiate(vfx, transform.position, vfx.transform.rotation);
                 }
             }
         }

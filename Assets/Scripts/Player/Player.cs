@@ -211,11 +211,6 @@ public class Player : MonoBehaviour
     {
         if (_gunshotImpulseSource != null) 
             _gunshotImpulseSource.GenerateImpulse();
-
-        if (ScreenFlash.Instance != null)
-        {
-            ScreenFlash.Instance.Flash(_screenFlashDuration, _screenFlashAlpha);
-        }
     }
     
     void Start()

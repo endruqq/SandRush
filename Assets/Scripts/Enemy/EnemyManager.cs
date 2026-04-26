@@ -58,6 +58,12 @@ public class EnemyManager : MonoBehaviour
         {
             _hitFlash.Flash();
         }
+        
+        // Global screen flash to emphasize hit impact
+        if (ScreenFlash.Instance != null)
+        {
+            ScreenFlash.Instance.Flash();
+        }
 
         Debug.Log($"{gameObject.name} taking {amount} damage. HP = {_currentHealth}");
 
