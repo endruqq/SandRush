@@ -12,11 +12,6 @@ public class PlayerDeathEffect : MonoBehaviour
 {
     [Header("Slow Motion")]
     [SerializeField] private float _slowMoTimeScale = 0.15f;
-    [SerializeField] private float _slowMoDuration = 2.5f;
-
-    [Header("Ragdoll")]
-    [SerializeField] private float _ragdollForce = 1.5f;
-    [SerializeField] private float _ragdollUpForce = 0f;
 
     [Header("Fade")]
     [SerializeField] private float _fadeDelay = 1f;

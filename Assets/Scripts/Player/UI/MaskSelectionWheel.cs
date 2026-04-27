@@ -77,8 +77,8 @@ namespace SandRush.UI
 
         private void Update()
         {
-            // Listening for the 'Q' key to toggle the wheel visual
-            if (Input.GetKeyDown(KeyCode.Q))
+            // Listening for the 'Tab' key to toggle the wheel visual
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (_wheelContainer != null)
                 {
@@ -86,7 +86,7 @@ namespace SandRush.UI
                 }
                 Player.IsUIModeActive = true;
             }
-            else if (Input.GetKeyUp(KeyCode.Q))
+            else if (Input.GetKeyUp(KeyCode.Tab))
             {
                 if (_wheelContainer != null)
                 {

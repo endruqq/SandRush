@@ -6,8 +6,6 @@ public class EnemyManager : MonoBehaviour
     
     [Header("Animation")]
     [SerializeField] private Animator _animator;
-    [SerializeField] private string _deathTrigger = "Death";
-    [SerializeField] private float _deathAnimationDuration = 1f;
 
     [Header("Effects")]
     [SerializeField] private GameObject _bloodSplatPrefab;
