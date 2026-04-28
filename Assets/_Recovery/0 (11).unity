@@ -8920,10 +8920,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChestRealOpen
       objectReference: {fileID: 0}
-    - target: {fileID: 4868625521555216774, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5258655674635754007, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.25041962
@@ -18302,7 +18298,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1542186277}
   - component: {fileID: 1542186276}
-  - component: {fileID: 1542186278}
   m_Layer: 0
   m_Name: ChestHolder
   m_TagString: Untagged
@@ -18327,12 +18322,12 @@ MonoBehaviour:
   _closedCrateModel: {fileID: 767724019}
   _healthPrefab: {fileID: 1950310730528616555, guid: c126c14c74c9f1540886517ecc885b23, type: 3}
   _shieldPrefab: {fileID: 0}
-  _healthItemsCount: 10
+  _healthItemsCount: 1
   _shieldItemsCount: 1
   _upwardForce: 6
   _forwardForce: 2
   _spread: 1.5
-  _breakSoundEvent: 
+  _breakSoundEvent: event:/Impacts/Wood_Break
   _breakVFX: {fileID: 0}
 --- !u!4 &1542186277
 Transform:
@@ -18342,36 +18337,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542186275}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000058114523}
-  m_LocalPosition: {x: -9.24, y: -0.81, z: -97.93}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
+  m_LocalPosition: {x: -8.67, y: -0.81, z: -94.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 767724020}
   - {fileID: 860259068}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!65 &1542186278
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542186275}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.9197145, y: 2.1332746, z: 3.4504242}
-  m_Center: {x: -0.3256965, y: 0.5666373, z: 0.2982986}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1546650822
 GameObject:
   m_ObjectHideFlags: 0

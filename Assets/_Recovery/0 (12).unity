@@ -18327,7 +18327,7 @@ MonoBehaviour:
   _closedCrateModel: {fileID: 767724019}
   _healthPrefab: {fileID: 1950310730528616555, guid: c126c14c74c9f1540886517ecc885b23, type: 3}
   _shieldPrefab: {fileID: 0}
-  _healthItemsCount: 10
+  _healthItemsCount: 1
   _shieldItemsCount: 1
   _upwardForce: 6
   _forwardForce: 2
@@ -18370,8 +18370,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9197145, y: 2.1332746, z: 3.4504242}
-  m_Center: {x: -0.3256965, y: 0.5666373, z: 0.2982986}
+  m_Size: {x: 2.059764, y: 2.4425385, z: 2.8544235}
+  m_Center: {x: -0.22107208, y: 0.72126925, z: 0.25405192}
 --- !u!1 &1546650822
 GameObject:
   m_ObjectHideFlags: 0

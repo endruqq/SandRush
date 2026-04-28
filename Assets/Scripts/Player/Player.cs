@@ -386,6 +386,27 @@ public class Player : MonoBehaviour
     {
         _lastHitDirection = direction;
     }
+
+    public static void Heal(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        Debug.Log($"[Player.Heal] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth + amount, 0, _instance._maxHealth);
+        if (_instance._healthUI != null) _instance._healthUI.UpdateHealth(_instance.CurrentHealth);
+    }
+
+    public static void AddShield(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        if (_instance.ActiveAbility == MaskAbilityType.Shield)
+        {
+            Debug.Log($"[Player.AddShield] Amount: {amount}, Shield Before: {_instance._currentShield}");
+            _instance._currentShield = Mathf.Clamp(_instance._currentShield + amount, 0, _instance._maxShield);
+            _instance.UpdateShieldUI();
+        }
+    }
     
     public static void GetUltimate(int amount)
     {
