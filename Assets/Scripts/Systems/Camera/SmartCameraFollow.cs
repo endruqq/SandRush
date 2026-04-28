@@ -14,6 +14,13 @@ public class SmartCameraFollow : MonoBehaviour
     [Tooltip("How fast the camera target moves to the new position.")]
     [SerializeField] private float _smoothTime = 0.1f;
 
+    [Header("Rotation Setup")]
+    [Tooltip("Ile stopni obraca się kamera wokół gracza przy wciśnięciu klawisza Q? (90 = idealny rzut izometryczny co ścianę)")]
+    [SerializeField] private float _rotationStep = 90f;
+    [Tooltip("Jak szybko kamera obraca się na nową pozycję")]
+    [SerializeField] private float _rotationSpeed = 7f;
+
+
     [Header("References")]
     [Tooltip("The Cinemachine Camera to control. Auto-found if empty.")]
     [SerializeField] private CinemachineCamera _virtualCamera; 
@@ -22,6 +29,7 @@ public class SmartCameraFollow : MonoBehaviour
     private Player _player;
     private Transform _targetObject;
     private Vector3 _currentVelocity;
+    private float _targetYRotation;
 
     private void Start()
     {
@@ -47,12 +55,35 @@ public class SmartCameraFollow : MonoBehaviour
         if (_virtualCamera != null)
         {
             _virtualCamera.Follow = _targetObject;
+            _targetYRotation = _virtualCamera.transform.eulerAngles.y; // Zczytujemy Twój obecny kąt!
             Debug.Log($"[SmartCameraFollow] Assigned camera follow to {_targetObject.name}");
         }
         else
         {
             Debug.LogWarning("[SmartCameraFollow] No CinemachineCamera found to assign!");
         }
+    }
+
+    private void Update()
+    {
+        if (_virtualCamera == null) return;
+
+        // Skok co 90 stopni po wciśnięciu Q
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _targetYRotation += _rotationStep;
+        }
+
+        // Orbitowanie izometryczne polegające na obracaniu Y samej widzącej kamery 
+        // (ponieważ Twój Cinemachine Position Composer ma Rotation = None)
+        Vector3 currentEuler = _virtualCamera.transform.eulerAngles;
+        Quaternion targetRotation = Quaternion.Euler(currentEuler.x, _targetYRotation, currentEuler.z);
+        
+        _virtualCamera.transform.rotation = Quaternion.Slerp(
+            _virtualCamera.transform.rotation, 
+            targetRotation, 
+            Time.deltaTime * _rotationSpeed
+        );
     }
 
     private void LateUpdate()

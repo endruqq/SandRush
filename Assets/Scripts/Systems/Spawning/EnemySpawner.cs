@@ -35,6 +35,13 @@ public class EnemySpawner : MonoBehaviour
     [Header("FMOD Sound")]
     [SerializeField] private string _spawnSound = "event:/Drone_Spawn_Tutorial";
 
+    [Header("Boss Trigger (Opcjonalne)")]
+    [Tooltip("Wybierz bossa z mapy do którego przypięty jest spawner. Po osiągnięciu progu HP spawner wywoła zgraję minionów!")]
+    [SerializeField] private BossController _bossTrigger;
+    [Tooltip("Odpali spawner gdy HP Bossa spadnie <= procent (np 0.5 to 50%)")]
+    [SerializeField] private float _bossHealthThreshold = 0.5f;
+    private bool _triggeredByBoss = false;
+
     private List<EnemyManager> _activeEnemies = new List<EnemyManager>();
     private bool _isSpawning = false;
     private int _wavesSpawned = 0;
@@ -47,9 +54,22 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        if (_autoStart)
+        if (_autoStart && _bossTrigger == null)
         {
             StartSpawning();
+        }
+    }
+
+    private void Update()
+    {
+        // Jeżeli przypisano bossa, Spawner działa jako "Posiłki w fazie 2"
+        if (_bossTrigger != null && !_isSpawning && !_triggeredByBoss)
+        {
+            if (_bossTrigger.HealthPercent > 0 && _bossTrigger.HealthPercent <= _bossHealthThreshold)
+            {
+                _triggeredByBoss = true;
+                StartSpawning();
+            }
         }
     }
 
