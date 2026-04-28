@@ -8916,6 +8916,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1542186277}
     m_Modifications:
+    - target: {fileID: 292506427030557972, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.97449315
+      objectReference: {fileID: 0}
+    - target: {fileID: 292506427030557972, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.22441763
+      objectReference: {fileID: 0}
+    - target: {fileID: 292506427030557972, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.000000059604645
+      objectReference: {fileID: 0}
+    - target: {fileID: 292506427030557972, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000022351742
+      objectReference: {fileID: 0}
+    - target: {fileID: 292506427030557972, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 25.937
+      objectReference: {fileID: 0}
     - target: {fileID: 4868625521555216774, guid: 4d6d660d66da47c4f88294222afa7074, type: 3}
       propertyPath: m_Name
       value: ChestRealOpen
@@ -18327,11 +18347,15 @@ MonoBehaviour:
   _closedCrateModel: {fileID: 767724019}
   _healthPrefab: {fileID: 1950310730528616555, guid: c126c14c74c9f1540886517ecc885b23, type: 3}
   _shieldPrefab: {fileID: 0}
-  _healthItemsCount: 10
+  _healthItemsCount: 5
   _shieldItemsCount: 1
-  _upwardForce: 6
-  _forwardForce: 2
-  _spread: 1.5
+  _landingTarget: {fileID: 0}
+  _upwardForce: 6.26
+  _forwardForce: -3.08
+  _spread: 1.27
+  _ejectionDirection: {x: 31.24, y: 0, z: -1}
+  _spawnOffset: {x: 0, y: 1.2, z: 0}
+  _groundLevelOffset: 0
   _breakSoundEvent: 
   _breakVFX: {fileID: 0}
 --- !u!4 &1542186277
@@ -18370,8 +18394,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9197145, y: 2.1332746, z: 3.4504242}
-  m_Center: {x: -0.3256965, y: 0.5666373, z: 0.2982986}
+  m_Size: {x: 1.9197145, y: 3.2637346, z: 3.4504242}
+  m_Center: {x: -0.32569647, y: 1.1318673, z: 0.2982986}
 --- !u!1 &1546650822
 GameObject:
   m_ObjectHideFlags: 0
@@ -134542,9 +134566,13 @@ MonoBehaviour:
   _shieldPrefab: {fileID: 0}
   _healthItemsCount: 1
   _shieldItemsCount: 1
+  _landingTarget: {fileID: 0}
   _upwardForce: 6
   _forwardForce: 2
   _spread: 1.5
+  _ejectionDirection: {x: 0, y: 0, z: 1}
+  _spawnOffset: {x: 0, y: 1.2, z: 0}
+  _groundLevelOffset: 0
   _breakSoundEvent: event:/Impacts/Wood_Break
   _breakVFX: {fileID: 0}
 --- !u!23 &4766849740368171028

@@ -15,10 +15,22 @@ public class LootCrate : MonoBehaviour
     [SerializeField] private int _healthItemsCount = 1;
     [SerializeField] private int _shieldItemsCount = 1;
 
-    [Header("Ejection Physics / Rzut do góry")]
+    [Header("Ejection Target Point (Najprostsza opcja!)")]
+    [Tooltip("Stwórz pusty obiekt, połóż go celowo tam gdzie chcesz żeby wylądował Loot. Przypisz go tutaj, a skrzynia zignoruje kierunki i celnie strzeli idealnie w ten obiekt!")]
+    [SerializeField] private Transform _landingTarget;
+
+    [Header("Ejection Physics (Skonfiguruj jeśli brakuje Landing Target)")]
     [SerializeField] private float _upwardForce = 6f;
     [SerializeField] private float _forwardForce = 2f;
     [SerializeField] private float _spread = 1.5f;
+    [Tooltip("Jeśli domyślny przód wyrzutu celuje tam gdzie nie chcesz (bo model skrzyni jest np. zapisany tyłem), zmień tę wartość na np. Z: -1 ")]
+    [SerializeField] private Vector3 _ejectionDirection = new Vector3(0, 0, 1);
+
+    [Header("Ejection Offsets (Doprecyzowanie)")]
+    [Tooltip("Precyzyjne ustawienie z jakiego punktu wylatuje loot (względem skrzyni)")]
+    [SerializeField] private Vector3 _spawnOffset = new Vector3(0, 1.2f, 0);
+    [Tooltip("Ustawienie podłogi (np -0.5, względem pivota skrzyni) jeśli nie używasz w ogóle Landing Target")]
+    [SerializeField] private float _groundLevelOffset = 0f;
 
     [Header("FMOD Dźwięk / Efekty")]
     [SerializeField] private string _breakSoundEvent = "event:/Impacts/Wood_Break";
@@ -28,14 +40,11 @@ public class LootCrate : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        Debug.Log($"[LootCrate] Otrzymano {amount} obrazen! (Crate: {gameObject.name})");
         if (_isOpened) return;
 
         _health -= amount;
-        Debug.Log($"[LootCrate] HP spadło do: {_health}");
         if (_health <= 0)
         {
-            Debug.Log($"[LootCrate] HP <= 0, Otwieram skrzynkę!");
             OpenCrate();
         }
     }
@@ -56,44 +65,173 @@ public class LootCrate : MonoBehaviour
         if (_closedCrateModel) _closedCrateModel.SetActive(false);
         if (_openCrateModel) _openCrateModel.SetActive(true);
 
-        // Wyłączamy kolizję skrzyni - ewentualnie zostawiamy kolizję tła/modelu
+        // Wyłączamy kolizję skrzyni
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
+        System.Collections.Generic.List<Collider> spawnedItems = new System.Collections.Generic.List<Collider>();
+
         // Pojawienie loot'u
-        SpawnItems(_healthPrefab, _healthItemsCount);
-        SpawnItems(_shieldPrefab, _shieldItemsCount);
+        SpawnItems(_healthPrefab, _healthItemsCount, spawnedItems);
+        SpawnItems(_shieldPrefab, _shieldItemsCount, spawnedItems);
         
-        // Zniszczenie skrzyni (odkomentuj, jesli nie podpinasz _openCrateModel i wolisz żeby od razu zniknęła)
-        // Destroy(gameObject, 0.1f);
+        // ZŁOTA ZASADA ZAPOBIEGAJĄCA ODBIJENIOM: 
+        // Każemy fizyce całkowicie ignorować zderzenia tych przedmiotów wyplutych z tej skrzyni MIĘDZY SOBĄ!
+        for (int i = 0; i < spawnedItems.Count; i++)
+        {
+            for (int j = i + 1; j < spawnedItems.Count; j++)
+            {
+                if (spawnedItems[i] != null && spawnedItems[j] != null)
+                {
+                    Physics.IgnoreCollision(spawnedItems[i], spawnedItems[j]);
+                }
+            }
+        }
     }
 
-    private void SpawnItems(GameObject prefab, int count)
+    private void SpawnItems(GameObject prefab, int count, System.Collections.Generic.List<Collider> spawnedList)
     {
         if (prefab == null) return;
 
         for (int i = 0; i < count; i++)
         {
-            // Pojawiamy delikatnie wyżej, żeby zminimalizować przycięcie się w podłodze
-            GameObject item = Instantiate(prefab, transform.position + Vector3.up * 0.8f, Quaternion.identity);
+            // Dodajemy drobny miks pozycji startowej, żeby nie rodziły się w 100% zespawane ze sobą
+            Vector3 randomOffset = new Vector3(Random.Range(-0.3f, 0.3f), 0, Random.Range(-0.3f, 0.3f));
+            
+            // Punkt początkowy wykorzystujący Twój własny offset wraz z kątem rotacji samej skrzyni!
+            Vector3 spawnPoint = transform.position + (transform.rotation * _spawnOffset);
+
+            // Spawniejemy na ustalonym wyżej punkcie
+            GameObject item = Instantiate(prefab, spawnPoint + randomOffset, Quaternion.identity);
+            
+            Collider itemCollider = item.GetComponent<Collider>();
+            if (itemCollider != null)
+            {
+                spawnedList.Add(itemCollider);
+            }
+
             Rigidbody rb = item.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                // Określamy kierunek fizyczny po Instantiate
-                Vector3 forwardEject = transform.forward * _forwardForce;
-                Vector3 upwardEject = Vector3.up * _upwardForce;
-                Vector3 randomSpread = new Vector3(
-                    Random.Range(-_spread, _spread),
-                    0,
-                    Random.Range(-_spread, _spread)
-                );
+                Vector3 finalForce = Vector3.zero;
 
-                Vector3 finalForce = forwardEject + upwardEject + randomSpread;
-                rb.AddForce(finalForce, ForceMode.Impulse);
-                
-                // Losowa rotacja podczas lotu dla lepszego wyglądu
-                rb.AddTorque(Random.insideUnitSphere * 4f, ForceMode.Impulse);
+                // Jeżeli gracz zdefiniował precyzyjny TARGET - wyliczamy wzór celujący samemu!
+                if (_landingTarget != null)
+                {
+                    float gravity = Mathf.Abs(Physics.gravity.y);
+                    if (gravity == 0) gravity = 9.81f;
+                    float h = spawnPoint.y - _landingTarget.position.y;
+                    if (h < 0) h = 0f;
+                    
+                    float a = 0.5f * gravity;
+                    float b = -_upwardForce;
+                    float c = -h;
+                    float delta = b * b - 4 * a * c;
+                    
+                    if (delta >= 0)
+                    {
+                        float t = (-b + Mathf.Sqrt(delta)) / (2f * a);
+                        Vector3 toTarget = _landingTarget.position - spawnPoint;
+                        toTarget.y = 0; // Pomijamy różnicę wysokości dla rzutu horyzontalnego
+                        Vector3 horizontalVel = toTarget / t;
+                        
+                        Vector3 rSpread = new Vector3(Random.Range(-_spread, _spread), 0, Random.Range(-_spread, _spread));
+                        finalForce = horizontalVel + (Vector3.up * _upwardForce) + rSpread;
+                    }
+                }
+                else 
+                {
+                    // Wyrzut matematyczny po ustalonych wpisanymi osiami (strzał w ciemno ze starej metody)
+                    Vector3 throwDir = transform.TransformDirection(_ejectionDirection.normalized);
+                    Vector3 forwardEject = throwDir * _forwardForce;
+                    Vector3 upwardEject = Vector3.up * _upwardForce;
+                    Vector3 rSpread = new Vector3(Random.Range(-_spread, _spread), 0, Random.Range(-_spread, _spread));
+
+                     finalForce = forwardEject + upwardEject + rSpread;
+                }
+
+                // ForceMode.VelocityChange w ogóle ignoruje masę elementu
+                rb.AddForce(finalForce, ForceMode.VelocityChange);
             }
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        float gravity = Mathf.Abs(Physics.gravity.y);
+        if (gravity == 0) gravity = 9.81f;
+
+        float vy = _upwardForce;
+        Vector3 spawnWorldPos = transform.position + (transform.rotation * _spawnOffset);
+
+        if (_landingTarget != null)
+        {
+            // === WIZUALIZACJA 1: TARGET (DYNAMIKA) ===
+            float h = spawnWorldPos.y - _landingTarget.position.y;
+            if (h < 0) h = 0f; 
+            
+            float a = 0.5f * gravity;
+            float b = -vy;
+            float c = -h;
+            
+            float delta = b * b - 4 * a * c;
+            if (delta >= 0)
+            {
+                float t = (-b + Mathf.Sqrt(delta)) / (2f * a);
+                
+                float spreadRadius = _spread * t * 1.41f;
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(spawnWorldPos, _landingTarget.position);
+
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(spawnWorldPos, 0.08f);
+
+                UnityEditor.Handles.color = new Color(0f, 1f, 0.4f, 0.8f);
+                UnityEditor.Handles.DrawWireDisc(_landingTarget.position, Vector3.up, spreadRadius);
+                
+                Gizmos.color = new Color(0f, 1f, 0.4f, 0.15f);
+                Gizmos.DrawSphere(_landingTarget.position, spreadRadius);
+            }
+        }
+        else
+        {
+            // === WIZUALIZACJA 2: TRADYCYJNA ===
+            float groundWorldY = transform.position.y + _groundLevelOffset;
+            float h = spawnWorldPos.y - groundWorldY;
+            if (h < 0) h = 0f; 
+            
+            float a = 0.5f * gravity;
+            float b = -vy;
+            float c = -h;
+            
+            float delta = b * b - 4 * a * c;
+            if (delta >= 0)
+            {
+                float t = (-b + Mathf.Sqrt(delta)) / (2f * a);
+                
+                Vector3 throwDir = transform.TransformDirection(_ejectionDirection.normalized);
+                Vector3 forwardDist = throwDir * (_forwardForce * t);
+                
+                Vector3 landingCenter = spawnWorldPos + forwardDist;
+                landingCenter.y = groundWorldY;
+                
+                float spreadRadius = _spread * t * 1.41f; 
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(spawnWorldPos, landingCenter);
+
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(spawnWorldPos, 0.08f);
+
+                UnityEditor.Handles.color = new Color(0f, 1f, 0.4f, 0.8f);
+                UnityEditor.Handles.DrawWireDisc(landingCenter, Vector3.up, spreadRadius);
+                
+                Gizmos.color = new Color(0f, 1f, 0.4f, 0.15f);
+                Gizmos.DrawSphere(landingCenter, spreadRadius);
+            }
+        }
+    }
+#endif
 }
