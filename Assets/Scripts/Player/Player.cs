@@ -65,6 +65,8 @@ public class Player : MonoBehaviour
     
     [Header("Mask Ability")]
     [SerializeField] private float _maskAbilityCooldown = 5f;
+    [Tooltip("Fizyczny obiekt (np. bańka, sphere) wokół gracza, który będzie się włączał tylko gdy tarcza żyje i ma punkty HP!")]
+    [SerializeField] private GameObject _shieldVisualEffect;
 
     
     [Header("Procedural Animation (Synthetik Style)")]
@@ -598,6 +600,18 @@ public class Player : MonoBehaviour
         if (_shieldUI != null)
         {
             _shieldUI.UpdateHealth(_currentShield);
+        }
+
+        // --- SHIELD VISUAL EFFECT TOGGLE ---
+        if (_shieldVisualEffect != null)
+        {
+            // Tarcza się świeci tylko gdy mamy wybraną maskę Tarczy I jednocześnie mamy punkty ochrony
+            bool hasShieldActive = (ActiveAbility == MaskAbilityType.Shield && _currentShield > 0);
+            
+            if (_shieldVisualEffect.activeSelf != hasShieldActive)
+            {
+                _shieldVisualEffect.SetActive(hasShieldActive);
+            }
         }
     }
 

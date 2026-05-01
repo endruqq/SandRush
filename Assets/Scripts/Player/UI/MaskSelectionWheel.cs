@@ -103,21 +103,29 @@ namespace SandRush.UI
 
         public void OnMaskOptionClicked(MaskWheelOption selectedOption)
         {
-            // Hide all chosen graphics first
+            // Reset all options back to normal state
             foreach (var opt in _options)
             {
                 if (opt.ChosenGraphic != null)
                 {
                     opt.ChosenGraphic.SetActive(false);
                 }
+                if (opt.NormalGraphic != null)
+                {
+                    opt.NormalGraphic.SetActive(true);
+                }
             }
 
-            // Show the chosen graphic for the selected option
+            // Show the chosen graphic for the selected option and hide its normal version
             if (selectedOption != null)
             {
                 if (selectedOption.ChosenGraphic != null)
                 {
                     selectedOption.ChosenGraphic.SetActive(true);
+                }
+                if (selectedOption.NormalGraphic != null)
+                {
+                    selectedOption.NormalGraphic.SetActive(false); // <--- To ukrywa NormalGraphic żeby nie przebijało!
                 }
                 
                 Player player = FindFirstObjectByType<Player>();

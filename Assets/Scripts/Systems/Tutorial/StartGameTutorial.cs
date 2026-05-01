@@ -37,8 +37,27 @@ public class StartGameTutorial : MonoBehaviour
         
         if (isTutorialDone)
         {
-            // Checkpoint Spawn (Gameplay)
-            StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
+            // Czy nadpisaliśmy checkpoint z poziomu Obozu/Stacji Zapisu (SaveStationInteractable)?
+            if (PlayerPrefs.GetInt("HasCustomSave", 0) == 1)
+            {
+                Vector3 savedPos = new Vector3(
+                    PlayerPrefs.GetFloat("RespawnPosX"),
+                    PlayerPrefs.GetFloat("RespawnPosY"),
+                    PlayerPrefs.GetFloat("RespawnPosZ")
+                );
+
+                // Tworzy ułotny ułamek sprawna (celownik) do którego przyciągnięty zostanie gracz
+                GameObject tempSpawn = new GameObject("Loaded_Custom_SavePoint");
+                tempSpawn.transform.position = savedPos;
+                tempSpawn.transform.rotation = Quaternion.identity;
+
+                StartCoroutine(PlaySpawnSequence(tempSpawn.transform, false));
+            }
+            else
+            {
+                // Domyślny główny Checkpoint przed wejściem na pustynie
+                StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
+            }
         }
         else
         {
