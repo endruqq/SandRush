@@ -2,9 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 
-using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
+
 using System.Collections.Generic;
 
 public class StartGameTutorial : MonoBehaviour
@@ -56,7 +54,7 @@ public class StartGameTutorial : MonoBehaviour
         // 1. Find Player & IMMEDIATELY Hide
         while (_player == null)
         {
-            _player = FindObjectOfType<Player>();
+            _player = FindFirstObjectByType<Player>();
             if (_player != null)
             {
                 // Cache components

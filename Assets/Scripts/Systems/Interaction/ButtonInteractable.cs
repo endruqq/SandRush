@@ -12,6 +12,10 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
     [Header("Settings")]
     [SerializeField] private bool _isOneTimeOnly = true;
 
+    [Header("UI Prompt")]
+    [SerializeField] private GameObject _promptUI;
+    [SerializeField] private float _promptShowDistance = 2f;
+
     [Header("Events")]
     public UnityEvent OnActivated;
 
@@ -20,6 +24,7 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
 
     private bool _hasBeenActivated = false;
     private GameObject _spawnedVFXObject;
+    private Transform _playerTransform;
 
     private void Start()
     {
@@ -28,6 +33,40 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
         {
             Vector3 spawnPos = _vfxSpawnPoint != null ? _vfxSpawnPoint.position : transform.position;
             _spawnedVFXObject = Instantiate(_loopVFXPrefab, spawnPos, Quaternion.identity, transform);
+        }
+        
+        if (_promptUI != null)
+        {
+            _promptUI.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (_promptUI == null) return;
+
+        // Jeżeli przycisk został wciśnięty i ma działać tylko raz, wyłącz prompt.
+        if (_isOneTimeOnly && _hasBeenActivated)
+        {
+            if (_promptUI.activeSelf) _promptUI.SetActive(false);
+            return;
+        }
+
+        // Pobranie transform'a playera
+        if (_playerTransform == null)
+        {
+            Player p = FindFirstObjectByType<Player>();
+            if (p != null) _playerTransform = p.transform;
+            else return;
+        }
+
+        // Sprawdzenie dystansu
+        float dist = Vector3.Distance(transform.position, _playerTransform.position);
+        bool shouldShow = dist <= _promptShowDistance;
+
+        if (_promptUI.activeSelf != shouldShow)
+        {
+            _promptUI.SetActive(shouldShow);
         }
     }
 
@@ -61,6 +100,12 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
             _spawnedVFXObject.transform.SetParent(null);
             Destroy(_spawnedVFXObject, 5f);
             _spawnedVFXObject = null;
+        }
+        
+        // Wyłącz prompt po wciśnięciu (jeżeli działa raz)
+        if (_isOneTimeOnly && _promptUI != null)
+        {
+            _promptUI.SetActive(false);
         }
 
         // Trigger Action (Door Open, etc.)

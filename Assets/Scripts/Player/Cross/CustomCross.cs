@@ -13,8 +13,6 @@ public class CursorCross : MonoBehaviour
     [SerializeField] private float _scaleRecoverSpeed = 5f;
 
     [Header("Reload Spin")]
-    [Tooltip("How fast the crosshair spins during reload (degrees per second)")]
-    [SerializeField] private float _reloadSpinSpeed = 720f;
     [Tooltip("Full 360° rotation happens over the reload duration")]
     [SerializeField] private float _reloadSpinDegrees = 360f;
     [Tooltip("Spin easing - higher = snappier start/end")]
