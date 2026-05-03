@@ -1,6 +1,7 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!1102 &-8441675638088035143
 AnimatorState:
   serializedVersion: 6
@@ -60,12 +61,17 @@ AnimatorState:
 --- !u!1107 &-3620361223697548532
 AnimatorStateMachine:
 >>>>>>> Stashed changes
+=======
+--- !u!1107 &-3620361223697548532
+AnimatorStateMachine:
+>>>>>>> Stashed changes
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_Speed: 1
   m_CycleOffset: 0
@@ -90,6 +96,8 @@ AnimatorStateMachine:
 --- !u!1102 &-1850396541552880644
 AnimatorState:
 =======
+=======
+>>>>>>> Stashed changes
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1815990231980192380}
@@ -106,6 +114,9 @@ AnimatorState:
   m_DefaultState: {fileID: 1815990231980192380}
 --- !u!1107 &-1890282160313390312
 AnimatorStateMachine:
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -113,6 +124,7 @@ AnimatorStateMachine:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Idle
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_Speed: 1
   m_CycleOffset: 0
@@ -160,6 +172,8 @@ AnimatorStateTransition:
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 =======
+=======
+>>>>>>> Stashed changes
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7256211498299381990}
@@ -174,6 +188,9 @@ AnimatorStateTransition:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 7256211498299381990}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!91 &9100000
 AnimatorController:
@@ -207,6 +224,9 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: 'Walk '
     m_StateMachine: {fileID: 8758784166105970295}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -218,8 +238,11 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!1107 &2697685355379339290
 =======
+=======
+>>>>>>> Stashed changes
   - serializedVersion: 5
     m_Name: Idle
     m_StateMachine: {fileID: -1890282160313390312}
@@ -323,6 +346,9 @@ AnimatorState:
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1107 &8758784166105970295
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 AnimatorStateMachine:
   serializedVersion: 6
@@ -330,6 +356,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_Name: Base Layer
   m_ChildStates:
@@ -343,17 +370,23 @@ AnimatorStateMachine:
     m_State: {fileID: -4875465324240191660}
     m_Position: {x: 410, y: 110, z: 0}
 =======
+=======
+>>>>>>> Stashed changes
   m_Name: 'Walk '
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1418829464844507676}
     m_Position: {x: 405, y: 87, z: 0}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
@@ -461,9 +494,14 @@ AnimatorStateTransition:
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 =======
+=======
+>>>>>>> Stashed changes
   m_AnyStatePosition: {x: 50, y: 50, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1418829464844507676}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
