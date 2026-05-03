@@ -9,7 +9,10 @@ public class ExplosiveBarrel : MonoBehaviour
     [SerializeField] private float _explosionForce = 10f;
     
     [Header("Visuals")]
-    [SerializeField] private GameObject _explosionVFX;
+    [SerializeField] private GameObject[] _explosionVFXs;
+
+    [Header("FMOD Sound")]
+    [SerializeField] private string _explosionSound = "event:/Explosions";
 
     private bool _exploded = false;
 
@@ -29,9 +32,19 @@ public class ExplosiveBarrel : MonoBehaviour
     {
         _exploded = true;
 
-        if (_explosionVFX != null)
+        // Play explosion sound
+        if (!string.IsNullOrEmpty(_explosionSound))
+            FMODHelper.PlayOneShot(_explosionSound, transform.position);
+
+        if (_explosionVFXs != null && _explosionVFXs.Length > 0)
         {
-            Instantiate(_explosionVFX, transform.position, Quaternion.identity);
+            foreach (var vfx in _explosionVFXs)
+            {
+                if (vfx != null)
+                {
+                    Instantiate(vfx, transform.position, vfx.transform.rotation);
+                }
+            }
         }
 
         Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);

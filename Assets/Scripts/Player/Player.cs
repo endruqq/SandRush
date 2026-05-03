@@ -5,12 +5,40 @@ using TMPro;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    public enum MaskAbilityType { Dash, Shield }
+
     [Header("Dependencies")]
     [SerializeField] private Transform _firePoint;
-    [SerializeField] private ParticleSystem _firePointParticles;
+    [SerializeField] private GameObject[] _firePointVFX;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
+    [SerializeField] private DashUI _dashUI;
+    [SerializeField] private HealthUI _healthUI;
+    [SerializeField] private HealthUI _shieldUI;
+    
+    [Header("Shooting Stats")]
+    [SerializeField] private float _bulletSpeed = 25f;
+    [SerializeField] private int _magazineSize = 25;
+    [SerializeField] private float _fireRate = 0.2f;
+    [SerializeField] private bool _isAutomatic = true;
+    [SerializeField] private float _reloadTime = 1.5f;
+    [SerializeField] private AmmoUI _ammoUI;
+
+    [Header("Health & Stats")]
+    [SerializeField] private int _maxHealth = 100;
+
+
+    [Header("Weapon Animation")]
+    [SerializeField] private Animator _weaponAnimator;
+    [SerializeField] private string _recoilAnimationTrigger = "Recoil";
+    [Header("Shooting Layer Override")]
+    [Tooltip("Name of the layer that plays shooting animations.")]
+    [SerializeField] private string _shootingLayerName = "ShootingGunLayer";
+    [Tooltip("Name of the upper body layer (idle aim).")]
+    [SerializeField] private string _upperBodyLayerName = "Upper Body";
+    [Tooltip("How fast the layer weights blend.")]
+    [SerializeField] private float _layerBlendSpeed = 10f;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3.5f;
@@ -32,10 +60,14 @@ public class Player : MonoBehaviour
     [Header("Impulse Sources")]
     [SerializeField] private CinemachineImpulseSource _dashImpulseSource;
     [SerializeField] private CinemachineImpulseSource _gunshotImpulseSource;
+
+
     
     [Header("Mask Ability")]
     [SerializeField] private float _maskAbilityCooldown = 5f;
-    [SerializeField] private float _maskAbilityDamage = 50f;
+    [Tooltip("Fizyczny obiekt (np. bańka, sphere) wokół gracza, który będzie się włączał tylko gdy tarcza żyje i ma punkty HP!")]
+    [SerializeField] private GameObject _shieldVisualEffect;
+
     
     [Header("Procedural Animation (Synthetik Style)")]
     [Tooltip("Assign the Spine or Chest bone here to lock it to the aim direction.")]
@@ -51,12 +83,32 @@ public class Player : MonoBehaviour
     private float _turnSpeed;
     private WorldSpaceCursor _worldCursor;
     private Camera _mainCamera;
+    private CursorCross _cursorCross;
+    private DashGhostEffect _dashGhost;
+    private PlayerDeathEffect _deathEffect;
+    private HitFlash _hitFlash;
+    private static bool _isDead = false;
+    private static Vector3 _lastHitDirection = Vector3.forward;
+    public static bool IsUIModeActive = false;
+    
+    // Shooting layer indices
+    private int _shootingLayerIndex = -1;
+    private int _upperBodyLayerIndex = -1;
+    private float _shootingLayerWeight = 0f;
+    private float _lastShotTime = -10f;
 
     private bool _hasMask = false;
     private float _maskCooldownTimer = 0f;
-    // Event for UI to listen to
+    
+    private int _maxShield;
+    private int _currentShield;
+    private float _shieldRegenDelayTimer;
+    private float _shieldRegenTimer;
+
+    
     public System.Action<bool> OnMaskEquipped;
     public System.Action<float> OnMaskCooldownChanged;
+    public System.Action<Sprite> OnMaskChanged;
 
     private readonly int _moveXHash = Animator.StringToHash("MoveX");
     private readonly int _moveYHash = Animator.StringToHash("MoveY");
@@ -66,6 +118,9 @@ public class Player : MonoBehaviour
     // Restored public access for UI scripts
     public int CurrentHealth { get; set; } = 100;
     public int CurrentUltimate { get; set; } = 0;
+    public PlayerShooting Shooting => _shooting;
+    public PlayerAiming Aiming => _aiming;
+    public MaskAbilityType ActiveAbility { get; private set; } = MaskAbilityType.Dash;
     private static Player _instance;
 
     void Awake()
@@ -75,7 +130,7 @@ public class Player : MonoBehaviour
         
         // --- SAFE INITIALIZATION ---
         if (_mainCamera == null) _mainCamera = Camera.main;
-        if (_mainCamera == null) _mainCamera = FindObjectOfType<Camera>();
+        if (_mainCamera == null) _mainCamera = FindFirstObjectByType<Camera>();
         
         if (_mainCamera == null)
         {
@@ -92,7 +147,37 @@ public class Player : MonoBehaviour
 
         _aiming = new PlayerAiming(_mainCamera, _firePoint, groundMask);
         _movement = new PlayerMovement(_controller, _mainCamera.transform, moveSpeed, accelerationTime);
-        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _firePointParticles);
+        _shooting = new PlayerShooting(transform, _firePoint, _bulletPrefab, _bulletSpeed, _firePointVFX, _weaponAnimator, _recoilAnimationTrigger, _fireRate, _isAutomatic, _magazineSize, _reloadTime);
+        
+        // Subscribe to shooting events
+        _shooting.OnShoot += OnShootHandler;
+
+        // Wire up crosshair feedback
+        _cursorCross = FindFirstObjectByType<CursorCross>();
+        if (_cursorCross != null)
+        {
+            _shooting.OnShoot += _cursorCross.OnShoot;
+            _shooting.OnReloadStateChanged += (isReloading) =>
+                _cursorCross.OnReloadStateChanged(isReloading, _reloadTime);
+        }
+
+        // Initialize ammo UI
+        if (_ammoUI != null)
+        {
+            _ammoUI.Initialize(_shooting);
+        }
+        
+        // Get layer indices
+        if (_animator != null)
+        {
+            _shootingLayerIndex = _animator.GetLayerIndex(_shootingLayerName);
+            _upperBodyLayerIndex = _animator.GetLayerIndex(_upperBodyLayerName);
+            
+            if (_shootingLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_shootingLayerName}' not found in Animator.");
+            if (_upperBodyLayerIndex == -1)
+                Debug.LogWarning($"[Player] Layer '{_upperBodyLayerName}' not found in Animator.");
+        }
         
         if (_dashCooldownText != null) _dashCooldownText.gameObject.SetActive(false);
         _lastRotation = transform.rotation;
@@ -103,12 +188,81 @@ public class Player : MonoBehaviour
             _worldCursor = cursorInstance.GetComponent<WorldSpaceCursor>();
         }
         Cursor.visible = false;
+
+        // Get optional effects
+        _dashGhost = GetComponent<DashGhostEffect>();
+        _deathEffect = GetComponent<PlayerDeathEffect>();
+        _hitFlash = GetComponent<HitFlash>();
+        _isDead = false;
+    }
+    
+    private void OnDestroy()
+    {
+        if (_shooting != null)
+        {
+            _shooting.OnShoot -= OnShootHandler;
+            if (_cursorCross != null)
+                _shooting.OnShoot -= _cursorCross.OnShoot;
+        }
+    }
+
+    private void OnShootHandler()
+    {
+        if (_gunshotImpulseSource != null) 
+            _gunshotImpulseSource.GenerateImpulse();
+    }
+    
+    void Start()
+    {
+        // Initialize Health in Start to ensure UI is ready
+        CurrentHealth = _maxHealth;
+        if (_healthUI != null) _healthUI.Initialize(CurrentHealth, _maxHealth);
+        Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
+        
+        // Hide mask abilities UI initially if no mask is equipped
+        if (!_hasMask)
+        {
+            if (_dashUI != null) _dashUI.gameObject.SetActive(false);
+            if (_shieldUI != null) _shieldUI.gameObject.SetActive(false);
+            if (_movement != null) _movement.IsDashEnabled = false;
+        }
     }
     
     void Update()
     {
+        // --- UI Interaction Check ---
+        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        bool uiMode = IsUIModeActive || isPointerOverUI;
+
+        _shooting.IsEnabled = !uiMode;
+
         if (_hasMask)
         {
+            // --- SHIELD REGENERATION ---
+            if (ActiveAbility == MaskAbilityType.Shield && _currentShield < _maxShield)
+            {
+                if (_shieldRegenDelayTimer > 0)
+                {
+                    _shieldRegenDelayTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    _shieldRegenTimer -= Time.deltaTime;
+                    if (_shieldRegenTimer <= 0)
+                    {
+                        _shieldRegenTimer = 5f;
+                        _currentShield++;
+                        UpdateShieldUI();
+
+                        if (_currentShield >= _maxShield)
+                        {
+                            _currentShield = _maxShield;
+                        }
+                    }
+                }
+            }
+
+            // ... (Mask logic unchanged) ...
             if (_maskCooldownTimer > 0)
             {
                 _maskCooldownTimer -= Time.deltaTime;
@@ -132,10 +286,26 @@ public class Player : MonoBehaviour
         UpdateAnimator();
         UpdateDashCooldownUI();
 
-        if (_movement.JustDashed && _dashImpulseSource != null) 
-            _dashImpulseSource.GenerateImpulse();
-        if (Input.GetMouseButtonDown(0) && _gunshotImpulseSource != null) 
-            _gunshotImpulseSource.GenerateImpulse();
+        if (_movement.JustDashed)
+        {
+            if (_dashImpulseSource != null) _dashImpulseSource.GenerateImpulse();
+            if (_dashGhost != null) _dashGhost.SpawnGhostTrail();
+        }
+        
+        // REMOVED manual impulse check here - driven by _shooting.OnShoot
+
+        // --- SHOOTING LOGIC MOVED TO UPDATE FOR RESPONSIVENESS ---
+        // Calculate shoot direction
+        Vector3 stableOrigin = transform.position;
+        // Check for null just in case firepoint was destroyed or not assigned yet
+        if (_firePoint != null) stableOrigin.y = _firePoint.position.y;
+        
+        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        
+        bool firedThisFrame = _shooting.Tick(shootDirection);
+        if (firedThisFrame) _lastShotTime = Time.time;
+        
+        UpdateShootingLayerWeights();
     }
 
     void LateUpdate()
@@ -150,22 +320,94 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.deltaTime * _rotationSpeed);
         }
 
-        // FIX: Calculate shoot direction from player center (at weapon height) to aim target.
-        // This decouples the aiming accuracy from the running animation sway (upper body movement).
-        Vector3 stableOrigin = transform.position;
-        stableOrigin.y = _firePoint.position.y;
-        Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+        // Shooting logic moved to Update()
         
-        _shooting.Tick(shootDirection);
-
         CalculateTurnSpeed();
     }
 
     public static void TakeDamage(int amount)
     {
-        if (_instance == null) return;
-        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, 100);
-        HealthUI.UpdateHealth(_instance.CurrentHealth);
+        if (_instance == null || _isDead) return;
+        
+        Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
+
+        // --- SHIELD INTERCEPTION ---
+        if (_instance.ActiveAbility == MaskAbilityType.Shield)
+        {
+            // Reset regen timer whenever ANY damage is taken!
+            _instance._shieldRegenDelayTimer = 10f;
+            _instance._shieldRegenTimer = 5f;
+
+            if (_instance._currentShield > 0)
+            {
+                if (amount >= _instance._currentShield)
+                {
+                    amount -= _instance._currentShield;
+                    _instance._currentShield = 0;
+                }
+                else
+                {
+                    _instance._currentShield -= amount;
+                    amount = 0;
+                }
+
+                _instance.UpdateShieldUI();
+
+                if (amount <= 0)
+                {
+                    // Fully absorbed by shield, just trigger flash
+                    if (_instance._hitFlash != null) _instance._hitFlash.Flash();
+                    return; 
+                }
+            }
+        }
+        
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, _instance._maxHealth);
+        if (_instance._healthUI != null) _instance._healthUI.UpdateHealth(_instance.CurrentHealth);
+
+        // Trigger hit flash
+        if (_instance._hitFlash != null)
+        {
+            _instance._hitFlash.Flash();
+        }
+
+        if (_instance.CurrentHealth <= 0)
+        {
+            _isDead = true;
+            if (_instance._deathEffect != null)
+            {
+                _instance._deathEffect.TriggerDeath(_lastHitDirection);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Call this to set the direction of the last hit (for ragdoll knockback).
+    /// </summary>
+    public static void SetLastHitDirection(Vector3 direction)
+    {
+        _lastHitDirection = direction;
+    }
+
+    public static void Heal(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        Debug.Log($"[Player.Heal] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth + amount, 0, _instance._maxHealth);
+        if (_instance._healthUI != null) _instance._healthUI.UpdateHealth(_instance.CurrentHealth);
+    }
+
+    public static void AddShield(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        if (_instance.ActiveAbility == MaskAbilityType.Shield)
+        {
+            Debug.Log($"[Player.AddShield] Amount: {amount}, Shield Before: {_instance._currentShield}");
+            _instance._currentShield = Mathf.Clamp(_instance._currentShield + amount, 0, _instance._maxShield);
+            _instance.UpdateShieldUI();
+        }
     }
     
     public static void GetUltimate(int amount)
@@ -173,6 +415,33 @@ public class Player : MonoBehaviour
         if (_instance == null) return;
         _instance.CurrentUltimate = Mathf.Clamp(_instance.CurrentUltimate + amount, 0, 10);
         UltimateUI.UpdateUltimate(_instance.CurrentUltimate);
+    }
+    
+    public static void TriggerHeavyCameraShake()
+    {
+        if (_instance != null && _instance._gunshotImpulseSource != null)
+        {
+            _instance._gunshotImpulseSource.GenerateImpulseWithForce(3f);
+        }
+    }
+    
+    private void UpdateShootingLayerWeights()
+    {
+        if (_animator == null || _shootingLayerIndex == -1 || _upperBodyLayerIndex == -1)
+            return;
+        
+        // Check if player is currently holding fire button
+        bool isShooting = Input.GetMouseButton(0);
+        
+        // Target weight: 1 when shooting, 0 when not
+        float targetWeight = isShooting ? 1f : 0f;
+        
+        // Smoothly blend the weight
+        _shootingLayerWeight = Mathf.MoveTowards(_shootingLayerWeight, targetWeight, _layerBlendSpeed * Time.deltaTime);
+        
+        // Apply weights: ShootingGunLayer gets the shooting weight, Upper Body gets the inverse
+        _animator.SetLayerWeight(_shootingLayerIndex, _shootingLayerWeight);
+        _animator.SetLayerWeight(_upperBodyLayerIndex, 1f - _shootingLayerWeight);
     }
     
     private void CalculateTurnSpeed()
@@ -248,17 +517,19 @@ public class Player : MonoBehaviour
     
     private void UpdateDashCooldownUI()
     {
-        if (_dashCooldownText == null) return;
-
-        float cooldown = _movement.DashCooldownTimer;
-        if (cooldown > 0)
+        // Update new visual UI
+        if (_dashUI != null)
         {
-            _dashCooldownText.gameObject.SetActive(true);
-            _dashCooldownText.text = cooldown.ToString("F1");
+            _dashUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
         }
-        else
+        
+        // Update legacy text if assigned (optional fallback)
+        if (_dashCooldownText != null)
         {
-            _dashCooldownText.gameObject.SetActive(false);
+             if (_movement.CurrentDashCharges > 0)
+                _dashCooldownText.text = _movement.CurrentDashCharges.ToString();
+             else
+                _dashCooldownText.text = _movement.DashRechargeProgress.ToString("F1");
         }
     }
 
@@ -274,8 +545,74 @@ public class Player : MonoBehaviour
         _hasMask = true;
         // Passive: +10% fire rate (dividing delay by 1.1)
         _shooting.ModifyFireRate(1.1f); 
+        
+        // Ensure ability UI is correctly shown upon picking up the first mask
+        if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
+        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash);
+
         OnMaskEquipped?.Invoke(true);
         Debug.Log("Mask Equipped: +10% Fire Rate active.");
+    }
+
+    public void SwitchMask(Sprite newHudIcon, MaskAbilityType abilityType)
+    {
+        if (!_hasMask) EquipMask();
+        OnMaskChanged?.Invoke(newHudIcon);
+        
+        if (ActiveAbility != MaskAbilityType.Shield && abilityType == MaskAbilityType.Shield)
+        {
+            _maxShield = Mathf.RoundToInt(_maxHealth * 0.25f);
+            
+            float penalty = 0f;
+            if (_maxShield <= 27) penalty = 0.03f;
+            else if (_maxShield <= 32) penalty = 0.05f;
+            else penalty = 0.07f;
+            
+            _currentShield = _maxShield;
+            
+            if (_shieldUI != null)
+            {
+                _shieldUI.Initialize(_currentShield, _maxShield);
+            }
+            
+            if (_movement != null) _movement.SpeedMultiplier = 1f - penalty;
+            
+            UpdateShieldUI();
+        }
+        else if (ActiveAbility == MaskAbilityType.Shield && abilityType != MaskAbilityType.Shield)
+        {
+            if (_movement != null) _movement.SpeedMultiplier = 1f;
+        }
+
+        ActiveAbility = abilityType;
+        
+        // Toggle UI
+        if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
+        
+        // Toggle Logic
+        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash);
+    }
+
+    private void UpdateShieldUI()
+    {
+        if (_shieldUI != null)
+        {
+            _shieldUI.UpdateHealth(_currentShield);
+        }
+
+        // --- SHIELD VISUAL EFFECT TOGGLE ---
+        if (_shieldVisualEffect != null)
+        {
+            // Tarcza się świeci tylko gdy mamy wybraną maskę Tarczy I jednocześnie mamy punkty ochrony
+            bool hasShieldActive = (ActiveAbility == MaskAbilityType.Shield && _currentShield > 0);
+            
+            if (_shieldVisualEffect.activeSelf != hasShieldActive)
+            {
+                _shieldVisualEffect.SetActive(hasShieldActive);
+            }
+        }
     }
 
     private void UseMaskAbility()
@@ -302,8 +639,7 @@ public class Player : MonoBehaviour
 
             _shooting.FireImmediate(shootDirection);
             
-            // Generate visual impulse for feedback
-            if (_gunshotImpulseSource != null) _gunshotImpulseSource.GenerateImpulse(0.5f);
+
 
             yield return new WaitForSeconds(burstDelay);
         }

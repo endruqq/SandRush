@@ -3,35 +3,66 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-    [SerializeField] private Sprite[] _healthSprites;
-    [SerializeField] private Image _healthImage;
-    [SerializeField] private Player _player;
+    [SerializeField] private Slider _healthSlider;
+    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _smoothSpeed = 5f;
+    
+    private float _targetHealth;
+    private float _currentDisplayedHealth;
 
-    private static HealthUI _instance;
-
-    void Awake() => _instance = this;
-
-    public static void UpdateHealth(int currentHealth)
+    void Awake()
     {
-        _instance._player.CurrentHealth = Mathf.Clamp(currentHealth, 0, 100);
-        _instance.UpdateHealthSprite();
+        _targetHealth = _maxHealth;
+        _currentDisplayedHealth = _maxHealth;
+        
+        if (_healthSlider != null)
+        {
+            _healthSlider.maxValue = _maxHealth;
+            _healthSlider.value = _maxHealth;
+        }
+    }
+    
+    void Update()
+    {
+        // Smoothly animate the health bar
+        if (_healthSlider != null && _currentDisplayedHealth != _targetHealth)
+        {
+            _currentDisplayedHealth = Mathf.MoveTowards(_currentDisplayedHealth, _targetHealth, _smoothSpeed * Time.deltaTime * _maxHealth);
+            _healthSlider.value = _currentDisplayedHealth;
+        }
     }
 
-    private void UpdateHealthSprite()
+    public void UpdateHealth(float currentHealth)
     {
-        int hp = _player.CurrentHealth;
-
-        if (hp > 100)
-            _healthImage.sprite = _healthSprites[0];
-        else if (hp > 84)
-            _healthImage.sprite = _healthSprites[1];
-        else if (hp > 66)
-            _healthImage.sprite = _healthSprites[2];
-        else if (hp > 50)
-            _healthImage.sprite = _healthSprites[3];
-        else if (hp > 33)
-            _healthImage.sprite = _healthSprites[4];
-        else
-            _healthImage.sprite = _healthSprites[5];
+        _targetHealth = Mathf.Clamp(currentHealth, 0, _maxHealth);
+    }
+    
+    /// <summary>
+    /// Initialize health bar with specific max health
+    /// </summary>
+    public void Initialize(float currentHealth, float maxHealth)
+    {
+        _maxHealth = maxHealth;
+        _targetHealth = currentHealth;
+        _currentDisplayedHealth = currentHealth;
+        
+        if (_healthSlider != null)
+        {
+            _healthSlider.maxValue = maxHealth;
+            _healthSlider.value = currentHealth;
+        }
+    }
+    
+    /// <summary>
+    /// Set health immediately without animation (for initialization)
+    /// </summary>
+    public void SetHealthImmediate(float health)
+    {
+        _targetHealth = health;
+        _currentDisplayedHealth = health;
+        if (_healthSlider != null)
+        {
+            _healthSlider.value = health;
+        }
     }
 }
