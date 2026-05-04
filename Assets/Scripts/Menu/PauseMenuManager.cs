@@ -32,8 +32,6 @@ public class PauseMenuManager : MonoBehaviour
     private bool isPaused = false;
     private Resolution[] _resolutions;
 
-    public static bool HasResetOnLaunch = false;
-
     private System.Collections.IEnumerator Start()
     {
         // Make sure menus are hidden at start
@@ -95,33 +93,67 @@ public class PauseMenuManager : MonoBehaviour
         // 5. --- SESSION RESET LOGIC ---
         // On first launch: Force Defaults (Volume 100%, Max Res, High Quality)
         // On reload: Keep current settings
-        if (!HasResetOnLaunch)
+        if (!PlayerPrefs.HasKey("HasSetOptionsBefore"))
         {
             Debug.Log("[PauseMenu] First Launch Detected: Resetting Options to Defaults.");
             ResetOptions();
-            HasResetOnLaunch = true;
-            yield break; // Stop here, ResetOptions handled everything
-        }
-
-        // 6. --- NORMAL LOAD (From PlayerPrefs) ---
-        // Load saved volume (default = full volume)
-        float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
-        if (savedVol <= 0.01f) savedVol = 1f; // Fix corrupted save from previous bug
-        
-        FMOD.RESULT result = _masterBus.setVolume(savedVol);
-        Debug.Log($"[PauseMenu] FMOD Master Bus setVolume({savedVol}) result: {result}");
-
-        // Set slider WITHOUT triggering OnValueChanged
-        if (_masterVolumeSlider != null)
-        {
-            _masterVolumeSlider.minValue = 0f;
-            _masterVolumeSlider.maxValue = 1f;
-            _masterVolumeSlider.SetValueWithoutNotify(savedVol);
-            Debug.Log($"[PauseMenu] Slider set to: {savedVol}");
+            PlayerPrefs.SetInt("HasSetOptionsBefore", 1);
+            PlayerPrefs.Save();
         }
         else
         {
-            Debug.LogError("[PauseMenu] CRITICAL: '_masterVolumeSlider' NOT ASSIGNED in Inspector! Slider will start at 0 and overwrite volume!");
+            // 6. --- NORMAL LOAD (From PlayerPrefs) ---
+            // Load saved volume (default = full volume)
+            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
+            if (savedVol <= 0.01f) savedVol = 1f; // Fix corrupted save from previous bug
+            
+            FMOD.RESULT result = _masterBus.setVolume(savedVol);
+            Debug.Log($"[PauseMenu] FMOD Master Bus setVolume({savedVol}) result: {result}");
+
+            // Set slider WITHOUT triggering OnValueChanged
+            if (_masterVolumeSlider != null)
+            {
+                _masterVolumeSlider.minValue = 0f;
+                _masterVolumeSlider.maxValue = 1f;
+                _masterVolumeSlider.SetValueWithoutNotify(savedVol);
+                Debug.Log($"[PauseMenu] Slider set to: {savedVol}");
+            }
+            else
+            {
+                Debug.LogError("[PauseMenu] CRITICAL: '_masterVolumeSlider' NOT ASSIGNED in Inspector! Slider will start at 0 and overwrite volume!");
+            }
+
+            // Load Graphics
+            if (PlayerPrefs.HasKey("QualitySetting"))
+            {
+                int quality = PlayerPrefs.GetInt("QualitySetting");
+                QualitySettings.SetQualityLevel(quality);
+                if (_qualityDropdown != null)
+                {
+                    _qualityDropdown.SetValueWithoutNotify(quality);
+                    _qualityDropdown.RefreshShownValue();
+                }
+            }
+
+            if (PlayerPrefs.HasKey("FullscreenSetting"))
+            {
+                Screen.fullScreen = PlayerPrefs.GetInt("FullscreenSetting") == 1;
+            }
+
+            if (PlayerPrefs.HasKey("ResolutionIndex"))
+            {
+                int resIndex = PlayerPrefs.GetInt("ResolutionIndex");
+                if (_resolutions != null && resIndex >= 0 && resIndex < _resolutions.Length)
+                {
+                    Resolution res = _resolutions[resIndex];
+                    Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+                    if (_resolutionDropdown != null)
+                    {
+                        _resolutionDropdown.SetValueWithoutNotify(resIndex);
+                        _resolutionDropdown.RefreshShownValue();
+                    }
+                }
+            }
         }
     }
     
@@ -218,6 +250,7 @@ public class PauseMenuManager : MonoBehaviour
 
         _masterBus.setVolume(sliderValue);
         PlayerPrefs.SetFloat(PREF_MASTER_VOL, sliderValue);
+        PlayerPrefs.Save();
         Debug.Log($"[PauseMenu] SetMasterVolume: {sliderValue} (Unmuted)");
     }
 
@@ -225,11 +258,15 @@ public class PauseMenuManager : MonoBehaviour
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
+        PlayerPrefs.SetInt("QualitySetting", qualityIndex);
+        PlayerPrefs.Save();
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+        PlayerPrefs.SetInt("FullscreenSetting", isFullscreen ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void SetResolution(int resolutionIndex)
@@ -238,6 +275,8 @@ public class PauseMenuManager : MonoBehaviour
         
         Resolution resolution = _resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
+        PlayerPrefs.Save();
     }
 
     public void QuitGame()
