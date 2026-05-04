@@ -99,24 +99,58 @@ public class MainMenuManager : MonoBehaviour
         _audioInitialized = true;
 
         // 6. --- SESSION RESET LOGIC (Shared with PauseMenu) ---
-        // If this is the FIRST time the App runs (MainMenu or PauseMenu), reset to defaults.
-        if (!PauseMenuManager.HasResetOnLaunch)
+        // If this is the FIRST time the App runs, reset to defaults.
+        if (!PlayerPrefs.HasKey("HasSetOptionsBefore"))
         {
             Debug.Log("[MainMenu] First Launch Detected: Resetting Options to Defaults.");
             ResetOptions();
-            PauseMenuManager.HasResetOnLaunch = true;
-            yield break; 
+            PlayerPrefs.SetInt("HasSetOptionsBefore", 1);
+            PlayerPrefs.Save();
         }
-
-        // 7. --- NORMAL LOAD (From PlayerPrefs) ---
-        float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
-        if (savedVol <= 0.01f) savedVol = 1f;
-        
-        _masterBus.setVolume(savedVol);
-        
-        if (_masterVolumeSlider != null)
+        else
         {
-            _masterVolumeSlider.SetValueWithoutNotify(savedVol);
+            // 7. --- NORMAL LOAD (From PlayerPrefs) ---
+            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
+            if (savedVol <= 0.01f) savedVol = 1f;
+            
+            _masterBus.setVolume(savedVol);
+            
+            if (_masterVolumeSlider != null)
+            {
+                _masterVolumeSlider.SetValueWithoutNotify(savedVol);
+            }
+
+            // Load Graphics
+            if (PlayerPrefs.HasKey("QualitySetting"))
+            {
+                int quality = PlayerPrefs.GetInt("QualitySetting");
+                QualitySettings.SetQualityLevel(quality);
+                if (_qualityDropdown != null)
+                {
+                    _qualityDropdown.SetValueWithoutNotify(quality);
+                    _qualityDropdown.RefreshShownValue();
+                }
+            }
+
+            if (PlayerPrefs.HasKey("FullscreenSetting"))
+            {
+                Screen.fullScreen = PlayerPrefs.GetInt("FullscreenSetting") == 1;
+            }
+
+            if (PlayerPrefs.HasKey("ResolutionIndex"))
+            {
+                int resIndex = PlayerPrefs.GetInt("ResolutionIndex");
+                if (_resolutions != null && resIndex >= 0 && resIndex < _resolutions.Length)
+                {
+                    Resolution res = _resolutions[resIndex];
+                    Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+                    if (_resolutionDropdown != null)
+                    {
+                        _resolutionDropdown.SetValueWithoutNotify(resIndex);
+                        _resolutionDropdown.RefreshShownValue();
+                    }
+                }
+            }
         }
     }
 
@@ -198,16 +232,21 @@ public class MainMenuManager : MonoBehaviour
         
         _masterBus.setVolume(sliderValue);
         PlayerPrefs.SetFloat(PREF_MASTER_VOL, sliderValue);
+        PlayerPrefs.Save();
     }
 
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
+        PlayerPrefs.SetInt("QualitySetting", qualityIndex);
+        PlayerPrefs.Save();
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+        PlayerPrefs.SetInt("FullscreenSetting", isFullscreen ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void SetResolution(int resolutionIndex)
@@ -215,6 +254,8 @@ public class MainMenuManager : MonoBehaviour
         if (_resolutions == null || resolutionIndex < 0 || resolutionIndex >= _resolutions.Length) return;
         Resolution resolution = _resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
+        PlayerPrefs.Save();
     }
 
     public void ResetOptions()
