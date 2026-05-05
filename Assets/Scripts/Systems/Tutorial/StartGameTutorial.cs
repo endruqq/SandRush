@@ -113,19 +113,19 @@ public class StartGameTutorial : MonoBehaviour
             Instantiate(_portalVFXPrefab, targetSpawn.position, targetSpawn.rotation);
         }
 
-        // 5. Wait for visual spawn moment
-        yield return new WaitForSeconds(_spawnDelay);
-
-        // 6. Reveal Player (Visuals Only)
-        SetPlayerVisuals(true);
-        Debug.Log("[StartGameTutorial] Player Revealed.");
-
-        // 7. Wait for Portal Animation to finish
-        yield return new WaitForSeconds(_portalDuration - _spawnDelay);
-
-        // 8. Trigger Next Step (Tutorial vs Gameplay)
         if (showTutorial)
         {
+            // 5. Wait for visual spawn moment
+            yield return new WaitForSeconds(_spawnDelay);
+
+            // 6. Reveal Player (Visuals Only)
+            SetPlayerVisuals(true);
+            Debug.Log("[StartGameTutorial] Player Revealed.");
+
+            // 7. Wait for Portal Animation to finish
+            yield return new WaitForSeconds(_portalDuration - _spawnDelay);
+
+            // 8. Trigger Next Step (Tutorial)
             Debug.Log("[StartGameTutorial] Starting Tutorial...");
             
             // Unlock controls so the player can actually do the tutorial tasks!
@@ -142,7 +142,10 @@ public class StartGameTutorial : MonoBehaviour
         }
         else
         {
-            // Just start gameplay
+            // 5. For Checkpoints/Saves, reveal and unlock immediately!
+            SetPlayerVisuals(true);
+            SetPlayerControls(true);
+
             Debug.Log("[StartGameTutorial] Checkpoint Spawn Complete. Starting Gameplay.");
             OnTutorialFinished(); 
         }

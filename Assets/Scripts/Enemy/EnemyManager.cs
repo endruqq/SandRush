@@ -90,7 +90,13 @@ public class EnemyManager : MonoBehaviour
         // Disable AI and movement
         if (TryGetComponent<EnemyAI>(out var ai)) ai.enabled = false;
         if (TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var nav)) nav.enabled = false;
-        if (TryGetComponent<Collider>(out var col)) col.enabled = false; // Disable collider so we can't hit dead body
+        
+        // Disable ALL colliders so we can't hit dead body
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+        foreach (var c in allColliders)
+        {
+            c.enabled = false;
+        }
         
         // Spawn Blood
         if (_bloodSplatPrefab != null)
@@ -109,15 +115,23 @@ public class EnemyManager : MonoBehaviour
             // Use a mask to avoid hitting the enemy itself or other enemies
             int layerMask = LayerMask.GetMask("Default", "Ground", "Terrain");
             
-            if (Physics.Raycast(spawnPos + Vector3.up * 3f, Vector3.down, out RaycastHit hit, 10f, layerMask))
+            RaycastHit[] hits = Physics.RaycastAll(spawnPos + Vector3.up * 3f, Vector3.down, 10f, layerMask);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            bool foundGround = false;
+            foreach (var hit in hits)
             {
-                spawnPos = hit.point + Vector3.up * 0.05f; // Slightly above ground (increased from 0.01f)
-                
-                // Align to ground normal (optional but looks better on slopes)
-                // Quaternion groundRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-                // finalRotation *= groundRotation; // This might conflict with the specific prefab rotation logic below, keeping simple for now.
+                // Ignore self, other enemies, and player
+                if (hit.collider.GetComponentInParent<EnemyManager>() != null) continue;
+                if (hit.collider.CompareTag("Player") || hit.collider.GetComponentInParent<Player>() != null) continue;
+                if (hit.collider.CompareTag("Enemy")) continue;
+
+                spawnPos = hit.point + Vector3.up * 0.05f; // Slightly above ground
+                foundGround = true;
+                break;
             }
-            else
+
+            if (!foundGround)
             {
                  // Fallback: If over void, just place at feet level
                  spawnPos.y = transform.position.y + 0.05f;

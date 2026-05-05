@@ -345,6 +345,7 @@ public class PauseMenuManager : MonoBehaviour
         // Clear Persistence
         PlayerPrefs.DeleteKey("TutorialCompleted");
         PlayerPrefs.DeleteKey("MaskCollected");
+        PlayerPrefs.DeleteKey("HasCustomSave");
         PlayerPrefs.Save();
         
         // Reset Time
