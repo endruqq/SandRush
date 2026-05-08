@@ -168,8 +168,8 @@ public class EnemySpawner : MonoBehaviour
             GameObject portal = Instantiate(_portalVFXPrefab, spawnPos, Quaternion.identity);
             Destroy(portal, _portalLifetime);
             
-            // Play spawn sound
-            if (!string.IsNullOrEmpty(_spawnSound))
+            // Play spawn sound (but mute it if it's the very start of the level to prevent 50 spawners deafening the player)
+            if (!string.IsNullOrEmpty(_spawnSound) && Time.timeSinceLevelLoad > 1f)
                 FMODHelper.PlayOneShot(_spawnSound, spawnPos);
             
             // Wait for portal to appear before spawning enemy
