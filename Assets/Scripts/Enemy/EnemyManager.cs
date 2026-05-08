@@ -16,6 +16,9 @@ public class EnemyManager : MonoBehaviour
     [Header("FMOD Sounds")]
     [SerializeField] private string _deathSound = "event:/Scarab_Death";
 
+    [Header("UI")]
+    [SerializeField] private EnemyHealthBar _healthBar;
+
     private float _currentHealth;
     private bool _isDead;
     private EnemySpawner _mySpawner;
@@ -27,6 +30,8 @@ public class EnemyManager : MonoBehaviour
         _currentHealth = _maxHealth;
         _hitFlash = GetComponent<HitFlash>();
         if (_bodyPartExploder == null) _bodyPartExploder = GetComponent<BodyPartExploder>();
+
+        if (_healthBar == null) _healthBar = GetComponentInChildren<EnemyHealthBar>();
 
         if (_modelRenderers == null || _modelRenderers.Length == 0)
         {
@@ -55,6 +60,11 @@ public class EnemyManager : MonoBehaviour
         if (_hitFlash != null)
         {
             _hitFlash.Flash();
+        }
+        
+        if (_healthBar != null)
+        {
+            _healthBar.UpdateHealth(_currentHealth, _maxHealth);
         }
         
         // Global screen flash to emphasize hit impact
@@ -179,6 +189,12 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log($"{gameObject.name} is dead!");
 
+        // Trigger the kill marker effect on the health bar canvas
+        if (_healthBar != null)
+        {
+            _healthBar.ShowKillMarker();
+        }
+
         // Handle Visual Death: Either Explode parts or just Hide
         if (_bodyPartExploder != null)
         {
@@ -188,7 +204,7 @@ public class EnemyManager : MonoBehaviour
             _bodyPartExploder.Explode(_lastHitDirection);
             // Don't disable renderers manually, exploded parts need them!
             // But we do destroy the main object eventually to clean up the empty shell.
-            StartCoroutine(DisableAfterDelay(0.1f)); 
+            StartCoroutine(DisableAfterDelay(1.6f)); // Increased delay to allow kill marker to finish
         }
         else
         {
@@ -200,7 +216,7 @@ public class EnemyManager : MonoBehaviour
                     if (r != null) r.enabled = false;
                 }
             }
-            StartCoroutine(DisableAfterDelay(0.1f));
+            StartCoroutine(DisableAfterDelay(1.6f)); // Increased delay to allow kill marker to finish
         }
     }
     
