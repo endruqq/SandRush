@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
     [SerializeField] private DashUI _dashUI;
-    [SerializeField] private GameObject _shieldUIGameObject;
+    [SerializeField] private HealthUI _healthUI;
+    [SerializeField] private HealthUI _shieldUI;
     
     [Header("Shooting Stats")]
     [SerializeField] private float _bulletSpeed = 25f;
@@ -60,13 +61,11 @@ public class Player : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource _dashImpulseSource;
     [SerializeField] private CinemachineImpulseSource _gunshotImpulseSource;
 
-    [Header("Effects Settings")]
-    [SerializeField] private float _screenFlashDuration = 0.03f;
-    [SerializeField] private float _screenFlashAlpha = 0.03f;
+
     
     [Header("Mask Ability")]
     [SerializeField] private float _maskAbilityCooldown = 5f;
-    [SerializeField] private float _maskAbilityDamage = 50f;
+
     
     [Header("Procedural Animation (Synthetik Style)")]
     [Tooltip("Assign the Spine or Chest bone here to lock it to the aim direction.")]
@@ -99,13 +98,11 @@ public class Player : MonoBehaviour
     private bool _hasMask = false;
     private float _maskCooldownTimer = 0f;
     
-    // Shield Systems
     private int _maxShield;
     private int _currentShield;
     private float _shieldRegenDelayTimer;
     private float _shieldRegenTimer;
-    private bool _isShieldBroken;
-    private UnityEngine.UI.Slider _shieldSlider;
+
     
     public System.Action<bool> OnMaskEquipped;
     public System.Action<float> OnMaskCooldownChanged;
@@ -131,7 +128,7 @@ public class Player : MonoBehaviour
         
         // --- SAFE INITIALIZATION ---
         if (_mainCamera == null) _mainCamera = Camera.main;
-        if (_mainCamera == null) _mainCamera = FindObjectOfType<Camera>();
+        if (_mainCamera == null) _mainCamera = FindFirstObjectByType<Camera>();
         
         if (_mainCamera == null)
         {
@@ -154,7 +151,7 @@ public class Player : MonoBehaviour
         _shooting.OnShoot += OnShootHandler;
 
         // Wire up crosshair feedback
-        _cursorCross = FindObjectOfType<CursorCross>();
+        _cursorCross = FindFirstObjectByType<CursorCross>();
         if (_cursorCross != null)
         {
             _shooting.OnShoot += _cursorCross.OnShoot;
@@ -217,14 +214,14 @@ public class Player : MonoBehaviour
     {
         // Initialize Health in Start to ensure UI is ready
         CurrentHealth = _maxHealth;
-        HealthUI.Initialize(CurrentHealth, _maxHealth);
+        if (_healthUI != null) _healthUI.Initialize(CurrentHealth, _maxHealth);
         Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
         
         // Hide mask abilities UI initially if no mask is equipped
         if (!_hasMask)
         {
             if (_dashUI != null) _dashUI.gameObject.SetActive(false);
-            if (_shieldUIGameObject != null) _shieldUIGameObject.SetActive(false);
+            if (_shieldUI != null) _shieldUI.gameObject.SetActive(false);
             if (_movement != null) _movement.IsDashEnabled = false;
         }
     }
@@ -257,7 +254,6 @@ public class Player : MonoBehaviour
 
                         if (_currentShield >= _maxShield)
                         {
-                            _isShieldBroken = false;
                             _currentShield = _maxShield;
                         }
                     }
@@ -346,7 +342,6 @@ public class Player : MonoBehaviour
                 {
                     amount -= _instance._currentShield;
                     _instance._currentShield = 0;
-                    _instance._isShieldBroken = true;
                 }
                 else
                 {
@@ -366,7 +361,7 @@ public class Player : MonoBehaviour
         }
         
         _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth - amount, 0, _instance._maxHealth);
-        HealthUI.UpdateHealth(_instance.CurrentHealth);
+        if (_instance._healthUI != null) _instance._healthUI.UpdateHealth(_instance.CurrentHealth);
 
         // Trigger hit flash
         if (_instance._hitFlash != null)
@@ -390,6 +385,27 @@ public class Player : MonoBehaviour
     public static void SetLastHitDirection(Vector3 direction)
     {
         _lastHitDirection = direction;
+    }
+
+    public static void Heal(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        Debug.Log($"[Player.Heal] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
+        _instance.CurrentHealth = Mathf.Clamp(_instance.CurrentHealth + amount, 0, _instance._maxHealth);
+        if (_instance._healthUI != null) _instance._healthUI.UpdateHealth(_instance.CurrentHealth);
+    }
+
+    public static void AddShield(int amount)
+    {
+        if (_instance == null || _isDead) return;
+        
+        if (_instance.ActiveAbility == MaskAbilityType.Shield)
+        {
+            Debug.Log($"[Player.AddShield] Amount: {amount}, Shield Before: {_instance._currentShield}");
+            _instance._currentShield = Mathf.Clamp(_instance._currentShield + amount, 0, _instance._maxShield);
+            _instance.UpdateShieldUI();
+        }
     }
     
     public static void GetUltimate(int amount)
@@ -530,7 +546,7 @@ public class Player : MonoBehaviour
         
         // Ensure ability UI is correctly shown upon picking up the first mask
         if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash);
-        if (_shieldUIGameObject != null) _shieldUIGameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
         if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash);
 
         OnMaskEquipped?.Invoke(true);
@@ -552,11 +568,10 @@ public class Player : MonoBehaviour
             else penalty = 0.07f;
             
             _currentShield = _maxShield;
-            _isShieldBroken = false;
             
-            if (_shieldUIGameObject != null && _shieldSlider == null)
+            if (_shieldUI != null)
             {
-                _shieldSlider = _shieldUIGameObject.GetComponentInChildren<UnityEngine.UI.Slider>(true);
+                _shieldUI.Initialize(_currentShield, _maxShield);
             }
             
             if (_movement != null) _movement.SpeedMultiplier = 1f - penalty;
@@ -572,7 +587,7 @@ public class Player : MonoBehaviour
         
         // Toggle UI
         if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash);
-        if (_shieldUIGameObject != null) _shieldUIGameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
         
         // Toggle Logic
         if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash);
@@ -580,10 +595,9 @@ public class Player : MonoBehaviour
 
     private void UpdateShieldUI()
     {
-        if (_shieldSlider != null)
+        if (_shieldUI != null)
         {
-            _shieldSlider.maxValue = _maxShield;
-            _shieldSlider.value = _currentShield;
+            _shieldUI.UpdateHealth(_currentShield);
         }
     }
 
