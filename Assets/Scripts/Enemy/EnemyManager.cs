@@ -133,8 +133,8 @@ public class EnemyManager : MonoBehaviour
             {
                 // Ignore self, other enemies, and player
                 if (hit.collider.GetComponentInParent<EnemyManager>() != null) continue;
-                if (hit.collider.CompareTag("Player") || hit.collider.GetComponentInParent<Player>() != null) continue;
-                if (hit.collider.CompareTag("Enemy")) continue;
+                if (hit.collider.GetComponentInParent<Player>() != null) continue;
+                // Removed CompareTag("Enemy") check as it was redundant and caused errors if the tag was missing.
 
                 spawnPos = hit.point + Vector3.up * 0.05f; // Slightly above ground
                 foundGround = true;

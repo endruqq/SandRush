@@ -1199,7 +1199,7 @@ MonoBehaviour:
   _bodyPartExploder: {fileID: 5479659328628253299}
   _modelRenderers: []
   _deathSound: event:/Scarab_Death
-  _healthBar: {fileID: 0}
+  _healthBar: {fileID: 7468879568050991435}
 --- !u!114 &5479659328628253299
 MonoBehaviour:
   m_ObjectHideFlags: 0
