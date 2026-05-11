@@ -74,11 +74,19 @@ public class TutorialManager : MonoBehaviour
 
         TutorialStep step = _currentSteps[index];
 
-        if (_contentTextField != null) _contentTextField.text = step.Text;
+        if (_contentTextField != null) 
+        {
+            _contentTextField.text = step.Text;
+            _contentTextField.gameObject.SetActive(!string.IsNullOrEmpty(step.Text));
+        }
+
         if (_contentImageField != null)
         {
             _contentImageField.sprite = step.Image;
             _contentImageField.gameObject.SetActive(step.Image != null);
+            
+            // Dopasowujemy rozmiar obrazka (opcjonalnie, zależy jak masz ustawiony RectTransform w Unity)
+            // if (step.Image != null) _contentImageField.SetNativeSize(); 
         }
         
         _actionTimer = 0f;
@@ -157,6 +165,20 @@ public class TutorialManager : MonoBehaviour
 
             case TutorialActionType.KillEnemies:
                 // Relies on event callback `OnSpawnerClearedHandler` 
+                break;
+
+            case TutorialActionType.CameraRotate:
+                if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
+                {
+                    AdvanceStep();
+                }
+                break;
+
+            case TutorialActionType.Dash:
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    AdvanceStep();
+                }
                 break;
 
             case TutorialActionType.Custom:
@@ -290,6 +312,8 @@ public enum TutorialActionType
     Shoot, 
     KillEnemies, 
     SelectMask,
+    CameraRotate,
+    Dash,
     Custom 
 }
 
