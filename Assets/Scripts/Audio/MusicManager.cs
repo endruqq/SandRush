@@ -54,7 +54,7 @@ public class MusicManager : MonoBehaviour
         _currentMusicInstance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
         _currentMusicInstance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 1f); // 0f może powodować błędy atenuacji
         _currentMusicInstance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 10000f);
-        _currentMusicInstance.setVolume(0.7f);
+        _currentMusicInstance.setVolume(0.35f); // Reduced by 50% as requested
         _currentMusicInstance.start();
         _currentEventPath = eventPath;
 
