@@ -65,6 +65,8 @@ public class Player : MonoBehaviour
     
     [Header("Mask Ability")]
     [SerializeField] private float _maskAbilityCooldown = 5f;
+    [Tooltip("Fizyczny obiekt (np. bańka, sphere) wokół gracza, który będzie się włączał tylko gdy tarcza żyje i ma punkty HP!")]
+    [SerializeField] private GameObject _shieldVisualEffect;
 
     
     [Header("Procedural Animation (Synthetik Style)")]
@@ -267,10 +269,7 @@ public class Player : MonoBehaviour
                 OnMaskCooldownChanged?.Invoke(_maskCooldownTimer / _maskAbilityCooldown);
             }
             
-            if (Input.GetMouseButtonDown(1) && _maskCooldownTimer <= 0)
-            {
-                UseMaskAbility();
-            }
+
         }
 
         _aiming.Tick();
@@ -599,37 +598,26 @@ public class Player : MonoBehaviour
         {
             _shieldUI.UpdateHealth(_currentShield);
         }
-    }
 
-    private void UseMaskAbility()
-    {
-        if (_maskCooldownTimer > 0) return;
-        
-        _maskCooldownTimer = _maskAbilityCooldown;
-        OnMaskCooldownChanged?.Invoke(1f);
-        
-        StartCoroutine(BurstFireRoutine());
-    }
-
-    private System.Collections.IEnumerator BurstFireRoutine()
-    {
-        int shots = 5;
-        float burstDelay = 0.08f; // Very fast burst
-        
-        for (int i = 0; i < shots; i++)
+        // --- SHIELD VISUAL EFFECT TOGGLE ---
+        if (_shieldVisualEffect != null)
         {
-            // Calculate direction same as LateUpdate
-            Vector3 stableOrigin = transform.position;
-            stableOrigin.y = _firePoint.position.y;
-            Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
+            // Tarcza się świeci tylko gdy mamy wybraną maskę Tarczy I jednocześnie mamy punkty ochrony
+            bool hasShieldActive = (ActiveAbility == MaskAbilityType.Shield && _currentShield > 0);
+            
+            if (_shieldVisualEffect.activeSelf != hasShieldActive)
+            {
+                _shieldVisualEffect.SetActive(hasShieldActive);
+            }
+        }
+    }
 
-            _shooting.FireImmediate(shootDirection);
+
+
+
+
             
 
 
-            yield return new WaitForSeconds(burstDelay);
-        }
-        
-        Debug.Log("Mask Ability: Burst Fire Complete");
-    }
+
 }

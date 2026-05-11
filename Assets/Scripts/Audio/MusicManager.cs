@@ -30,6 +30,7 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
+        if (Instance != this) return; // Zabezpieczenie przed duplikatem który nie zdążył się jeszcze zniszczyć
         if (_playOnStart)
         {
             PlayMusic(_startEvent);
@@ -51,10 +52,9 @@ public class MusicManager : MonoBehaviour
         StopMusic();
 
         _currentMusicInstance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
-        // Music is 2D — no need for 3D attributes, but override distance just in case
-        _currentMusicInstance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 0f);
+        _currentMusicInstance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 1f); // 0f może powodować błędy atenuacji
         _currentMusicInstance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 10000f);
-        _currentMusicInstance.setVolume(0.7f); // 70% volume
+        _currentMusicInstance.setVolume(0.7f);
         _currentMusicInstance.start();
         _currentEventPath = eventPath;
 

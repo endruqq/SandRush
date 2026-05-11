@@ -37,8 +37,27 @@ public class StartGameTutorial : MonoBehaviour
         
         if (isTutorialDone)
         {
-            // Checkpoint Spawn (Gameplay)
-            StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
+            // Czy nadpisaliśmy checkpoint z poziomu Obozu/Stacji Zapisu (SaveStationInteractable)?
+            if (PlayerPrefs.GetInt("HasCustomSave", 0) == 1)
+            {
+                Vector3 savedPos = new Vector3(
+                    PlayerPrefs.GetFloat("RespawnPosX"),
+                    PlayerPrefs.GetFloat("RespawnPosY"),
+                    PlayerPrefs.GetFloat("RespawnPosZ")
+                );
+
+                // Tworzy ułotny ułamek sprawna (celownik) do którego przyciągnięty zostanie gracz
+                GameObject tempSpawn = new GameObject("Loaded_Custom_SavePoint");
+                tempSpawn.transform.position = savedPos;
+                tempSpawn.transform.rotation = Quaternion.identity;
+
+                StartCoroutine(PlaySpawnSequence(tempSpawn.transform, false));
+            }
+            else
+            {
+                // Domyślny główny Checkpoint przed wejściem na pustynie
+                StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
+            }
         }
         else
         {
@@ -94,19 +113,19 @@ public class StartGameTutorial : MonoBehaviour
             Instantiate(_portalVFXPrefab, targetSpawn.position, targetSpawn.rotation);
         }
 
-        // 5. Wait for visual spawn moment
-        yield return new WaitForSeconds(_spawnDelay);
-
-        // 6. Reveal Player (Visuals Only)
-        SetPlayerVisuals(true);
-        Debug.Log("[StartGameTutorial] Player Revealed.");
-
-        // 7. Wait for Portal Animation to finish
-        yield return new WaitForSeconds(_portalDuration - _spawnDelay);
-
-        // 8. Trigger Next Step (Tutorial vs Gameplay)
         if (showTutorial)
         {
+            // 5. Wait for visual spawn moment
+            yield return new WaitForSeconds(_spawnDelay);
+
+            // 6. Reveal Player (Visuals Only)
+            SetPlayerVisuals(true);
+            Debug.Log("[StartGameTutorial] Player Revealed.");
+
+            // 7. Wait for Portal Animation to finish
+            yield return new WaitForSeconds(_portalDuration - _spawnDelay);
+
+            // 8. Trigger Next Step (Tutorial)
             Debug.Log("[StartGameTutorial] Starting Tutorial...");
             
             // Unlock controls so the player can actually do the tutorial tasks!
@@ -123,7 +142,10 @@ public class StartGameTutorial : MonoBehaviour
         }
         else
         {
-            // Just start gameplay
+            // 5. For Checkpoints/Saves, reveal and unlock immediately!
+            SetPlayerVisuals(true);
+            SetPlayerControls(true);
+
             Debug.Log("[StartGameTutorial] Checkpoint Spawn Complete. Starting Gameplay.");
             OnTutorialFinished(); 
         }
