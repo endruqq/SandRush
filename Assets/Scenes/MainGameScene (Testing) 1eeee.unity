@@ -23152,6 +23152,8 @@ MonoBehaviour:
   _animator: {fileID: 266007474}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
 --- !u!195 &266007477
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -38184,6 +38186,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!1 &449081051 stripped
@@ -38576,6 +38580,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!65 &457165788
@@ -42404,6 +42410,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505357125}
   m_Mesh: {fileID: -6277919634521360205, guid: 5245bca2d0778a94996a7d8dd968e968, type: 3}
+--- !u!1001 &505679326
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.019
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.027
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -97.287
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
+      propertyPath: m_Name
+      value: Rifle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0057567d237c8ba4691cb9ff9279bd7b, type: 3}
 --- !u!65 &506054903
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -85563,6 +85626,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!1001 &1077974808
@@ -93412,6 +93477,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 157278853}
   _bossHealthThreshold: 0.5
 --- !u!1 &1156635131
@@ -95932,6 +95999,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!65 &1193890799
@@ -99273,6 +99342,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1100000000000000005, guid: 111b71af21055ab4bab0c24377be754d, type: 3}
+      propertyPath: _targetScale
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1429225945688509771, guid: 111b71af21055ab4bab0c24377be754d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -99397,6 +99470,10 @@ PrefabInstance:
       propertyPath: _gunshotImpulseSource
       value: 
       objectReference: {fileID: 1231638237}
+    - target: {fileID: 8605733682166280793, guid: 111b71af21055ab4bab0c24377be754d, type: 3}
+      propertyPath: _enableUpgradeScreenVFX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8605733682166280793, guid: 111b71af21055ab4bab0c24377be754d, type: 3}
       propertyPath: '_firePointVFX.Array.data[0]'
       value: 
@@ -101269,6 +101346,8 @@ MonoBehaviour:
   _animator: {fileID: 1773066938}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
 --- !u!195 &1252234548
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -106949,6 +107028,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1324524807}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1324524809}
   m_SourcePrefab: {fileID: 100100000, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
 --- !u!1 &1324524806 stripped
 GameObject:
@@ -106981,8 +107063,29 @@ MonoBehaviour:
   _ejectionDirection: {x: 0, y: 0, z: 1}
   _spawnOffset: {x: 0, y: 1.2, z: 0}
   _groundLevelOffset: 0
-  _breakSoundEvent: event:/Impacts/Wood_Break
+  _breakSoundEvent: 
   _breakVFX: {fileID: 0}
+--- !u!65 &1324524809
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324524806}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.7165973, y: 2.332655, z: 1}
+  m_Center: {x: 0.01663071, y: 0.6663275, z: 8.024261e-16}
 --- !u!1 &1325063997
 GameObject:
   m_ObjectHideFlags: 0
@@ -141545,6 +141648,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!1 &1755802413
@@ -142911,6 +143016,8 @@ MonoBehaviour:
   _animator: {fileID: 1773066938}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
 --- !u!195 &1773066940
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -144431,6 +144538,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!1001 &1781868594
@@ -163775,6 +163884,8 @@ MonoBehaviour:
   _portalSpawnDelay: 0.5
   _portalLifetime: 2
   _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 10
   _bossTrigger: {fileID: 0}
   _bossHealthThreshold: 0.5
 --- !u!1 &2057109439
@@ -246135,6 +246246,8 @@ MonoBehaviour:
   _animator: {fileID: 4335541447953524865}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
 --- !u!23 &5707616538998401325
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -275573,3 +275686,4 @@ SceneRoots:
   - {fileID: 561083602}
   - {fileID: 844984042}
   - {fileID: 1324524805}
+  - {fileID: 505679326}

@@ -16,16 +16,19 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastPosition;
     [SerializeField] private LayerMask _hitLayers = -1; // Default to Everything
     private bool _hasHit = false;
+    private float _baseDamage;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _baseDamage = damage;
     }
 
     private void OnEnable()
     {
         _lastPosition = transform.position;
         _hasHit = false;
+        damage = _baseDamage;
     }
 
     public void Init(ObjectPool<Bullet> pool)
@@ -70,7 +73,17 @@ public class Bullet : MonoBehaviour
     public void SetOwner(Transform owner)
     {
         _owner = owner;
-        if (owner != null) _ownerTag = owner.tag;
+        if (owner != null)
+        {
+            _ownerTag = owner.tag;
+            if (owner.CompareTag("Player") || owner.GetComponent<Player>() != null)
+            {
+                if (Player.Instance != null)
+                {
+                    damage = _baseDamage + Player.Instance.DamageBonus;
+                }
+            }
+        }
     }
     
     // Legacy overload for compatibility if needed, but prefer Transform

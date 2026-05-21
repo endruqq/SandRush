@@ -69,24 +69,8 @@ public class LootCrate : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
-        System.Collections.Generic.List<Collider> spawnedItems = new System.Collections.Generic.List<Collider>();
-
-        // Pojawienie loot'u
-        SpawnItems(_healthPrefab, _healthItemsCount, spawnedItems);
-        SpawnItems(_shieldPrefab, _shieldItemsCount, spawnedItems);
-        
-        // ZŁOTA ZASADA ZAPOBIEGAJĄCA ODBIJENIOM: 
-        // Każemy fizyce całkowicie ignorować zderzenia tych przedmiotów wyplutych z tej skrzyni MIĘDZY SOBĄ!
-        for (int i = 0; i < spawnedItems.Count; i++)
-        {
-            for (int j = i + 1; j < spawnedItems.Count; j++)
-            {
-                if (spawnedItems[i] != null && spawnedItems[j] != null)
-                {
-                    Physics.IgnoreCollision(spawnedItems[i], spawnedItems[j]);
-                }
-            }
-        }
+        // Trigger card selection UI instead of spawning physical items
+        CardUpgradeManager.ShowUpgradeScreen();
     }
 
     private void SpawnItems(GameObject prefab, int count, System.Collections.Generic.List<Collider> spawnedList)

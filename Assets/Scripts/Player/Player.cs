@@ -24,6 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isAutomatic = true;
     [SerializeField] private float _reloadTime = 1.5f;
     [SerializeField] private AmmoUI _ammoUI;
+    [SerializeField] private GameObject[] _alternativeBullets;
+
+    [Header("Crate Upgrade Settings")]
+    [SerializeField] private GameObject _cardUpgradeCanvasPrefab;
+    [SerializeField] private bool _enableUpgradeScreenVFX = true;
 
     [Header("Health & Stats")]
     [SerializeField] private int _maxHealth = 100;
@@ -122,6 +127,56 @@ public class Player : MonoBehaviour
     public PlayerAiming Aiming => _aiming;
     public MaskAbilityType ActiveAbility { get; private set; } = MaskAbilityType.Dash;
     private static Player _instance;
+
+    public static Player Instance => _instance;
+    public float DamageBonus => _damageBonus;
+    public GameObject CardUpgradeCanvasPrefab => _cardUpgradeCanvasPrefab;
+    public bool EnableUpgradeScreenVFX => _enableUpgradeScreenVFX;
+
+    private int _currentAlternativeWeaponIndex = -1;
+    private float _damageBonus = 0f;
+
+    public static void IncreaseMaxHealth(int amount)
+    {
+        if (_instance != null)
+        {
+            _instance._maxHealth += amount;
+            _instance.CurrentHealth += amount;
+            if (_instance._healthUI != null)
+            {
+                _instance._healthUI.Initialize(_instance.CurrentHealth, _instance._maxHealth);
+            }
+            Debug.Log($"[Player] Max Health increased by {amount}. New Max: {_instance._maxHealth}");
+        }
+    }
+
+    public static void IncreaseDamage(float amount)
+    {
+        if (_instance != null)
+        {
+            _instance._damageBonus += amount;
+            Debug.Log($"[Player] Damage Bonus increased by {amount}. New Bonus: {_instance._damageBonus}");
+        }
+    }
+
+    public bool HasAlternativeWeapons()
+    {
+        return _alternativeBullets != null && _alternativeBullets.Length > 0;
+    }
+
+    public void EquipNextAlternativeWeapon()
+    {
+        if (_alternativeBullets != null && _alternativeBullets.Length > 0)
+        {
+            _currentAlternativeWeaponIndex = (_currentAlternativeWeaponIndex + 1) % _alternativeBullets.Length;
+            GameObject newBullet = _alternativeBullets[_currentAlternativeWeaponIndex];
+            if (newBullet != null)
+            {
+                EquipWeapon(newBullet);
+                Debug.Log($"[Player] Equipped alternative weapon: {newBullet.name}");
+            }
+        }
+    }
 
     void Awake()
     {
@@ -236,6 +291,15 @@ public class Player : MonoBehaviour
 
         _shooting.IsEnabled = !uiMode;
 
+        if (uiMode)
+        {
+            if (_animator != null)
+            {
+                _animator.SetFloat(_speedHash, 0);
+            }
+            return;
+        }
+
         if (_hasMask)
         {
             // --- SHIELD REGENERATION ---
@@ -307,6 +371,10 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
+        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        bool uiMode = IsUIModeActive || isPointerOverUI;
+        if (uiMode) return;
+
         Vector3 lookDirection = _aiming.GroundPosition - transform.position;
         lookDirection.y = 0;
 

@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _attackType: 1
   _playerTransform: {fileID: 0}
-  _detectionRadius: 30
+  _detectionRadius: 10
   _attackRange: 2
   _attackRate: 0.5
   _bulletPrefab: {fileID: 0}
@@ -1160,6 +1160,8 @@ MonoBehaviour:
   _animator: {fileID: 3071011234499516426}
   _isWalkingBool: isWalking
   _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
 --- !u!65 &292161925237011104
 BoxCollider:
   m_ObjectHideFlags: 0
