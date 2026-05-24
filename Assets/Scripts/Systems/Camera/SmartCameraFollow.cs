@@ -68,10 +68,14 @@ public class SmartCameraFollow : MonoBehaviour
     {
         if (_virtualCamera == null) return;
 
-        // Skok co 90 stopni po wciśnięciu Q
+        // Skok co 90 stopni po wciśnięciu Q (w lewo) lub E (w prawo)
         if (Input.GetKeyDown(KeyCode.Q))
         {
             _targetYRotation += _rotationStep;
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            _targetYRotation -= _rotationStep;
         }
 
         // Orbitowanie izometryczne polegające na obracaniu Y samej widzącej kamery 

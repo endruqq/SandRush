@@ -68,7 +68,7 @@ public class PauseMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[PauseMenu] CRITICAL: '_resolutionDropdown' NOT ASSIGNED in Inspector!");
+            Debug.LogWarning("[PauseMenu] WARNING: '_resolutionDropdown' NOT ASSIGNED in Inspector!");
         }
 
         if (_qualityDropdown != null)
@@ -81,7 +81,7 @@ public class PauseMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[PauseMenu] CRITICAL: '_qualityDropdown' NOT ASSIGNED in Inspector!");
+            Debug.LogWarning("[PauseMenu] WARNING: '_qualityDropdown' NOT ASSIGNED in Inspector!");
         }
 
         // 3. --- WAIT FOR UI TO SETTLE (Skip initial events) ---
@@ -345,6 +345,7 @@ public class PauseMenuManager : MonoBehaviour
         // Clear Persistence
         PlayerPrefs.DeleteKey("TutorialCompleted");
         PlayerPrefs.DeleteKey("MaskCollected");
+        PlayerPrefs.DeleteKey("HasCustomSave");
         PlayerPrefs.Save();
         
         // Reset Time

@@ -24,6 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isAutomatic = true;
     [SerializeField] private float _reloadTime = 1.5f;
     [SerializeField] private AmmoUI _ammoUI;
+    [SerializeField] private GameObject[] _alternativeBullets;
+
+    [Header("Crate Upgrade Settings")]
+    [SerializeField] private GameObject _cardUpgradeCanvasPrefab;
+    [SerializeField] private bool _enableUpgradeScreenVFX = true;
 
     [Header("Health & Stats")]
     [SerializeField] private int _maxHealth = 100;
@@ -123,6 +128,56 @@ public class Player : MonoBehaviour
     public MaskAbilityType ActiveAbility { get; private set; } = MaskAbilityType.Dash;
     private static Player _instance;
 
+    public static Player Instance => _instance;
+    public float DamageBonus => _damageBonus;
+    public GameObject CardUpgradeCanvasPrefab => _cardUpgradeCanvasPrefab;
+    public bool EnableUpgradeScreenVFX => _enableUpgradeScreenVFX;
+
+    private int _currentAlternativeWeaponIndex = -1;
+    private float _damageBonus = 0f;
+
+    public static void IncreaseMaxHealth(int amount)
+    {
+        if (_instance != null)
+        {
+            _instance._maxHealth += amount;
+            _instance.CurrentHealth += amount;
+            if (_instance._healthUI != null)
+            {
+                _instance._healthUI.Initialize(_instance.CurrentHealth, _instance._maxHealth);
+            }
+            Debug.Log($"[Player] Max Health increased by {amount}. New Max: {_instance._maxHealth}");
+        }
+    }
+
+    public static void IncreaseDamage(float amount)
+    {
+        if (_instance != null)
+        {
+            _instance._damageBonus += amount;
+            Debug.Log($"[Player] Damage Bonus increased by {amount}. New Bonus: {_instance._damageBonus}");
+        }
+    }
+
+    public bool HasAlternativeWeapons()
+    {
+        return _alternativeBullets != null && _alternativeBullets.Length > 0;
+    }
+
+    public void EquipNextAlternativeWeapon()
+    {
+        if (_alternativeBullets != null && _alternativeBullets.Length > 0)
+        {
+            _currentAlternativeWeaponIndex = (_currentAlternativeWeaponIndex + 1) % _alternativeBullets.Length;
+            GameObject newBullet = _alternativeBullets[_currentAlternativeWeaponIndex];
+            if (newBullet != null)
+            {
+                EquipWeapon(newBullet);
+                Debug.Log($"[Player] Equipped alternative weapon: {newBullet.name}");
+            }
+        }
+    }
+
     void Awake()
     {
         _instance = this;
@@ -131,6 +186,57 @@ public class Player : MonoBehaviour
         // --- SAFE INITIALIZATION ---
         if (_mainCamera == null) _mainCamera = Camera.main;
         if (_mainCamera == null) _mainCamera = FindFirstObjectByType<Camera>();
+
+        // Helper to check if a component reference points to a project prefab asset instead of a scene instance
+        bool IsPrefab(Component comp) => comp != null && !comp.gameObject.scene.IsValid();
+
+        // Dynamically locate Health, Shield, Dash, and Ammo UI references if they are not wired in the inspector or point to prefabs
+        if (_healthUI == null || IsPrefab(_healthUI) || 
+            _shieldUI == null || IsPrefab(_shieldUI) || 
+            _dashUI == null || IsPrefab(_dashUI) || 
+            _ammoUI == null || IsPrefab(_ammoUI))
+        {
+            HealthUI[] healthUIs = FindObjectsByType<HealthUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (HealthUI ui in healthUIs)
+            {
+                if (IsPrefab(ui)) continue;
+
+                if ((_healthUI == null || IsPrefab(_healthUI)) && ui.gameObject.name.Contains("Health"))
+                {
+                    _healthUI = ui;
+                }
+                else if ((_shieldUI == null || IsPrefab(_shieldUI)) && ui.gameObject.name.Contains("Shield"))
+                {
+                    _shieldUI = ui;
+                }
+            }
+
+            if (_dashUI == null || IsPrefab(_dashUI))
+            {
+                DashUI[] dashUIs = FindObjectsByType<DashUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (DashUI ui in dashUIs)
+                {
+                    if (!IsPrefab(ui))
+                    {
+                        _dashUI = ui;
+                        break;
+                    }
+                }
+            }
+
+            if (_ammoUI == null || IsPrefab(_ammoUI))
+            {
+                AmmoUI[] ammoUIs = FindObjectsByType<AmmoUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (AmmoUI ui in ammoUIs)
+                {
+                    if (!IsPrefab(ui))
+                    {
+                        _ammoUI = ui;
+                        break;
+                    }
+                }
+            }
+        }
         
         if (_mainCamera == null)
         {
@@ -236,6 +342,15 @@ public class Player : MonoBehaviour
 
         _shooting.IsEnabled = !uiMode;
 
+        if (uiMode)
+        {
+            if (_animator != null)
+            {
+                _animator.SetFloat(_speedHash, 0);
+            }
+            return;
+        }
+
         if (_hasMask)
         {
             // --- SHIELD REGENERATION ---
@@ -269,10 +384,7 @@ public class Player : MonoBehaviour
                 OnMaskCooldownChanged?.Invoke(_maskCooldownTimer / _maskAbilityCooldown);
             }
             
-            if (Input.GetMouseButtonDown(1) && _maskCooldownTimer <= 0)
-            {
-                UseMaskAbility();
-            }
+
         }
 
         _aiming.Tick();
@@ -310,6 +422,10 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
+        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        bool uiMode = IsUIModeActive || isPointerOverUI;
+        if (uiMode) return;
+
         Vector3 lookDirection = _aiming.GroundPosition - transform.position;
         lookDirection.y = 0;
 
@@ -615,35 +731,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void UseMaskAbility()
-    {
-        if (_maskCooldownTimer > 0) return;
-        
-        _maskCooldownTimer = _maskAbilityCooldown;
-        OnMaskCooldownChanged?.Invoke(1f);
-        
-        StartCoroutine(BurstFireRoutine());
-    }
 
-    private System.Collections.IEnumerator BurstFireRoutine()
-    {
-        int shots = 5;
-        float burstDelay = 0.08f; // Very fast burst
-        
-        for (int i = 0; i < shots; i++)
-        {
-            // Calculate direction same as LateUpdate
-            Vector3 stableOrigin = transform.position;
-            stableOrigin.y = _firePoint.position.y;
-            Vector3 shootDirection = (_aiming.AimPosition - stableOrigin).normalized;
 
-            _shooting.FireImmediate(shootDirection);
+
+
             
 
 
-            yield return new WaitForSeconds(burstDelay);
-        }
-        
-        Debug.Log("Mask Ability: Burst Fire Complete");
-    }
+
 }

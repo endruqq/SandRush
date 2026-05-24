@@ -35,6 +35,10 @@ public class EnemySpawner : MonoBehaviour
     [Header("FMOD Sound")]
     [SerializeField] private string _spawnSound = "event:/Drone_Spawn_Tutorial";
 
+    [Header("Proximity Activation")]
+    [SerializeField] private bool _useProximitySpawning = true;
+    [SerializeField] private float _proximityRadius = 30f;
+
     [Header("Boss Trigger (Opcjonalne)")]
     [Tooltip("Wybierz bossa z mapy do którego przypięty jest spawner. Po osiągnięciu progu HP spawner wywoła zgraję minionów!")]
     [SerializeField] private BossController _bossTrigger;
@@ -56,7 +60,40 @@ public class EnemySpawner : MonoBehaviour
     {
         if (_autoStart && _bossTrigger == null)
         {
-            StartSpawning();
+            if (_useProximitySpawning)
+            {
+                StartCoroutine(WaitForPlayerProximity());
+            }
+            else
+            {
+                StartSpawning();
+            }
+        }
+    }
+
+    private IEnumerator WaitForPlayerProximity()
+    {
+        while (true)
+        {
+            if (_cachedPlayer == null)
+            {
+                GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+                if (playerObj != null)
+                {
+                    _cachedPlayer = playerObj.GetComponent<Player>();
+                }
+            }
+
+            if (_cachedPlayer != null)
+            {
+                float distance = Vector3.Distance(transform.position, _cachedPlayer.transform.position);
+                if (distance <= _proximityRadius)
+                {
+                    StartSpawning();
+                    yield break;
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -168,8 +205,8 @@ public class EnemySpawner : MonoBehaviour
             GameObject portal = Instantiate(_portalVFXPrefab, spawnPos, Quaternion.identity);
             Destroy(portal, _portalLifetime);
             
-            // Play spawn sound
-            if (!string.IsNullOrEmpty(_spawnSound))
+            // Play spawn sound (but mute it if it's the very start of the level to prevent 50 spawners deafening the player)
+            if (!string.IsNullOrEmpty(_spawnSound) && Time.timeSinceLevelLoad > 1f)
                 FMODHelper.PlayOneShot(_spawnSound, spawnPos);
             
             // Wait for portal to appear before spawning enemy
@@ -233,5 +270,11 @@ public class EnemySpawner : MonoBehaviour
     {
         Gizmos.color = _spawnMode == SpawnMode.WaveClear ? Color.blue : Color.red;
         Gizmos.DrawWireSphere(transform.position, _spawnRadius);
+
+        if (_useProximitySpawning)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, _proximityRadius);
+        }
     }
 }

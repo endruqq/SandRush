@@ -11,11 +11,13 @@ public static class FMODHelper
     /// Play a one-shot FMOD event at a world position.
     /// Automatically overrides 3D distance to prevent virtualization.
     /// </summary>
-    public static void PlayOneShot(string eventPath, Vector3 position)
+    public static void PlayOneShot(string eventPath, Vector3 position, float pitch = 1f)
     {
         var instance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
         instance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 0f);
         instance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 10000f);
+        if (pitch != 1f) instance.setPitch(pitch);
+        instance.setVolume(0.05f); // Extremely reduced (0.05) because FMOD volume scaling is linear, not perceived
         instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
         instance.start();
         instance.release();
@@ -29,6 +31,7 @@ public static class FMODHelper
         var instance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
         instance.setProperty(EVENT_PROPERTY.MINIMUM_DISTANCE, 0f);
         instance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 10000f);
+        instance.setVolume(0.05f); // Extremely reduced (0.05)
         instance.start();
         instance.release();
     }

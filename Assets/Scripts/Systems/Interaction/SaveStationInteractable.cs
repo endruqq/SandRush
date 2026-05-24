@@ -56,10 +56,19 @@ public class SaveStationInteractable : MonoBehaviour, IInteractable
         // Oznaczamy w globalnym sejvie, że posiadamy fizyczny nowy punkt kontrolny (Checkpoint Station)
         PlayerPrefs.SetInt("HasCustomSave", 1);
 
-        // Zapisujemy idealnie koordynaty z tej maszyny/obiektu by zrespinić się dokładnie w niej
-        PlayerPrefs.SetFloat("RespawnPosX", transform.position.x);
-        PlayerPrefs.SetFloat("RespawnPosY", transform.position.y);
-        PlayerPrefs.SetFloat("RespawnPosZ", transform.position.z);
+        // Obliczamy kierunek od stacji do gracza, aby odsunąć go przy respawnie (by nie wchodził w model)
+        Vector3 dirFromStation = (player.transform.position - transform.position).normalized;
+        dirFromStation.y = 0; // Utrzymujemy płasko
+        if (dirFromStation.sqrMagnitude < 0.01f) dirFromStation = -transform.forward; // Zabezpieczenie
+        dirFromStation.Normalize();
+
+        // Odsunąć gracza o dodatkowe 1.25 jednostki od jego aktualnej pozycji w stronę wolnej przestrzeni
+        Vector3 spawnPos = player.transform.position + dirFromStation * 1.25f;
+
+        // Zapisujemy nowe koordynaty z offsetem
+        PlayerPrefs.SetFloat("RespawnPosX", spawnPos.x);
+        PlayerPrefs.SetFloat("RespawnPosY", spawnPos.y);
+        PlayerPrefs.SetFloat("RespawnPosZ", spawnPos.z);
         
         PlayerPrefs.Save();
 

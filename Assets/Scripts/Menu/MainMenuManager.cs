@@ -159,6 +159,7 @@ public class MainMenuManager : MonoBehaviour
         // Clear progress for a fresh start
         PlayerPrefs.DeleteKey("TutorialCompleted");
         PlayerPrefs.DeleteKey("MaskCollected");
+        PlayerPrefs.DeleteKey("HasCustomSave");
         PlayerPrefs.Save();
         LoadScene(_gameplaySceneName);
     }

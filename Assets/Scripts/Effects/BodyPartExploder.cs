@@ -98,16 +98,15 @@ public class BodyPartExploder : MonoBehaviour
                 rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 rb.interpolation = RigidbodyInterpolation.Interpolate;
                 
-                // Add Collider
-                try
+                // Add Collider (Use BoxCollider to avoid Convex Mesh polygon limit errors and improve physics performance)
+                var box = debris.AddComponent<BoxCollider>();
+                if (meshToUse != null && meshToUse.bounds.size.magnitude > 0)
                 {
-                    var col = debris.AddComponent<MeshCollider>();
-                    col.convex = true; 
-                    col.sharedMesh = meshToUse;
+                    box.center = meshToUse.bounds.center;
+                    box.size = meshToUse.bounds.size;
                 }
-                catch
+                else
                 {
-                    var box = debris.AddComponent<BoxCollider>();
                     box.size = Vector3.one * 0.5f; 
                 }
                 

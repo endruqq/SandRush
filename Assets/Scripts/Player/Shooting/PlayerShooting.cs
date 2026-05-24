@@ -104,8 +104,9 @@ public class PlayerShooting
             _nextFireTime = Time.time + _fireRate;
             _weapon.Fire(aimDir);
             
-            // Play gunshot sound
-            FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position);
+            // Play gunshot sound with random pitch variation
+            float randomPitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position, randomPitch);
             
             // Consume ammo
             _currentAmmo--;
@@ -150,8 +151,9 @@ public class PlayerShooting
         
         _weapon.Fire(aimDir);
         
-        // Play gunshot sound
-        FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position);
+        // Play gunshot sound with random pitch variation
+        float randomPitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        FMODHelper.PlayOneShot("event:/Gun_Shot_Player", _firePoint.position, randomPitch);
         
         _currentAmmo--;
         OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);

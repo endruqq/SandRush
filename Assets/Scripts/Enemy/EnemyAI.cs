@@ -49,7 +49,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private string _isWalkingBool = "IsWalking";
     [SerializeField] private string _attackTrigger = "Attack";
 
-    private enum State { Idle, Chasing, Attacking }
+    [Header("Search & Line of Sight")]
+    [SerializeField] private float _losHeightOffset = 1.2f;
+    [SerializeField] private float _searchDuration = 2.0f;
+
+    private enum State { Idle, Chasing, Attacking, Searching, ReturningToOrigin }
     private State _currentState;
     private NavMeshAgent _navAgent;
     
@@ -63,6 +67,11 @@ public class EnemyAI : MonoBehaviour
     // AI enhancements
     private float _randomAngleOffset;
     private float _speedVariance;
+
+    // Search/Return behaviors
+    private Vector3 _originalPosition;
+    private Vector3 _lastSeenPosition;
+    private float _searchTimer;
     
     // --- DEBUG ---
     private State _previousState;
@@ -82,6 +91,7 @@ public class EnemyAI : MonoBehaviour
     {
         _currentState = State.Idle;
         _previousState = State.Idle;
+        _originalPosition = transform.position;
         
         // Check if on NavMesh, try to warp if not
         if (!_navAgent.isOnNavMesh)
@@ -132,6 +142,8 @@ public class EnemyAI : MonoBehaviour
             case State.Idle: HandleIdleState(); break;
             case State.Chasing: HandleChasingState(); break;
             case State.Attacking: HandleAttackingState(); break;
+            case State.Searching: HandleSearchingState(); break;
+            case State.ReturningToOrigin: HandleReturningToOriginState(); break;
         }
 
         // --- BEGIN DEBUG ---
@@ -142,12 +154,36 @@ public class EnemyAI : MonoBehaviour
         // --- END DEBUG ---
     }
 
+    private bool CheckLineOfSight()
+    {
+        if (_playerTransform == null) return false;
+        
+        Vector3 eyePos = transform.position + Vector3.up * _losHeightOffset;
+        Vector3 targetPos = _playerTransform.position + Vector3.up * 1.0f;
+        Vector3 direction = targetPos - eyePos;
+        float distance = direction.magnitude;
+        
+        if (Physics.Raycast(eyePos, direction, out RaycastHit hit, distance))
+        {
+            if (hit.transform == _playerTransform || 
+                hit.transform.CompareTag("Player") || 
+                hit.transform.GetComponentInParent<Player>() != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        return true;
+    }
+
     private void HandleIdleState()
     {
         SetWalking(false);
-        if (_distanceToPlayer <= _detectionRadius)
+        if (_distanceToPlayer <= _detectionRadius && CheckLineOfSight())
         {
             _currentState = State.Chasing;
+            _lastSeenPosition = _playerTransform.position;
             // Play detection alert sound
             if (!string.IsNullOrEmpty(_detectionSound))
                 FMODHelper.PlayOneShot(_detectionSound, transform.position);
@@ -161,10 +197,23 @@ public class EnemyAI : MonoBehaviour
         // Melee enemies chase faster, and all enemies use speed variance to avoid walking in sync
         float chaseSpeed = _attackType == AttackType.Melee ? (_originalSpeed * 1.5f) * _speedVariance : _originalSpeed * _speedVariance;
         _navAgent.speed = chaseSpeed;
-        SetWalking(true);
-        _navAgent.isStopped = false;
         
-        _navAgent.SetDestination(_playerTransform.position);
+        if (CheckLineOfSight())
+        {
+            _lastSeenPosition = _playerTransform.position;
+            _navAgent.SetDestination(_playerTransform.position);
+            SetWalking(true);
+            _navAgent.isStopped = false;
+        }
+        else
+        {
+            _currentState = State.Searching;
+            _searchTimer = _searchDuration;
+            _navAgent.SetDestination(_lastSeenPosition);
+            SetWalking(true);
+            _navAgent.isStopped = false;
+            return;
+        }
         
         if (_attackType == AttackType.Melee)
         {
@@ -195,10 +244,10 @@ public class EnemyAI : MonoBehaviour
             SetWalking(false);
             _currentState = State.Attacking;
         }
-        else if (_distanceToPlayer > _detectionRadius)
+        else if (_distanceToPlayer > _detectionRadius * 1.5f)
         {
-            _currentState = State.Idle;
-            _navAgent.isStopped = true;
+            _currentState = State.ReturningToOrigin;
+            _navAgent.SetDestination(_originalPosition);
         }
     }
     
@@ -260,6 +309,23 @@ public class EnemyAI : MonoBehaviour
     {
         // Continuously face the player while attacking (winds up)
         RotateTowardsPlayer();
+
+        bool canSee = CheckLineOfSight();
+        if (!canSee)
+        {
+            _currentState = State.Searching;
+            _searchTimer = _searchDuration;
+            _navAgent.SetDestination(_lastSeenPosition);
+            _navAgent.isStopped = false;
+            SetWalking(true);
+            if (_attackType == AttackType.Exploder)
+            {
+                _isFuseLit = false;
+            }
+            return;
+        }
+
+        _lastSeenPosition = _playerTransform.position;
 
         if (_attackType == AttackType.Ranged)
         {
@@ -585,7 +651,71 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
-    
+    private void HandleSearchingState()
+    {
+        _navAgent.updateRotation = true;
+        _navAgent.speed = _originalSpeed * _speedVariance;
+
+        if (CheckLineOfSight())
+        {
+            _currentState = State.Chasing;
+            return;
+        }
+
+        if (!_navAgent.pathPending && _navAgent.remainingDistance <= 1.2f)
+        {
+            _navAgent.isStopped = true;
+            SetWalking(false);
+
+            _searchTimer -= Time.deltaTime;
+            if (_searchTimer <= 0f)
+            {
+                _currentState = State.ReturningToOrigin;
+                _navAgent.isStopped = false;
+                _navAgent.SetDestination(_originalPosition);
+            }
+        }
+        else
+        {
+            _navAgent.isStopped = false;
+            SetWalking(true);
+            if (_navAgent.destination != _lastSeenPosition)
+            {
+                _navAgent.SetDestination(_lastSeenPosition);
+            }
+        }
+    }
+
+    private void HandleReturningToOriginState()
+    {
+        _navAgent.updateRotation = true;
+        _navAgent.speed = _originalSpeed * 0.8f * _speedVariance;
+
+        if (_distanceToPlayer <= _detectionRadius && CheckLineOfSight())
+        {
+            _currentState = State.Chasing;
+            if (!string.IsNullOrEmpty(_detectionSound))
+                FMODHelper.PlayOneShot(_detectionSound, transform.position);
+            return;
+        }
+
+        if (!_navAgent.pathPending && _navAgent.remainingDistance <= 1.2f)
+        {
+            _navAgent.isStopped = true;
+            SetWalking(false);
+            _currentState = State.Idle;
+        }
+        else
+        {
+            _navAgent.isStopped = false;
+            SetWalking(true);
+            if (_navAgent.destination != _originalPosition)
+            {
+                _navAgent.SetDestination(_originalPosition);
+            }
+        }
+    }
+
     private void TriggerAnimation(string triggerName)
     {
         if (_animator != null && !string.IsNullOrEmpty(triggerName))
