@@ -186,6 +186,57 @@ public class Player : MonoBehaviour
         // --- SAFE INITIALIZATION ---
         if (_mainCamera == null) _mainCamera = Camera.main;
         if (_mainCamera == null) _mainCamera = FindFirstObjectByType<Camera>();
+
+        // Helper to check if a component reference points to a project prefab asset instead of a scene instance
+        bool IsPrefab(Component comp) => comp != null && !comp.gameObject.scene.IsValid();
+
+        // Dynamically locate Health, Shield, Dash, and Ammo UI references if they are not wired in the inspector or point to prefabs
+        if (_healthUI == null || IsPrefab(_healthUI) || 
+            _shieldUI == null || IsPrefab(_shieldUI) || 
+            _dashUI == null || IsPrefab(_dashUI) || 
+            _ammoUI == null || IsPrefab(_ammoUI))
+        {
+            HealthUI[] healthUIs = FindObjectsByType<HealthUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (HealthUI ui in healthUIs)
+            {
+                if (IsPrefab(ui)) continue;
+
+                if ((_healthUI == null || IsPrefab(_healthUI)) && ui.gameObject.name.Contains("Health"))
+                {
+                    _healthUI = ui;
+                }
+                else if ((_shieldUI == null || IsPrefab(_shieldUI)) && ui.gameObject.name.Contains("Shield"))
+                {
+                    _shieldUI = ui;
+                }
+            }
+
+            if (_dashUI == null || IsPrefab(_dashUI))
+            {
+                DashUI[] dashUIs = FindObjectsByType<DashUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (DashUI ui in dashUIs)
+                {
+                    if (!IsPrefab(ui))
+                    {
+                        _dashUI = ui;
+                        break;
+                    }
+                }
+            }
+
+            if (_ammoUI == null || IsPrefab(_ammoUI))
+            {
+                AmmoUI[] ammoUIs = FindObjectsByType<AmmoUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (AmmoUI ui in ammoUIs)
+                {
+                    if (!IsPrefab(ui))
+                    {
+                        _ammoUI = ui;
+                        break;
+                    }
+                }
+            }
+        }
         
         if (_mainCamera == null)
         {

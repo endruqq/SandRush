@@ -8,6 +8,8 @@ public class LootCrate : MonoBehaviour
     [SerializeField] private GameObject _openCrateModel;
     [Tooltip("Przypisz tu model zamkniętej skrzyni (zniknie po jej otwarciu)")]
     [SerializeField] private GameObject _closedCrateModel;
+    [Tooltip("Przypisz element daszka skrzynki do obracania przy otwieraniu")]
+    [SerializeField] private Transform _crateLid;
 
     [Header("Loot")]
     [SerializeField] private GameObject _healthPrefab; // Prefab apteczki (plusika)
@@ -38,6 +40,42 @@ public class LootCrate : MonoBehaviour
 
     private bool _isOpened = false;
 
+    private void Start()
+    {
+        if (_crateLid != null)
+        {
+            Vector3 rot = _crateLid.localEulerAngles;
+            rot.x = -55.82f;
+            _crateLid.localEulerAngles = rot;
+        }
+    }
+
+    private System.Collections.IEnumerator RotateLidCoroutine()
+    {
+        if (_crateLid == null) yield break;
+
+        float elapsed = 0f;
+        float duration = 0.5f;
+        float startX = -55.82f;
+        float targetX = 4.171f;
+
+        Vector3 rot = _crateLid.localEulerAngles;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float smoothT = Mathf.Sin(t * Mathf.PI * 0.5f);
+            float currentX = Mathf.Lerp(startX, targetX, smoothT);
+            rot.x = currentX;
+            _crateLid.localEulerAngles = rot;
+            yield return null;
+        }
+
+        rot.x = targetX;
+        _crateLid.localEulerAngles = rot;
+    }
+
     public void TakeDamage(float amount)
     {
         if (_isOpened) return;
@@ -61,9 +99,16 @@ public class LootCrate : MonoBehaviour
             Instantiate(_breakVFX, transform.position, Quaternion.identity);
         }
 
-        // Zmień model
-        if (_closedCrateModel) _closedCrateModel.SetActive(false);
-        if (_openCrateModel) _openCrateModel.SetActive(true);
+        // Animate the lid if assigned, otherwise fall back to model swapping
+        if (_crateLid != null)
+        {
+            StartCoroutine(RotateLidCoroutine());
+        }
+        else
+        {
+            if (_closedCrateModel) _closedCrateModel.SetActive(false);
+            if (_openCrateModel) _openCrateModel.SetActive(true);
+        }
 
         // Wyłączamy kolizję skrzyni
         Collider col = GetComponent<Collider>();
