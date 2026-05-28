@@ -32,32 +32,33 @@ public class StartGameTutorial : MonoBehaviour
 
     private void Start()
     {
+        // 1. Zawsze najpierw sprawdź czy mamy zapisany własny punkt odrodzenia (SaveStation)
+        if (PlayerPrefs.GetInt("HasCustomSave", 0) == 1)
+        {
+            Vector3 savedPos = new Vector3(
+                PlayerPrefs.GetFloat("RespawnPosX"),
+                PlayerPrefs.GetFloat("RespawnPosY"),
+                PlayerPrefs.GetFloat("RespawnPosZ")
+            );
+
+            // Tworzy tymczasowy punkt odrodzenia do którego przeteleportujemy gracza
+            GameObject tempSpawn = new GameObject("Loaded_Custom_SavePoint");
+            tempSpawn.transform.position = savedPos;
+            tempSpawn.transform.rotation = Quaternion.identity;
+
+            StartCoroutine(PlaySpawnSequence(tempSpawn.transform, false));
+            Debug.Log($"[StartGameTutorial] Custom Save Loaded! Spawning at: {savedPos}");
+            return;
+        }
+
+        // 2. Jeśli nie ma zapisu, sprawdź czy tutorial jest zakończony
         bool isTutorialDone = PlayerPrefs.GetInt(PREF_TUTORIAL_COMPLETED, 0) == 1;
         Debug.Log($"[StartGameTutorial] Started! TutorialCompleted: {isTutorialDone}");
         
         if (isTutorialDone)
         {
-            // Czy nadpisaliśmy checkpoint z poziomu Obozu/Stacji Zapisu (SaveStationInteractable)?
-            if (PlayerPrefs.GetInt("HasCustomSave", 0) == 1)
-            {
-                Vector3 savedPos = new Vector3(
-                    PlayerPrefs.GetFloat("RespawnPosX"),
-                    PlayerPrefs.GetFloat("RespawnPosY"),
-                    PlayerPrefs.GetFloat("RespawnPosZ")
-                );
-
-                // Tworzy ułotny ułamek sprawna (celownik) do którego przyciągnięty zostanie gracz
-                GameObject tempSpawn = new GameObject("Loaded_Custom_SavePoint");
-                tempSpawn.transform.position = savedPos;
-                tempSpawn.transform.rotation = Quaternion.identity;
-
-                StartCoroutine(PlaySpawnSequence(tempSpawn.transform, false));
-            }
-            else
-            {
-                // Domyślny główny Checkpoint przed wejściem na pustynie
-                StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
-            }
+            // Domyślny główny Checkpoint przed wejściem na pustynie
+            StartCoroutine(PlaySpawnSequence(_gameplaySpawnPoint, false));
         }
         else
         {
@@ -98,6 +99,12 @@ public class StartGameTutorial : MonoBehaviour
             Physics.SyncTransforms();
             _controller.enabled = true; // Re-enable CC (but controls still locked)
             Debug.Log($"[StartGameTutorial] Player Teleported to: {targetSpawn.name}");
+            
+            // Clean up temporary spawn point object to avoid hierarchy pollution
+            if (targetSpawn.name == "Loaded_Custom_SavePoint")
+            {
+                Destroy(targetSpawn.gameObject);
+            }
         }
 
         // 3. Equip Mask if previously collected

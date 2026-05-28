@@ -255,6 +255,16 @@ public class EnemyAI : MonoBehaviour
     {
         if (!_navAgent.isOnNavMesh) return;
         
+        // Detect if the enemy is on stairs or a slope to avoid pushing them off/under
+        bool isOnSlope = false;
+        if (UnityEngine.AI.NavMesh.SamplePosition(transform.position, out UnityEngine.AI.NavMeshHit navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            if (navHit.normal.y < 0.95f) // Slope angle is greater than ~18 degrees
+            {
+                isOnSlope = true;
+            }
+        }
+        
         // Find nearby enemies to push away from
         Collider[] nearby = Physics.OverlapSphere(transform.position, 2.0f);
         Vector3 separationForce = Vector3.zero;
@@ -278,7 +288,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
         
-        if (count > 0)
+        if (count > 0 && !isOnSlope)
         {
             // Manually shove the agent so they slide apart while chasing.
             // Reduced by ~80% for a much more subtle, natural shift rather than an aggressive slide.
@@ -288,7 +298,7 @@ public class EnemyAI : MonoBehaviour
         // Close-range Encirclement
         // Only start wrapping around when they get close to the player (e.g., within 6 units)
         // This ensures they always charge forward from far away, but fan out wide when closing in for the kill
-        if (_distanceToPlayer < 6.0f && _distanceToPlayer > _attackRange * 0.5f)
+        if (!isOnSlope && _distanceToPlayer < 6.0f && _distanceToPlayer > _attackRange * 0.5f)
         {
             Vector3 dirFromPlayer = (transform.position - _playerTransform.position).normalized;
             dirFromPlayer.y = 0;
@@ -329,8 +339,9 @@ public class EnemyAI : MonoBehaviour
 
         if (_attackType == AttackType.Ranged)
         {
-            
-            if (_enableStrafing)
+            // Only strafe if the player is at a reasonable distance (more than 4 units away)
+            // If they are too close, strafing laterally might cause them to path off stairs or run away weirdly
+            if (_enableStrafing && _distanceToPlayer > 4f)
             {
                 _navAgent.updateRotation = false; // Manually look at player while moving sideways
                 _navAgent.isStopped = false;
@@ -345,7 +356,9 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
+                // Stand ground and shoot when close or when strafing is disabled
                 _navAgent.isStopped = true;
+                _navAgent.updateRotation = true;
                 SetWalking(false);
             }
         }
@@ -406,9 +419,13 @@ public class EnemyAI : MonoBehaviour
         // Attempt to find a valid navmesh point 4 units in the strafe direction
         Vector3 targetPos = transform.position + strafeDir * 4f;
         
-        if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out UnityEngine.AI.NavMeshHit hit, 4f, UnityEngine.AI.NavMesh.AllAreas))
+        // Restrict sampling range to 1.5 units and verify elevation is similar to avoid snapping to a floor under the stairs
+        if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out UnityEngine.AI.NavMeshHit hit, 1.5f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            _navAgent.SetDestination(hit.position);
+            if (Mathf.Abs(hit.position.y - transform.position.y) < 1.5f)
+            {
+                _navAgent.SetDestination(hit.position);
+            }
         }
     }
 

@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     [Header("Weapon Animation")]
     [SerializeField] private Animator _weaponAnimator;
     [SerializeField] private string _recoilAnimationTrigger = "Recoil";
+    [SerializeField] private AnimatorOverrideController _rifleOverrideController;
+    private RuntimeAnimatorController _baseAnimatorController;
     [Header("Shooting Layer Override")]
     [Tooltip("Name of the layer that plays shooting animations.")]
     [SerializeField] private string _shootingLayerName = "ShootingGunLayer";
@@ -44,6 +46,27 @@ public class Player : MonoBehaviour
     [SerializeField] private string _upperBodyLayerName = "Upper Body";
     [Tooltip("How fast the layer weights blend.")]
     [SerializeField] private float _layerBlendSpeed = 10f;
+
+    [System.Serializable]
+    public struct WeaponSettings
+    {
+        public string weaponName;
+        public GameObject weaponModel;
+        public GameObject bulletPrefab;
+        public float fireRate;
+        public float bulletSpeed;
+        public int magazineSize;
+        public float reloadTime;
+        public bool isAutomatic;
+        public string recoilTrigger;
+        public RuntimeAnimatorController animatorController;
+        public GameObject[] firePointVFX;
+    }
+
+    [Header("Weapon Configurations")]
+    [SerializeField] private WeaponSettings _pistolConfig;
+    [SerializeField] private WeaponSettings _rifleConfig;
+    private bool _hasRifle = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3.5f;
@@ -178,10 +201,65 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool HasRifleUpgradeAvailable()
+    {
+        return !_hasRifle && _rifleConfig.bulletPrefab != null;
+    }
+
+    public void EquipRifle()
+    {
+        _hasRifle = true;
+        EquipWeaponConfig(_rifleConfig);
+    }
+
+    public void EquipWeaponConfig(WeaponSettings config)
+    {
+        // 1. Swap visual models
+        if (_pistolConfig.weaponModel != null) _pistolConfig.weaponModel.SetActive(config.weaponName == _pistolConfig.weaponName);
+        if (_rifleConfig.weaponModel != null) _rifleConfig.weaponModel.SetActive(config.weaponName == _rifleConfig.weaponName);
+
+        // 2. Extract weapon animator from the new model if present
+        Animator weaponAnim = null;
+        if (config.weaponModel != null)
+        {
+            weaponAnim = config.weaponModel.GetComponent<Animator>();
+            if (weaponAnim == null) weaponAnim = config.weaponModel.GetComponentInChildren<Animator>();
+        }
+
+        // 3. Update shooting stats
+        if (_shooting != null)
+        {
+            _shooting.UpdateWeaponStats(
+                config.bulletPrefab, 
+                config.fireRate, 
+                config.bulletSpeed, 
+                config.magazineSize, 
+                config.reloadTime, 
+                config.isAutomatic, 
+                weaponAnim, 
+                config.recoilTrigger,
+                config.firePointVFX
+            );
+        }
+
+        // 4. Swap player model animator controller
+        if (_animator != null)
+        {
+            _animator.runtimeAnimatorController = config.animatorController != null ? config.animatorController : _baseAnimatorController;
+        }
+
+        Debug.Log($"[Player] Equipped weapon configuration: {config.weaponName}");
+    }
+
     void Awake()
     {
         _instance = this;
         _controller = GetComponent<CharacterController>();
+        
+        if (_baseAnimatorController == null && _animator != null)
+        {
+            _baseAnimatorController = _animator.runtimeAnimatorController;
+        }
         
         // --- SAFE INITIALIZATION ---
         if (_mainCamera == null) _mainCamera = Camera.main;
@@ -325,6 +403,12 @@ public class Player : MonoBehaviour
         if (_healthUI != null) _healthUI.Initialize(CurrentHealth, _maxHealth);
         Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
         
+        // Initialize default weapon configuration
+        if (_pistolConfig.bulletPrefab != null)
+        {
+            EquipWeaponConfig(_pistolConfig);
+        }
+        
         // Hide mask abilities UI initially if no mask is equipped
         if (!_hasMask)
         {
@@ -336,6 +420,24 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        // --- Testing Weapon Override Controller ---
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            if (_animator != null)
+            {
+                if (_animator.runtimeAnimatorController == _rifleOverrideController)
+                {
+                    _animator.runtimeAnimatorController = _baseAnimatorController;
+                    Debug.Log("[Player] Switched animator to Base Controller");
+                }
+                else if (_rifleOverrideController != null)
+                {
+                    _animator.runtimeAnimatorController = _rifleOverrideController;
+                    Debug.Log("[Player] Switched animator to Rifle Override Controller");
+                }
+            }
+        }
+
         // --- UI Interaction Check ---
         bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
         bool uiMode = IsUIModeActive || isPointerOverUI;

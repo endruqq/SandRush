@@ -138,11 +138,11 @@ public class CardUpgradeManager : MonoBehaviour
         }));
 
         // 3. Weapon or Speed Card
-        if (Player.Instance != null && Player.Instance.HasAlternativeWeapons())
+        if (Player.Instance != null && Player.Instance.HasRifleUpgradeAvailable())
         {
-            cardsList.Add(CreateCard(container.transform, "WEAPON CARD", "Equip next special\nweapon prototype", () =>
+            cardsList.Add(CreateCard(container.transform, "WEAPON CARD", "Equip automatic\nRifle prototype", () =>
             {
-                Player.Instance.EquipNextAlternativeWeapon();
+                Player.Instance.EquipRifle();
             }));
         }
         else
@@ -185,11 +185,11 @@ public class CardUpgradeManager : MonoBehaviour
         });
 
         // Configure Weapon or Speed Card
-        if (Player.Instance != null && Player.Instance.HasAlternativeWeapons())
+        if (Player.Instance != null && Player.Instance.HasRifleUpgradeAvailable())
         {
-            ConfigureCustomCard(cardButtons[2], "WEAPON CARD", "Equip next special\nweapon prototype", () =>
+            ConfigureCustomCard(cardButtons[2], "WEAPON CARD", "Equip automatic\nRifle prototype", () =>
             {
-                Player.Instance.EquipNextAlternativeWeapon();
+                Player.Instance.EquipRifle();
             });
         }
         else

@@ -6,22 +6,22 @@ public class PlayerShooting
     private readonly Transform _playerTransform;
     private readonly Transform _firePoint;
     private float _fireRate = 0.25f;
-    private readonly float _bulletSpeed;
-    private readonly GameObject[] _firePointVFXPrefabs;
-    private readonly bool _isAutomatic;
+    private float _bulletSpeed;
+    private GameObject[] _firePointVFXPrefabs;
+    private bool _isAutomatic;
 
     private float _nextFireTime = 0f;
     
     private readonly float _maxShootAngle = 60f;
 
     private WeaponBase _weapon;
-    private readonly Animator _weaponAnimator;
-    private readonly string _recoilTrigger;
+    private Animator _weaponAnimator;
+    private string _recoilTrigger;
     
     // --- Ammo System ---
-    private readonly int _magazineSize;
+    private int _magazineSize;
     private int _currentAmmo;
-    private readonly float _reloadTime;
+    private float _reloadTime;
     private float _reloadTimer;
     private bool _isReloading;
     
@@ -175,35 +175,46 @@ public class PlayerShooting
             Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
             GameObject vfxInstance = UnityEngine.Object.Instantiate(prefab, _firePoint.position, correctedRotation, _firePoint);
             
-            // Get root particle system and play with all children
+            // Get root particle system and play with all children (true flag makes it play recursively)
             ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
             if (rootPS != null)
             {
-                // Stop everything first, then play all together
-                rootPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                rootPS.Play(true); // true = play all children simultaneously
+                rootPS.Play(true);
             }
             else
             {
-                // No root PS, play each child individually
-                foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
+                ParticleSystem childPS = vfxInstance.GetComponentInChildren<ParticleSystem>();
+                if (childPS != null)
                 {
-                    ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                    ps.Play(true);
+                    childPS.Play(true);
                 }
             }
             
-            // Calculate max duration for auto-destroy
-            float maxDuration = 0f;
-            foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
-            {
-                float duration = ps.main.duration + ps.main.startLifetime.constantMax;
-                if (duration > maxDuration) maxDuration = duration;
-            }
-            
-            // Auto-destroy after VFX finishes (with small buffer)
-            UnityEngine.Object.Destroy(vfxInstance, maxDuration + 0.5f);
+            // Auto-destroy after VFX finishes (1.0 second is more than enough for a muzzle flash)
+            UnityEngine.Object.Destroy(vfxInstance, 1.0f);
         }
+    }
+
+    public void UpdateWeaponStats(GameObject bulletPrefab, float fireRate, float bulletSpeed, int magazineSize, float reloadTime, bool isAutomatic, Animator weaponAnimator, string recoilTrigger, GameObject[] firePointVFX)
+    {
+        _fireRate = fireRate;
+        _bulletSpeed = bulletSpeed;
+        _magazineSize = magazineSize;
+        _reloadTime = reloadTime;
+        _isAutomatic = isAutomatic;
+        _weaponAnimator = weaponAnimator;
+        _recoilTrigger = recoilTrigger;
+        _firePointVFXPrefabs = firePointVFX;
+
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        
+        // Reset/Refill ammo
+        _currentAmmo = _magazineSize;
+        _isReloading = false;
+        _reloadTimer = 0f;
+        
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+        OnReloadStateChanged?.Invoke(false);
     }
 
     public void EquipWeapon(GameObject bulletPrefab)

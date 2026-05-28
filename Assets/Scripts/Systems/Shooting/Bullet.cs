@@ -18,6 +18,8 @@ public class Bullet : MonoBehaviour
     private bool _hasHit = false;
     private float _baseDamage;
 
+    private static readonly RaycastHit[] _raycastHits = new RaycastHit[16];
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -110,25 +112,35 @@ public class Bullet : MonoBehaviour
 
         if (distance > 0)
         {
-            // Use SphereCastAll to get ALL hits, then pick the first valid one
-            // This prevents the bullet from stopping on the Shooter's collider
-            RaycastHit[] hits = Physics.SphereCastAll(_lastPosition, 0.1f, direction.normalized, distance, _hitLayers);
+            // Use SphereCastNonAlloc to avoid garbage collector allocations (GC pressure)
+            int hitCount = Physics.SphereCastNonAlloc(_lastPosition, 0.1f, direction.normalized, _raycastHits, distance, _hitLayers);
             
-            // Sort by distance to process closest hits first
-            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-            
-            foreach (RaycastHit hit in hits)
+            RaycastHit closestHit = default;
+            float closestDistance = float.MaxValue;
+            bool foundValidHit = false;
+
+            for (int i = 0; i < hitCount; i++)
             {
+                RaycastHit hit = _raycastHits[i];
                 if (hit.collider.gameObject == gameObject) continue; // Ignore self
 
                 // Check if we hit the owner
-                if (IsOwner(hit.collider)) continue; // Ignore owner and KEEO GOING
+                if (IsOwner(hit.collider)) continue; // Ignore owner and KEEP GOING
                 
-                // If we got here, it's a valid hit (wall, enemy, another player)
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    closestHit = hit;
+                    foundValidHit = true;
+                }
+            }
+
+            if (foundValidHit)
+            {
                 _hasHit = true;
-                HandleHit(hit.collider, hit.point, hit.normal);
-                transform.position = hit.point;
-                return; // Stop processing after first valid hit
+                HandleHit(closestHit.collider, closestHit.point, closestHit.normal);
+                transform.position = closestHit.point;
+                return; // Stop processing after finding the closest valid hit
             }
         }
 
@@ -180,22 +192,17 @@ public class Bullet : MonoBehaviour
         
         string hitTag = other.tag;
         string hitName = other.name;
-        
-        // Log valid hit
-        Debug.Log($"Bullet HIT VALID: {hitName} (Tag: {hitTag})");
 
         EnemyManager enemy = other.GetComponentInParent<EnemyManager>();
         bool isPlayer = other.CompareTag("Player") || other.GetComponentInParent<Player>() != null;
 
         if (enemy != null)
         {
-            Debug.Log($"Dealing {damage} damage to ENEMY: {enemy.name}");
             // Pass the bullet's current forward direction as the hit direction
             enemy.TakeDamage(damage, transform.forward);
         }
         else if (isPlayer)
         {
-            Debug.Log($"Dealing {damage} damage to PLAYER");
             Player.TakeDamage((int)damage);
         }
         else
@@ -216,6 +223,12 @@ public class Bullet : MonoBehaviour
 
     private void Deactivate()
     {
+        if (_trail != null)
+        {
+            _trail.emitting = false;
+            _trail.Clear();
+        }
+
         if (_rb != null)
         {
             _rb.linearVelocity = Vector3.zero;

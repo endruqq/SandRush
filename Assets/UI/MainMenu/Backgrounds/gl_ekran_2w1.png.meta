@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3c75ce3cf0fc6674696611b0f2cbe0ba
+guid: 480af0d951554f944bbf7e47376f7ce2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dash_anim_0
+      name: gl_ekran_2w1_0
       rect:
         serializedVersion: 2
-        x: 261
-        y: 88
-        width: 162
-        height: 40
+        x: 4
+        y: 375
+        width: 885
+        height: 318
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a99b794b003ab648be7e8b129337cde
-      internalID: -405108935
+      spriteID: 0ee2c3650dd6fc84ba858df7b06cb854
+      internalID: 825190164
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_anim_1
+      name: gl_ekran_2w1_1
       rect:
         serializedVersion: 2
-        x: 429
-        y: 88
-        width: 162
-        height: 40
+        x: 4
+        y: 4
+        width: 885
+        height: 318
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,8 +134,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f28bd6c887da4ee4a9b98077a22bea60
-      internalID: -391415381
+      spriteID: a49a1f5a80667b94797528c67c7bfc9a
+      internalID: -1128320874
       vertices: []
       indices: 
       edges: []
@@ -144,7 +144,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 07d944b9a6d62e844a56b67c4a360834
     internalID: 0
     vertices: []
     indices: 
@@ -156,8 +156,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      dash_anim_0: -405108935
-      dash_anim_1: -391415381
+      gl_ekran_2w1_0: 825190164
+      gl_ekran_2w1_1: -1128320874
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

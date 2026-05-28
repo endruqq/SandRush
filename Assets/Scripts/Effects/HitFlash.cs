@@ -22,12 +22,12 @@ public class HitFlash : MonoBehaviour
             _renderers = GetComponentsInChildren<Renderer>();
         }
 
-        // Cache original materials
+        // Cache original materials using sharedMaterials to avoid instantiating copies!
         foreach (var renderer in _renderers)
         {
             if (renderer != null)
             {
-                _originalMaterials[renderer] = renderer.materials;
+                _originalMaterials[renderer] = renderer.sharedMaterials;
             }
         }
     }
@@ -52,13 +52,11 @@ public class HitFlash : MonoBehaviour
 
     private IEnumerator FlashRoutine()
     {
-        // Swap to flash material
+        // Swap to flash material using sharedMaterials to avoid allocations
         foreach (var renderer in _renderers)
         {
             if (renderer == null) continue;
             
-            // Create distinct array of flash materials based on material count
-            // We reuse the array size from cached originals to be safe
             if (_originalMaterials.TryGetValue(renderer, out var originals))
             {
                 Material[] flashMats = new Material[originals.Length];
@@ -66,7 +64,7 @@ public class HitFlash : MonoBehaviour
                 {
                     flashMats[i] = _flashMaterial;
                 }
-                renderer.materials = flashMats;
+                renderer.sharedMaterials = flashMats;
             }
         }
 
@@ -84,7 +82,7 @@ public class HitFlash : MonoBehaviour
             
             if (_originalMaterials.ContainsKey(renderer))
             {
-                renderer.materials = _originalMaterials[renderer];
+                renderer.sharedMaterials = _originalMaterials[renderer];
             }
         }
     }

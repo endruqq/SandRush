@@ -191,5 +191,24 @@ public class EnemyHealthBar : MonoBehaviour
 
         // Clean up
         if (_slider != null) _slider.gameObject.SetActive(true); // Restore for pooling
+        
+        _isVisible = false;
+        _timeSinceLastHit = _showDuration; // Start fully hidden
+        if (_canvasGroup != null)
+        {
+            _canvasGroup.alpha = 0f;
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SetCrosses(GameObject largeCross, GameObject smallCross)
+    {
+        _largeCross = largeCross;
+        _smallCross = smallCross;
+        if (_largeCross != null) _largeCross.SetActive(false);
+        if (_smallCross != null) _smallCross.SetActive(false);
     }
 }
