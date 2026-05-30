@@ -5,7 +5,7 @@ using TMPro;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    public enum MaskAbilityType { Dash, Shield }
+    public enum MaskAbilityType { Dash, Shield, Lifesteal }
 
     [Header("Dependencies")]
     [SerializeField] private Transform _firePoint;
@@ -168,6 +168,10 @@ public class Player : MonoBehaviour
     public float MaxHealthMultiplier { get; set; } = 1.0f;
     public bool HasMaskSynergy { get; set; } = false;
 
+    public bool IsShieldActive => (ActiveAbility == MaskAbilityType.Shield) || (HasMaskSynergy && (ActiveAbility == MaskAbilityType.Dash || ActiveAbility == MaskAbilityType.Shield));
+    public bool IsDashActive => (ActiveAbility == MaskAbilityType.Dash) || (HasMaskSynergy && (ActiveAbility == MaskAbilityType.Dash || ActiveAbility == MaskAbilityType.Shield));
+    public bool IsDashShieldSynergyActive => HasMaskSynergy && (ActiveAbility == MaskAbilityType.Dash || ActiveAbility == MaskAbilityType.Shield);
+
     private int _emeraldTabletCount = 0;
     private int _baseMaxHealth;
 
@@ -181,6 +185,7 @@ public class Player : MonoBehaviour
             _instance._baseMaxHealth += amount;
             _instance.RecalculateMaxHealth();
             Heal(amount);
+            _instance.SaveUpgrades();
             Debug.Log($"[Player] Base Max Health increased by {amount}. New Max: {_instance._maxHealth}");
         }
     }
@@ -190,6 +195,7 @@ public class Player : MonoBehaviour
         if (_instance != null)
         {
             _instance._damageBonus += amount;
+            _instance.SaveUpgrades();
             Debug.Log($"[Player] Damage Bonus increased by {amount}. New Bonus: {_instance._damageBonus}");
         }
     }
@@ -197,24 +203,28 @@ public class Player : MonoBehaviour
     public void UpgradeMovementSpeed(float amount)
     {
         MovementSpeedMultiplier += amount;
+        SaveUpgrades();
         Debug.Log($"[Player] Movement Speed Multiplier upgraded by +{amount}. New Multiplier: {MovementSpeedMultiplier}");
     }
 
     public void UpgradeFireRate(float amount)
     {
         FireRateMultiplier += amount;
+        SaveUpgrades();
         Debug.Log($"[Player] Fire Rate Multiplier upgraded by +{amount}. New Multiplier: {FireRateMultiplier}");
     }
 
     public void UpgradeMaskCooldownReduction(float amount)
     {
         MaskCooldownMultiplier = Mathf.Max(0.1f, MaskCooldownMultiplier - amount);
+        SaveUpgrades();
         Debug.Log($"[Player] Mask Cooldown Multiplier upgraded by -{amount}. New Multiplier: {MaskCooldownMultiplier}");
     }
 
     public void UpgradeEmeraldTablet()
     {
         _emeraldTabletCount++;
+        SaveUpgrades();
         Debug.Log($"[Player] Emerald Tablet count increased to {_emeraldTabletCount}. Current active mask bonus: {(_emeraldTabletCount * 0.1f * (_hasMask ? 1f : 0f)):P}");
     }
 
@@ -223,6 +233,7 @@ public class Player : MonoBehaviour
         DamageMultiplier += 0.5f;
         MaxHealthMultiplier = Mathf.Max(0.1f, MaxHealthMultiplier - 0.25f);
         RecalculateMaxHealth();
+        SaveUpgrades();
         Debug.Log($"[Player] Glass Sarcophagus upgraded. Damage Multiplier: {DamageMultiplier}, Max Health Multiplier: {MaxHealthMultiplier}");
     }
 
@@ -230,6 +241,7 @@ public class Player : MonoBehaviour
     {
         FireRateMultiplier += 1.0f;
         DamageTakenMultiplier += 0.5f;
+        SaveUpgrades();
         Debug.Log($"[Player] Wrath of Seth upgraded. Fire Rate Multiplier: {FireRateMultiplier}, Damage Taken Multiplier: {DamageTakenMultiplier}");
     }
 
@@ -242,7 +254,7 @@ public class Player : MonoBehaviour
         }
         ShieldCapacityMultiplier += 0.6f;
         
-        if (ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy)
+        if (IsShieldActive)
         {
             int prevMax = _maxShield;
             _maxShield = Mathf.RoundToInt(_maxHealth * 0.25f * ShieldCapacityMultiplier);
@@ -253,6 +265,7 @@ public class Player : MonoBehaviour
             }
             UpdateShieldUI();
         }
+        SaveUpgrades();
         Debug.Log($"[Player] Mummy Shell upgraded. Dash Blocked: {IsDashBlocked}, Shield Capacity Multiplier: {ShieldCapacityMultiplier}");
     }
 
@@ -263,7 +276,99 @@ public class Player : MonoBehaviour
         {
             SwitchMask(null, ActiveAbility);
         }
+        SaveUpgrades();
         Debug.Log("[Player] Mask Synergy upgraded! Both Dash and Shield are now active simultaneously.");
+    }
+
+    public void SaveUpgrades()
+    {
+        PlayerPrefs.SetInt("Upgrade_BaseMaxHealth", _baseMaxHealth);
+        PlayerPrefs.SetFloat("Upgrade_DamageBonus", _damageBonus);
+        PlayerPrefs.SetFloat("Upgrade_MovementSpeedMultiplier", MovementSpeedMultiplier);
+        PlayerPrefs.SetFloat("Upgrade_FireRateMultiplier", FireRateMultiplier);
+        PlayerPrefs.SetFloat("Upgrade_MaskCooldownMultiplier", MaskCooldownMultiplier);
+        PlayerPrefs.SetInt("Upgrade_EmeraldTabletCount", _emeraldTabletCount);
+        PlayerPrefs.SetFloat("Upgrade_DamageMultiplier", DamageMultiplier);
+        PlayerPrefs.SetFloat("Upgrade_DamageTakenMultiplier", DamageTakenMultiplier);
+        PlayerPrefs.SetFloat("Upgrade_ShieldCapacityMultiplier", ShieldCapacityMultiplier);
+        PlayerPrefs.SetInt("Upgrade_IsDashBlocked", IsDashBlocked ? 1 : 0);
+        PlayerPrefs.SetFloat("Upgrade_MaxHealthMultiplier", MaxHealthMultiplier);
+        PlayerPrefs.SetInt("Upgrade_HasMaskSynergy", HasMaskSynergy ? 1 : 0);
+        PlayerPrefs.SetInt("Upgrade_ActiveAbility", (int)ActiveAbility);
+        PlayerPrefs.SetInt("Upgrade_HasRifle", _hasRifle ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadUpgrades()
+    {
+        if (PlayerPrefs.HasKey("Upgrade_BaseMaxHealth"))
+        {
+            _baseMaxHealth = PlayerPrefs.GetInt("Upgrade_BaseMaxHealth");
+            _damageBonus = PlayerPrefs.GetFloat("Upgrade_DamageBonus");
+            MovementSpeedMultiplier = PlayerPrefs.GetFloat("Upgrade_MovementSpeedMultiplier");
+            FireRateMultiplier = PlayerPrefs.GetFloat("Upgrade_FireRateMultiplier");
+            MaskCooldownMultiplier = PlayerPrefs.GetFloat("Upgrade_MaskCooldownMultiplier");
+            _emeraldTabletCount = PlayerPrefs.GetInt("Upgrade_EmeraldTabletCount");
+            DamageMultiplier = PlayerPrefs.GetFloat("Upgrade_DamageMultiplier");
+            DamageTakenMultiplier = PlayerPrefs.GetFloat("Upgrade_DamageTakenMultiplier");
+            ShieldCapacityMultiplier = PlayerPrefs.GetFloat("Upgrade_ShieldCapacityMultiplier");
+            IsDashBlocked = PlayerPrefs.GetInt("Upgrade_IsDashBlocked") == 1;
+            MaxHealthMultiplier = PlayerPrefs.GetFloat("Upgrade_MaxHealthMultiplier");
+            HasMaskSynergy = PlayerPrefs.GetInt("Upgrade_HasMaskSynergy") == 1;
+            _hasRifle = PlayerPrefs.GetInt("Upgrade_HasRifle", 0) == 1;
+            
+            if (PlayerPrefs.GetInt("MaskCollected", 0) == 1)
+            {
+                _hasMask = true;
+            }
+
+            // Recalculate max health with loaded multipliers
+            RecalculateMaxHealth();
+            CurrentHealth = _maxHealth; // Reset health to full max health on spawn/scene load
+            
+            // Sync with movement component
+            if (_movement != null)
+            {
+                _movement.IsDashEnabled = IsDashActive && !IsDashBlocked;
+            }
+
+            int savedAbility = PlayerPrefs.GetInt("Upgrade_ActiveAbility", 0);
+            ActiveAbility = (MaskAbilityType)savedAbility;
+            
+            // Initialize shield if shield is active under loaded synergy/mask
+            if (IsShieldActive)
+            {
+                _maxShield = Mathf.RoundToInt(_maxHealth * 0.25f * ShieldCapacityMultiplier);
+                _currentShield = _maxShield;
+                if (_shieldUI != null)
+                {
+                    _shieldUI.Initialize(_currentShield, _maxShield);
+                }
+                UpdateShieldUI();
+            }
+            
+            Debug.Log("[Player] Persistent upgrades loaded successfully.");
+        }
+    }
+
+    public static void ResetPersistentUpgrades()
+    {
+        PlayerPrefs.DeleteKey("Upgrade_BaseMaxHealth");
+        PlayerPrefs.DeleteKey("Upgrade_DamageBonus");
+        PlayerPrefs.DeleteKey("Upgrade_MovementSpeedMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_FireRateMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_MaskCooldownMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_EmeraldTabletCount");
+        PlayerPrefs.DeleteKey("Upgrade_DamageMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_DamageTakenMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_ShieldCapacityMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_IsDashBlocked");
+        PlayerPrefs.DeleteKey("Upgrade_MaxHealthMultiplier");
+        PlayerPrefs.DeleteKey("Upgrade_HasMaskSynergy");
+        PlayerPrefs.DeleteKey("Upgrade_ActiveAbility");
+        PlayerPrefs.DeleteKey("Upgrade_HasRifle");
+        PlayerPrefs.Save();
+        Debug.Log("[Player] Persistent upgrades reset.");
     }
 
     public void RecalculateMaxHealth()
@@ -527,13 +632,18 @@ public class Player : MonoBehaviour
     
     void Start()
     {
+        LoadUpgrades();
+
         // Initialize Health in Start to ensure UI is ready
-        CurrentHealth = _maxHealth;
         if (_healthUI != null) _healthUI.Initialize(CurrentHealth, _maxHealth);
         Debug.Log($"[Player] Health Initialized: {CurrentHealth}/{_maxHealth}");
         
         // Initialize default weapon configuration
-        if (_pistolConfig.bulletPrefab != null)
+        if (_hasRifle && _rifleConfig.bulletPrefab != null)
+        {
+            EquipWeaponConfig(_rifleConfig);
+        }
+        else if (_pistolConfig.bulletPrefab != null)
         {
             EquipWeaponConfig(_pistolConfig);
         }
@@ -585,7 +695,7 @@ public class Player : MonoBehaviour
         if (_hasMask)
         {
             // --- SHIELD REGENERATION ---
-            if ((ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy) && _currentShield < _maxShield)
+            if (IsShieldActive && _currentShield < _maxShield)
             {
                 if (_shieldRegenDelayTimer > 0)
                 {
@@ -680,7 +790,7 @@ public class Player : MonoBehaviour
         Debug.Log($"[Player.TakeDamage] Amount: {amount}, HP Before: {_instance.CurrentHealth}");
 
         // --- SHIELD INTERCEPTION ---
-        if (_instance.ActiveAbility == MaskAbilityType.Shield || _instance.HasMaskSynergy)
+        if (_instance.IsShieldActive)
         {
             // Reset regen timer whenever ANY damage is taken!
             _instance._shieldRegenDelayTimer = 10f * _instance.MaskCooldownMultiplier;
@@ -750,7 +860,7 @@ public class Player : MonoBehaviour
     {
         if (_instance == null || _isDead) return;
         
-        if (_instance.ActiveAbility == MaskAbilityType.Shield || _instance.HasMaskSynergy)
+        if (_instance.IsShieldActive)
         {
             Debug.Log($"[Player.AddShield] Amount: {amount}, Shield Before: {_instance._currentShield}");
             _instance._currentShield = Mathf.Clamp(_instance._currentShield + amount, 0, _instance._maxShield);
@@ -866,7 +976,7 @@ public class Player : MonoBehaviour
     private void UpdateDashCooldownUI()
     {
         // Update correct visual UI based on mask synergy
-        if (HasMaskSynergy)
+        if (IsDashShieldSynergyActive)
         {
             if (_dashWhen2MasksActiveUI != null)
             {
@@ -903,13 +1013,13 @@ public class Player : MonoBehaviour
         _hasMask = true;
         
         // Ensure ability UI is correctly shown upon picking up the first mask
-        bool showStandardDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !HasMaskSynergy;
-        bool showSynergyDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && HasMaskSynergy;
+        bool showStandardDash = IsDashActive && !HasMaskSynergy;
+        bool showSynergyDash = IsDashActive && HasMaskSynergy;
 
         if (_dashUI != null) _dashUI.gameObject.SetActive(showStandardDash);
         if (_dashWhen2MasksActiveUI != null) _dashWhen2MasksActiveUI.gameObject.SetActive(showSynergyDash);
-        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy);
-        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !IsDashBlocked;
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(IsShieldActive);
+        if (_movement != null) _movement.IsDashEnabled = IsDashActive && !IsDashBlocked;
 
         OnMaskEquipped?.Invoke(true);
         Debug.Log("Mask Equipped: +10% Fire Rate active.");
@@ -920,9 +1030,10 @@ public class Player : MonoBehaviour
         if (!_hasMask) EquipMask();
         if (newHudIcon != null) OnMaskChanged?.Invoke(newHudIcon);
         
-        bool isShieldActiveNow = (abilityType == MaskAbilityType.Shield) || HasMaskSynergy;
+        bool isShieldActiveNow = (abilityType == MaskAbilityType.Shield) || (HasMaskSynergy && (abilityType == MaskAbilityType.Dash || abilityType == MaskAbilityType.Shield));
+        bool isShieldActivePrev = IsShieldActive;
 
-        if (ActiveAbility != MaskAbilityType.Shield && isShieldActiveNow)
+        if (!isShieldActivePrev && isShieldActiveNow)
         {
             _maxShield = Mathf.RoundToInt(_maxHealth * 0.25f * ShieldCapacityMultiplier);
             
@@ -942,7 +1053,7 @@ public class Player : MonoBehaviour
             
             UpdateShieldUI();
         }
-        else if (ActiveAbility == MaskAbilityType.Shield && !isShieldActiveNow)
+        else if (isShieldActivePrev && !isShieldActiveNow)
         {
             if (_movement != null) _movement.SpeedMultiplier = 1f;
         }
@@ -950,15 +1061,15 @@ public class Player : MonoBehaviour
         ActiveAbility = abilityType;
         
         // Toggle UI
-        bool showStandardDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !HasMaskSynergy;
-        bool showSynergyDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && HasMaskSynergy;
+        bool showStandardDash = IsDashActive && !HasMaskSynergy;
+        bool showSynergyDash = IsDashActive && HasMaskSynergy;
 
         if (_dashUI != null) _dashUI.gameObject.SetActive(showStandardDash);
         if (_dashWhen2MasksActiveUI != null) _dashWhen2MasksActiveUI.gameObject.SetActive(showSynergyDash);
-        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(IsShieldActive);
         
         // Toggle Logic
-        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !IsDashBlocked;
+        if (_movement != null) _movement.IsDashEnabled = IsDashActive && !IsDashBlocked;
     }
 
     private void UpdateShieldUI()
@@ -972,7 +1083,7 @@ public class Player : MonoBehaviour
         if (_shieldVisualEffect != null)
         {
             // Tarcza się świeci tylko gdy mamy wybraną maskę Tarczy I jednocześnie mamy punkty ochrony
-            bool hasShieldActive = ((ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy) && _currentShield > 0);
+            bool hasShieldActive = (IsShieldActive && _currentShield > 0);
             
             if (_shieldVisualEffect.activeSelf != hasShieldActive)
             {

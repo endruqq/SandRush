@@ -233,6 +233,17 @@ public class Bullet : MonoBehaviour
         {
             // Pass the bullet's current forward direction as the hit direction
             enemy.TakeDamage(damage, transform.forward);
+
+            // Apply Lifesteal (Vampirism) if the bullet belongs to the player and the active mask is Lifesteal
+            if (!string.IsNullOrEmpty(_ownerTag) && _ownerTag == "Player")
+            {
+                Player player = Player.Instance;
+                if (player != null && player.ActiveAbility == Player.MaskAbilityType.Lifesteal)
+                {
+                    int healAmount = Mathf.Max(1, Mathf.RoundToInt(damage * 0.1f)); // 10% lifesteal (min 1 HP)
+                    Player.Heal(healAmount);
+                }
+            }
         }
         else if (isPlayer)
         {

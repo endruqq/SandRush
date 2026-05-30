@@ -160,6 +160,13 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.DeleteKey("TutorialCompleted");
         PlayerPrefs.DeleteKey("MaskCollected");
         PlayerPrefs.DeleteKey("HasCustomSave");
+        PlayerPrefs.DeleteKey("RespawnPosX");
+        PlayerPrefs.DeleteKey("RespawnPosY");
+        PlayerPrefs.DeleteKey("RespawnPosZ");
+        
+        Player.ResetPersistentUpgrades();
+        LootCrate.ResetOpenedCrates();
+        
         PlayerPrefs.Save();
         LoadScene(_gameplaySceneName);
     }

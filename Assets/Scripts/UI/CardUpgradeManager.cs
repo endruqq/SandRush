@@ -375,9 +375,12 @@ public class CardUpgradeManager : MonoBehaviour
         allPool.Add(new UpgradeCard("MUMMY SHELL", "+60% Shield Capacity\nDash ability blocked", () => {
             if (Player.Instance != null) Player.Instance.UpgradeMummyShell();
         }));
-        allPool.Add(new UpgradeCard("DUAL ALIGNMENT", "Equip both Dash and Shield\nmasks at the same time", () => {
-            if (Player.Instance != null) Player.Instance.UpgradeMaskSynergy();
-        }));
+        if (Player.Instance == null || !Player.Instance.HasMaskSynergy)
+        {
+            allPool.Add(new UpgradeCard("DUAL ALIGNMENT", "Equip both Dash and Shield\nmasks at the same time", () => {
+                if (Player.Instance != null) Player.Instance.UpgradeMaskSynergy();
+            }));
+        }
 
         // Shuffle the pool using Fisher-Yates
         for (int i = 0; i < allPool.Count; i++)
