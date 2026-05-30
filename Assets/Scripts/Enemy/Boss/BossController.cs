@@ -42,6 +42,7 @@ public class BossController : MonoBehaviour
     private Player _cachedPlayer;
 
     public float HealthPercent => _maxHealth > 0 ? _currentHealth / _maxHealth : 0;
+    public bool IsDead => _isDead;
 
     private void Awake()
     {

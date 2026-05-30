@@ -569,8 +569,7 @@ public class Player : MonoBehaviour
         }
 
         // --- UI Interaction Check ---
-        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-        bool uiMode = IsUIModeActive || isPointerOverUI;
+        bool uiMode = IsUIModeActive;
 
         _shooting.IsEnabled = !uiMode;
 
@@ -654,8 +653,7 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
-        bool isPointerOverUI = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-        bool uiMode = IsUIModeActive || isPointerOverUI;
+        bool uiMode = IsUIModeActive;
         if (uiMode) return;
 
         Vector3 lookDirection = _aiming.GroundPosition - transform.position;
