@@ -37,6 +37,20 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_currentMusicInstance.isValid())
+        {
+            _currentMusicInstance.getPlaybackState(out PLAYBACK_STATE state);
+            if (state == PLAYBACK_STATE.STOPPED && !string.IsNullOrEmpty(_currentEventPath))
+            {
+                // The track finished naturally (didn't loop in FMOD). Let's restart it!
+                Debug.Log($"[MusicManager] Track finished naturally. Restarting to loop: {_currentEventPath}");
+                _currentMusicInstance.start();
+            }
+        }
+    }
+
     /// <summary>
     /// Play a music event. Stops current music if different track.
     /// </summary>

@@ -51,6 +51,7 @@ public class BodyPartExploder : MonoBehaviour
             debris.transform.position = r.transform.position;
             debris.transform.rotation = r.transform.rotation;
             debris.layer = r.gameObject.layer;
+            debris.AddComponent<DebrisTag>();
             
             Mesh meshToUse = null;
             Material[] matsToUse = r.sharedMaterials;
@@ -163,3 +164,5 @@ public class DebrisCleanup : MonoBehaviour
         }
     }
 }
+
+public class DebrisTag : MonoBehaviour {}

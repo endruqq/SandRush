@@ -5154,6 +5154,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45151285}
   m_Mesh: {fileID: 7315884856667932905, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &46912321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 46912322}
+  - component: {fileID: 46912323}
+  m_Layer: 0
+  m_Name: Spawner_2 (28)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &46912322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46912321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.550003, y: -6.26, z: 119.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 477556481}
+  - {fileID: 1534345018}
+  - {fileID: 1242496268}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &46912323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46912321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &47470523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5877,6 +5941,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53392769}
   m_Mesh: {fileID: 3952875707863401030, guid: 5245bca2d0778a94996a7d8dd968e968, type: 3}
+--- !u!1 &53435244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 53435245}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &53435245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53435244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 490656865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &53650881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7409,6 +7504,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
+--- !u!1 &70500163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 70500164}
+  - component: {fileID: 70500165}
+  m_Layer: 0
+  m_Name: Spawner_2 (33)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &70500164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70500163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -38.48, y: -6.26, z: 51.300003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 986974799}
+  - {fileID: 156830928}
+  - {fileID: 1902860362}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &70500165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70500163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 3
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &71845817
 GameObject:
   m_ObjectHideFlags: 0
@@ -9407,6 +9566,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4393657, y: 1.466593, z: 1.741418}
   m_Center: {x: 0.7196829, y: 0.47639713, z: -0.870709}
+--- !u!1 &101697723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 101697724}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &101697724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101697723}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 444898221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &104959073
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12927,6 +13117,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144613658}
   m_Mesh: {fileID: 8050637208936198001, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &144617920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 144617921}
+  - component: {fileID: 144617922}
+  m_Layer: 0
+  m_Name: Spawner_2 (24)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &144617921
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144617920}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 45.550003, y: -6.26, z: 68.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1409901066}
+  - {fileID: 737669149}
+  - {fileID: 1934856390}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144617922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144617920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1001 &145089816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14131,6 +14385,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9, y: 6.116676, z: 9}
   m_Center: {x: 0, y: 3.0125864, z: 0}
+--- !u!1 &156830927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 156830928}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &156830928
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156830927}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70500164}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &157278853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15261,6 +15546,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 416.57098, z: -180}
+--- !u!1 &165752900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 165752901}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &165752901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165752900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1125595354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &168033430
 GameObject:
   m_ObjectHideFlags: 0
@@ -19594,97 +19910,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208645548}
   m_Mesh: {fileID: 6344824001135287846, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
---- !u!1001 &208742655
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 58.66999
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5319798
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -35.699913
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.70710677
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071069
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -5020134255852103994, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 90bf95e906515ee4cb8c35b57e2a6246, type: 2}
-    - target: {fileID: -952805970159229923, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 90bf95e906515ee4cb8c35b57e2a6246, type: 2}
-    - target: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_Name
-      value: F_Chest (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8836455
-      objectReference: {fileID: 0}
-    - target: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4681568
-      objectReference: {fileID: 0}
-    - target: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.00000008940696
-      objectReference: {fileID: 0}
-    - target: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -55.829
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1620336490}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1620336489}
-  m_SourcePrefab: {fileID: 100100000, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
 --- !u!65 &210890154
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20776,6 +21001,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224349523}
   m_Mesh: {fileID: 5532904954280411677, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &227156280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227156281}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &227156281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227156280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1125595354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227360447
 GameObject:
   m_ObjectHideFlags: 0
@@ -21364,6 +21620,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 235198130}
   m_Mesh: {fileID: 8040521487702091733, guid: 60b7ded7ed04ad1458373e628bfd823f, type: 3}
+--- !u!1 &235227668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 235227669}
+  - component: {fileID: 235227670}
+  m_Layer: 0
+  m_Name: Spawner_2 (22)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &235227669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235227668}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 62.550003, y: -6.26, z: 68.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2129019196}
+  - {fileID: 505391255}
+  - {fileID: 1344586195}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &235227670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235227668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &236380642
 GameObject:
   m_ObjectHideFlags: 0
@@ -26739,6 +27059,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293812936}
   m_CullTransparentMesh: 1
+--- !u!1 &296499172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296499173}
+  - component: {fileID: 296499174}
+  m_Layer: 0
+  m_Name: Spawner_2 (23)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &296499173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296499172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 39.550003, y: -6.26, z: 68.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1816238878}
+  - {fileID: 1934075479}
+  - {fileID: 1738857903}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &296499174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296499172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &296803665
 GameObject:
   m_ObjectHideFlags: 0
@@ -28562,6 +28946,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314237354}
   m_Mesh: {fileID: 3910734656562040719, guid: 60b7ded7ed04ad1458373e628bfd823f, type: 3}
+--- !u!1 &316260954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 316260955}
+  - component: {fileID: 316260956}
+  m_Layer: 0
+  m_Name: Spawner_2 (25)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &316260955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316260954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.550003, y: -6.26, z: 81.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1752366718}
+  - {fileID: 875403810}
+  - {fileID: 1140085744}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &316260956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316260954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1001 &317691403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32106,6 +32554,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360458217}
   m_Mesh: {fileID: -9127579385510032115, guid: 45cdc9ece7e7198449848eeeb62bc18f, type: 3}
+--- !u!1 &360967162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 360967163}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &360967163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360967162}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2076100157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &362855266
 GameObject:
   m_ObjectHideFlags: 0
@@ -34257,6 +34736,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387056613}
   m_Mesh: {fileID: 604437184016217929, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &388396332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 388396333}
+  m_Layer: 0
+  m_Name: FirePoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &388396333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388396332}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.0000029355283, z: -0, w: -1}
+  m_LocalPosition: {x: -0.30115703, y: 0.37799996, z: 0.61463165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1828297894}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &391096210
 GameObject:
   m_ObjectHideFlags: 0
@@ -36478,6 +36988,54 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1755036154}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1397346089}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2076100157}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1941158939}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 235227669}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 296499173}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 144617921}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316260955}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1125595354}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 852460428}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 46912322}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 914691268}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 490656865}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1156921630}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1837357395}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 70500164}
+    - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 444898221}
     - targetCorrespondingSourceObject: {fileID: 208338071718896948, guid: 0eb5c21fd604ccf4ea406aca64f8a615, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2056682327}
@@ -40343,6 +40901,70 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03, y: 0.029999994, z: 1.2705492e-23}
   m_Center: {x: 0.014999985, y: -0.014999997, z: -0.0000000018626451}
+--- !u!1 &444898220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 444898221}
+  - component: {fileID: 444898222}
+  m_Layer: 0
+  m_Name: Spawner_2 (34)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &444898221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444898220}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -55.48, y: -6.26, z: 56.300003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 640852372}
+  - {fileID: 101697724}
+  - {fileID: 1441258594}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &444898222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444898220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 3
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &445130814
 GameObject:
   m_ObjectHideFlags: 0
@@ -40687,7 +41309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 266007473}
+  _enemyPrefab: {fileID: 1828297886}
   _spawnMode: 1
   _enemiesPerWave: 3
   _timeBetweenWaves: 3
@@ -41954,6 +42576,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465167412}
   m_Mesh: {fileID: 8050637208936198001, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &467762386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 467762387}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &467762387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467762386}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1941158939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470207835
 GameObject:
   m_ObjectHideFlags: 0
@@ -42360,6 +43013,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9848576, y: 1.4125658, z: 0.08901193}
   m_Center: {x: 0.0047724843, y: -0.0036628246, z: 0.0443263}
+--- !u!1 &477556480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 477556481}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &477556481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477556480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 46912322}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &479968478
 GameObject:
   m_ObjectHideFlags: 0
@@ -43370,6 +44054,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -80.652, z: -90}
+--- !u!1 &490656864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 490656865}
+  - component: {fileID: 490656866}
+  m_Layer: 0
+  m_Name: Spawner_2 (30)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &490656865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490656864}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.48, y: -6.26, z: 79.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1894659762}
+  - {fileID: 1049675356}
+  - {fileID: 53435245}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &490656866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490656864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &491203072
 GameObject:
   m_ObjectHideFlags: 0
@@ -45372,6 +46120,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505357125}
   m_Mesh: {fileID: -6277919634521360205, guid: 5245bca2d0778a94996a7d8dd968e968, type: 3}
+--- !u!1 &505391254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 505391255}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &505391255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505391254}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 235227669}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &506054903
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54730,7 +55509,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1832006458}
   m_SourcePrefab: {fileID: 100100000, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
 --- !u!4 &634098661 stripped
 Transform:
@@ -55163,6 +55945,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8543690888035663796, guid: 0ba85c9b49c72e24ba62e872e50c776a, type: 3}
   m_PrefabInstance: {fileID: 8525743241685401614}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &640852371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640852372}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640852372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640852371}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 444898221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &642293121
 GameObject:
   m_ObjectHideFlags: 0
@@ -62830,6 +63643,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734546113}
   m_Mesh: {fileID: -667738730887278378, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &737669148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737669149}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &737669149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737669148}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 144617921}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &739686435
 GameObject:
   m_ObjectHideFlags: 0
@@ -67718,6 +68562,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800073954}
   m_Mesh: {fileID: 6344824001135287846, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &800130716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800130717}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &800130717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800130716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837357395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &800497017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -73955,6 +74830,70 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &852460427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 852460428}
+  - component: {fileID: 852460429}
+  m_Layer: 0
+  m_Name: Spawner_2 (27)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &852460428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852460427}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.550003, y: -6.26, z: 110.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1858208970}
+  - {fileID: 1172827547}
+  - {fileID: 1058050231}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &852460429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852460427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1001 &853750944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75807,6 +76746,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2056682327}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &875403809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875403810}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &875403810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875403809}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 316260955}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &880720072 stripped
 Transform:
@@ -77726,6 +78696,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911326254}
   m_Mesh: {fileID: 713140104604227251, guid: c74a9001669dbff4c879671e85a50653, type: 3}
+--- !u!1 &914691267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 914691268}
+  - component: {fileID: 914691269}
+  m_Layer: 0
+  m_Name: Spawner_2 (29)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &914691268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914691267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 44.550003, y: -6.26, z: 124.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1567835866}
+  - {fileID: 1546238036}
+  - {fileID: 1681066129}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &914691269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914691267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &915167976
 GameObject:
   m_ObjectHideFlags: 0
@@ -79932,6 +80966,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935960692}
   m_Mesh: {fileID: -5995652372484661629, guid: 45cdc9ece7e7198449848eeeb62bc18f, type: 3}
+--- !u!1 &936329215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 936329216}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &936329216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936329215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1156921630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &936951675
 GameObject:
   m_ObjectHideFlags: 0
@@ -84604,6 +85669,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986745762}
   m_Mesh: {fileID: -3998744924856260934, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &986974798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986974799}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &986974799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986974798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70500164}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &986986849
 GameObject:
   m_ObjectHideFlags: 0
@@ -89492,6 +90588,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1047062397}
   m_Mesh: {fileID: -6990331873521931974, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1049675355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1049675356}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1049675356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049675355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 490656865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1049808228
 GameObject:
   m_ObjectHideFlags: 0
@@ -90617,6 +91744,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057600672}
   m_Mesh: {fileID: -9042605214870593457, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1058050230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1058050231}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1058050231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058050230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 852460428}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1059174247
 GameObject:
   m_ObjectHideFlags: 0
@@ -95922,6 +97080,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119091940}
   m_Mesh: {fileID: 4122070578226212140, guid: 7cd013c958d537444b16ff1d93c8a456, type: 3}
+--- !u!1 &1121542563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1121542564}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1121542564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121542563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2076100157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1122173825
 GameObject:
   m_ObjectHideFlags: 0
@@ -96235,6 +97424,70 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3306618, y: 4.482146, z: 1.9530075}
   m_Center: {x: -1.1653309, y: 2.2410724, z: -0.9765042}
+--- !u!1 &1125595353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1125595354}
+  - component: {fileID: 1125595355}
+  m_Layer: 0
+  m_Name: Spawner_2 (26)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1125595354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125595353}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.550003, y: -6.26, z: 99.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 227156281}
+  - {fileID: 1930467296}
+  - {fileID: 165752901}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1125595355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125595353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!65 &1126447402
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -97807,6 +99060,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.1296787, y: 3.5250573, z: 7.762171}
   m_Center: {x: 0.07872963, y: 0.0000073313713, z: 3.8814135}
+--- !u!1 &1140085743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140085744}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140085744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140085743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 316260955}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1140186100
 GameObject:
   m_ObjectHideFlags: 0
@@ -98046,6 +99330,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141350675}
   m_Mesh: {fileID: -6990331873521931974, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1141965507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141965508}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1141965508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141965507}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.0000029355283, z: -0, w: -1}
+  m_LocalPosition: {x: 0.3698425, y: 0.37799996, z: 0.61463165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1828297894}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1145496509
 GameObject:
   m_ObjectHideFlags: 0
@@ -99847,6 +101162,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156635131}
   m_Mesh: {fileID: 8116964701051474867, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1156921629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1156921630}
+  - component: {fileID: 1156921631}
+  m_Layer: 0
+  m_Name: Spawner_2 (31)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1156921630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156921629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -58.48, y: -6.26, z: 79.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 936329216}
+  - {fileID: 1581017054}
+  - {fileID: 1252112281}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1156921631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156921629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &1159412356
 GameObject:
   m_ObjectHideFlags: 0
@@ -101678,6 +103057,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172642369}
   m_Mesh: {fileID: 8040521487702091733, guid: 60b7ded7ed04ad1458373e628bfd823f, type: 3}
+--- !u!1 &1172827546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1172827547}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1172827547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172827546}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 852460428}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1178517091
 GameObject:
   m_ObjectHideFlags: 0
@@ -102513,7 +103923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 266007473}
+  _enemyPrefab: {fileID: 1828297886}
   _spawnMode: 1
   _enemiesPerWave: 2
   _timeBetweenWaves: 3
@@ -103215,11 +104625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
---- !u!4 &1201006073 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7520675667221553174, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-  m_PrefabInstance: {fileID: 208742655}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1201274529
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107203,6 +108608,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4393657, y: 1.466593, z: 1.741418}
   m_Center: {x: 0.7196829, y: 0.47639713, z: -0.870709}
+--- !u!1 &1242496267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1242496268}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1242496268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242496267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 46912322}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1244393006
 GameObject:
   m_ObjectHideFlags: 0
@@ -108010,7 +109446,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1750146739}
   m_SourcePrefab: {fileID: 100100000, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
 --- !u!4 &1248870578 stripped
 Transform:
@@ -108239,6 +109678,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250822580}
   m_Mesh: {fileID: 1548768725360189028, guid: 81032857143fefb46b4fc9842aff5975, type: 3}
+--- !u!1 &1252112280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1252112281}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1252112281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252112280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1156921630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1252234544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -112075,7 +113545,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 85194931355c9d846af72816a0e07b76, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.02916
+      value: 49.029076
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85194931355c9d846af72816a0e07b76, type: 3}
       propertyPath: m_LocalPosition.y
@@ -112083,7 +113553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85194931355c9d846af72816a0e07b76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -85.34
+      value: -99.34017
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 85194931355c9d846af72816a0e07b76, type: 3}
       propertyPath: m_LocalRotation.w
@@ -114346,7 +115816,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58.66999
+      value: 70.677635
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalPosition.y
@@ -114354,11 +115824,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -43.699913
+      value: -44.68504
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710677
+      value: 0.7071069
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalRotation.x
@@ -114366,7 +115836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071069
+      value: 0.7071067
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalRotation.z
@@ -114378,7 +115848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -115997,6 +117467,37 @@ CapsuleCollider:
   m_Height: 2.313965
   m_Direction: 1
   m_Center: {x: 0, y: 1.1554073, z: 0.00000071525574}
+--- !u!1 &1344586194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1344586195}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1344586195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344586194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 235227669}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349242039
 GameObject:
   m_ObjectHideFlags: 0
@@ -118989,6 +120490,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 944659960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1389269702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389269703}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1389269703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389269702}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2076100157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1390877509
 Mesh:
   m_ObjectHideFlags: 0
@@ -119453,6 +120985,70 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3944631, y: 1.4665929, z: 1.7414178}
   m_Center: {x: 0.69723916, y: 0.5209108, z: -0.8707089}
+--- !u!1 &1397346088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397346089}
+  - component: {fileID: 1397346090}
+  m_Layer: 0
+  m_Name: Spawner_2 (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1397346089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397346088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 50.55, y: -5.26, z: 8.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1590394348}
+  - {fileID: 1419612346}
+  - {fileID: 1919120530}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1397346090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397346088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 5.98
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &1397370037
 GameObject:
   m_ObjectHideFlags: 0
@@ -120893,6 +122489,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409073951}
   m_Mesh: {fileID: 6344824001135287846, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1409901065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1409901066}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1409901066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409901065}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 144617921}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1414444555
 GameObject:
   m_ObjectHideFlags: 0
@@ -121231,6 +122858,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6855571728332416818, guid: ee728466206a1e04db426b8a577fa987, type: 3}
+--- !u!1 &1419612345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1419612346}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1419612346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419612345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1397346089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1419700133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123502,6 +125160,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.000824, y: 4.163904, z: 1.000824}
   m_Center: {x: 0, y: 2.08463, z: 0.000008374453}
+--- !u!1 &1441258593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1441258594}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1441258594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441258593}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 444898221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1441533138
 GameObject:
   m_ObjectHideFlags: 0
@@ -125965,6 +127654,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463906796}
   m_Mesh: {fileID: 7315884856667932905, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1463945484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1463945485}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1463945485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463945484}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1941158939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1464145028
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -131571,6 +133291,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532768290}
   m_Mesh: {fileID: -667738730887278378, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1534345017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1534345018}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1534345018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534345017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 46912322}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1534665696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133135,6 +134886,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544556890}
   m_Mesh: {fileID: 6344824001135287846, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1546238035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546238036}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1546238036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546238035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 914691268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1546650822
 GameObject:
   m_ObjectHideFlags: 0
@@ -134927,6 +136709,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566336818}
   m_Mesh: {fileID: 6344824001135287846, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1567835865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1567835866}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567835866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567835865}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 914691268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1570411173
 GameObject:
   m_ObjectHideFlags: 0
@@ -136162,6 +137975,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580145470}
   m_Mesh: {fileID: 7103410984560831286, guid: 60b7ded7ed04ad1458373e628bfd823f, type: 3}
+--- !u!1 &1581017053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1581017054}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1581017054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581017053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1156921630}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1584338044
 GameObject:
   m_ObjectHideFlags: 0
@@ -136815,6 +138659,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03, y: 0.029999994, z: 1.2705492e-23}
   m_Center: {x: 0.0150000295, y: -0.014999997, z: -9.313226e-10}
+--- !u!1 &1590394347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1590394348}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1590394348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590394347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1397346089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1592159119
 GameObject:
   m_ObjectHideFlags: 0
@@ -138358,61 +140233,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618158934}
   m_Mesh: {fileID: -8541766051557881652, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
---- !u!1 &1620336488 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f7a9d2cb21fd0d4898cb0e32f52dd89, type: 3}
-  m_PrefabInstance: {fileID: 208742655}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1620336489
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620336488}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.7165973, y: 2.332655, z: 1}
-  m_Center: {x: 0.01663071, y: 0.6663275, z: 8.024261e-16}
---- !u!114 &1620336490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620336488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da079ee9391a9d341be5cabfc5bae75b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LootCrate
-  _health: 1
-  _openCrateModel: {fileID: 0}
-  _closedCrateModel: {fileID: 0}
-  _crateLid: {fileID: 1201006073}
-  _healthPrefab: {fileID: 0}
-  _shieldPrefab: {fileID: 0}
-  _healthItemsCount: 1
-  _shieldItemsCount: 1
-  _landingTarget: {fileID: 0}
-  _upwardForce: 6
-  _forwardForce: 2
-  _spread: 1.5
-  _ejectionDirection: {x: 0, y: 0, z: 1}
-  _spawnOffset: {x: 0, y: 1.2, z: 0}
-  _groundLevelOffset: 0
-  _breakSoundEvent: 
-  _breakVFX: {fileID: 0}
 --- !u!1001 &1620338609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142629,6 +144449,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.00562, y: 4.9704676, z: 1.005619}
   m_Center: {x: -0.00000011920929, y: 2.4923587, z: 0.00000062584877}
+--- !u!1 &1681066128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1681066129}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1681066129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681066128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 914691268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1681088597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148142,6 +149993,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737639470}
   m_Mesh: {fileID: -9127579385510032115, guid: 45cdc9ece7e7198449848eeeb62bc18f, type: 3}
+--- !u!1 &1738857902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1738857903}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1738857903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738857902}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 296499173}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1738933054
 GameObject:
   m_ObjectHideFlags: 0
@@ -150302,6 +152184,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749719271}
   m_Mesh: {fileID: -9042605214870593457, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1750146738 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
+  m_PrefabInstance: {fileID: 1248870577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1750146739
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750146738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 32.257843, y: 5.1371155, z: 0.24639702}
+  m_Center: {x: 15.6289215, y: 2.0685577, z: 0.0044671893}
 --- !u!1 &1750730815
 GameObject:
   m_ObjectHideFlags: 0
@@ -150413,6 +152321,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1750730815}
   m_Mesh: {fileID: 7315884856667932905, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1752366717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1752366718}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1752366718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752366717}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 316260955}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1754066335
 GameObject:
   m_ObjectHideFlags: 0
@@ -150571,7 +152510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyPrefab: {fileID: 266007473}
+  _enemyPrefab: {fileID: 1828297886}
   _spawnMode: 1
   _enemiesPerWave: 1
   _timeBetweenWaves: 3
@@ -155626,6 +157565,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813290873}
   m_Mesh: {fileID: 5698961210767587461, guid: bbfb18ca6cc9159479b9b9dbced0347d, type: 3}
+--- !u!1 &1816238877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1816238878}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1816238878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816238877}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 296499173}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1816380153
 GameObject:
   m_ObjectHideFlags: 0
@@ -156847,6 +158817,278 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827634952}
   m_Mesh: {fileID: 8050637208936198001, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1001 &1828297885
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 50.066917
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -99.31055
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.000000014901161
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1456753250922983655, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d360b426296795741a8493152a8f19f5, type: 2}
+    - target: {fileID: -37791496034917779, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d360b426296795741a8493152a8f19f5, type: 2}
+    - target: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_Name
+      value: F_Dron
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1039632166306413028, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d360b426296795741a8493152a8f19f5, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1141965508}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 388396333}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297893}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297892}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297891}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297890}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297889}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297888}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828297887}
+  m_SourcePrefab: {fileID: 100100000, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+--- !u!1 &1828297886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+  m_PrefabInstance: {fileID: 1828297885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1828297887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ed95d0e6b4c1348b4d08f6fde5b5f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BodyPartExploder
+  _knockbackForce: 1
+  _torqueAmount: 5
+  _partLifetime: 5
+  _excludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  _debrisScale: 0.01
+--- !u!114 &1828297888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769d72ea59b8c3b4eb4399c924980a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFlash
+  _flashMaterial: {fileID: 2100000, guid: 2d676949a60bedf44acf956c9ccebda7, type: 2}
+  _duration: 0.1
+  _renderers: []
+--- !u!65 &1828297889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.1839578, z: 1}
+  m_Center: {x: 0, y: 0.8151673, z: -0}
+--- !u!114 &1828297890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4f585e1b153e54cbf211522ac7f355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  _maxHealth: 30
+  _animator: {fileID: 0}
+  _bloodSplatPrefab: {fileID: 5129652101402271953, guid: 26fd16bba0727004cbea9be28dce2a15, type: 3}
+  _bodyPartExploder: {fileID: 0}
+  _modelRenderers: []
+  _deathSound: event:/Scarab_Death
+  _healthBar: {fileID: 0}
+--- !u!114 &1828297891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba08bd008a162ca4da4f0b7299b71292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  _attackType: 0
+  _playerTransform: {fileID: 1231638233}
+  _detectionRadius: 15
+  _attackRange: 10
+  _attackRate: 5
+  _bulletPrefab: {fileID: 7043720130884026749, guid: d18be9049b4e2344f920763504379835, type: 3}
+  _firePoints:
+  - {fileID: 1141965508}
+  - {fileID: 388396333}
+  _bulletSpeed: 15
+  _rangedDamage: 5
+  _rangedVFXPrefabs:
+  - {fileID: 457345638}
+  _enableStrafing: 1
+  _strafeSpeed: 2
+  _strafeChangeInterval: 2
+  _meleeDamage: 10
+  _meleeHitDelay: 0.3
+  _meleeVFXPoint: {fileID: 0}
+  _meleeVFXPrefabs: []
+  _explosionDamage: 50
+  _explosionRadius: 5
+  _explosionFuseTime: 1.5
+  _explosionVFX: {fileID: 0}
+  _attackSound: event:/Scarab_Attack
+  _detectionSound: event:/Detection_Alert
+  _explosionSound: event:/Explosions
+  _animator: {fileID: 266007474}
+  _isWalkingBool: isWalking
+  _attackTrigger: Attack
+  _losHeightOffset: 1.2
+  _searchDuration: 2
+--- !u!195 &1828297892
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!95 &1828297893
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828297886}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 85194931355c9d846af72816a0e07b76, type: 3}
+  m_Controller: {fileID: 9100000, guid: 0c1b80d43a9a6ad428797bb299494ff4, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1828297894 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e1b6e5cf9d5893a46b30ce50ff784c2d, type: 3}
+  m_PrefabInstance: {fileID: 1828297885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1829006754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157034,6 +159276,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4393657, y: 1.466593, z: 1.7414181}
   m_Center: {x: 0.7196829, y: 0.47638956, z: -0.87070894}
+--- !u!1 &1832006457 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b35025d3f9d59b043b183e15208f0f1a, type: 3}
+  m_PrefabInstance: {fileID: 634098660}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1832006458
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1832006457}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 32.178543, y: 4.97665, z: 0.32925653}
+  m_Center: {x: 15.589272, y: 1.9883256, z: -0.13114029}
 --- !u!1001 &1832128219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157711,6 +159979,70 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03, y: 0.029999994, z: 1.2705492e-23}
   m_Center: {x: 0.014999985, y: -0.014999997, z: -9.313226e-10}
+--- !u!1 &1837357394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1837357395}
+  - component: {fileID: 1837357396}
+  m_Layer: 0
+  m_Name: Spawner_2 (32)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1837357395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837357394}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -58.48, y: -6.26, z: 55.300003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1960028461}
+  - {fileID: 1850689746}
+  - {fileID: 800130717}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1837357396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837357394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 2.78
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &1838344867
 GameObject:
   m_ObjectHideFlags: 0
@@ -158223,6 +160555,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1850620057}
   m_Mesh: {fileID: 5275541602752490014, guid: 81032857143fefb46b4fc9842aff5975, type: 3}
+--- !u!1 &1850689745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1850689746}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1850689746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850689745}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837357395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1851170632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159210,6 +161573,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.075179, y: 1.787328, z: 0.76183605}
   m_Center: {x: 0.00484848, y: 0.893664, z: -0.004492104}
+--- !u!1 &1858208969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858208970}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1858208970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858208969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 852460428}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1863185894
 GameObject:
   m_ObjectHideFlags: 0
@@ -161511,6 +163905,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893328759}
   m_Mesh: {fileID: -9042605214870593457, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1894659761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1894659762}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1894659762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894659761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 490656865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1895090453
 GameObject:
   m_ObjectHideFlags: 0
@@ -162122,6 +164547,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3306618, y: 4.482146, z: 1.9530075}
   m_Center: {x: -1.1653309, y: 2.2410724, z: -0.9765042}
+--- !u!1 &1902860361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1902860362}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1902860362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902860361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70500164}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903832412
 GameObject:
   m_ObjectHideFlags: 0
@@ -164043,6 +166499,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917207992}
   m_Mesh: {fileID: -5995652372484661629, guid: 45cdc9ece7e7198449848eeeb62bc18f, type: 3}
+--- !u!1 &1919120529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919120530}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1919120530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919120529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1397346089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1920029665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -164564,6 +167051,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930196220}
   m_Mesh: {fileID: 7315884856667932905, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &1930467295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930467296}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930467296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930467295}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1125595354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1931049891
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -164802,6 +167320,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933754626}
   m_Mesh: {fileID: -1422070111292384529, guid: 3b2f933bbb3bbf241b240dc5d91d8267, type: 3}
+--- !u!1 &1934075478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1934075479}
+  m_Layer: 0
+  m_Name: spawnpointdrone (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1934075479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934075478}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 296499173}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1934856389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1934856390}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1934856390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934856389}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 144617921}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1936730248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165035,6 +167615,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -89.185, z: -39.463}
+--- !u!1 &1941158938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941158939}
+  - component: {fileID: 1941158940}
+  m_Layer: 0
+  m_Name: Spawner_2 (21)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1941158939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941158938}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 67.55, y: -5.26, z: 62.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1463945485}
+  - {fileID: 467762387}
+  - {fileID: 2019106904}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1941158940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941158938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 5.98
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &1941462958
 GameObject:
   m_ObjectHideFlags: 0
@@ -166122,6 +168766,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956994019}
   m_Mesh: {fileID: 6984602059565751836, guid: 45cdc9ece7e7198449848eeeb62bc18f, type: 3}
+--- !u!1 &1960028460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960028461}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1960028461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960028460}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837357395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1960785562
 GameObject:
   m_ObjectHideFlags: 0
@@ -170448,6 +173123,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1755036154}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2019106903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2019106904}
+  m_Layer: 0
+  m_Name: spawnpointdrone (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2019106904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019106903}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.96, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1941158939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2019141872
 GameObject:
@@ -174955,6 +177661,70 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3532359388759755455, guid: 2f793da4c08d73642a8b48c5cbaf85b9, type: 3}
   m_PrefabInstance: {fileID: 1259269632}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2076100156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2076100157}
+  - component: {fileID: 2076100158}
+  m_Layer: 0
+  m_Name: Spawner_2 (20)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2076100157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076100156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 67.55, y: -5.26, z: 4.9300003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 360967163}
+  - {fileID: 1389269703}
+  - {fileID: 1121542564}
+  m_Father: {fileID: 2133293795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2076100158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076100156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4a6403596f5624585842076832f87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  _enemyPrefab: {fileID: 1828297886}
+  _spawnMode: 1
+  _enemiesPerWave: 1
+  _timeBetweenWaves: 3
+  _maxWaves: 1
+  _autoStart: 1
+  _spawnPositionMode: 0
+  _spawnRadius: 5.98
+  _customSpawnPoints: []
+  _portalVFXPrefab: {fileID: 6421534644744988539}
+  _portalSpawnDelay: 0.5
+  _portalLifetime: 2
+  _spawnSound: event:/Drone_Spawn_Tutorial
+  _useProximitySpawning: 1
+  _proximityRadius: 30
+  _bossTrigger: {fileID: 0}
+  _bossHealthThreshold: 0.5
 --- !u!1 &2077993912
 GameObject:
   m_ObjectHideFlags: 0
@@ -178301,6 +181071,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2128354193}
   m_Mesh: {fileID: 604437184016217929, guid: 8b196d1548e83cc4bbddb5aabddec715, type: 3}
+--- !u!1 &2129019195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2129019196}
+  m_Layer: 0
+  m_Name: spawnpointdrone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2129019196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129019195}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.32, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 235227669}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2129237080
 GameObject:
   m_ObjectHideFlags: 0
@@ -284032,7 +286833,7 @@ SceneRoots:
   - {fileID: 1231951218}
   - {fileID: 182166317}
   - {fileID: 530939039}
-  - {fileID: 208742655}
   - {fileID: 649197879}
   - {fileID: 1044309155}
   - {fileID: 804366421}
+  - {fileID: 1828297885}

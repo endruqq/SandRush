@@ -129,10 +129,7 @@ public class Bullet : MonoBehaviour
             for (int i = 0; i < hitCount; i++)
             {
                 RaycastHit hit = _raycastHits[i];
-                if (hit.collider.gameObject == gameObject) continue; // Ignore self
-
-                // Check if we hit the owner
-                if (IsOwner(hit.collider)) continue; // Ignore owner and KEEP GOING
+                if (ShouldIgnoreCollision(hit.collider)) continue;
                 
                 if (hit.distance < closestDistance)
                 {
@@ -157,7 +154,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (_hasHit) return;
-        if (IsOwner(collision.collider)) return; // Ignore owner collision
+        if (ShouldIgnoreCollision(collision.collider)) return;
 
         HandleHit(collision.collider, collision.contacts[0].point, collision.contacts[0].normal);
     }
@@ -166,9 +163,38 @@ public class Bullet : MonoBehaviour
     {
         if (_hasHit) return;
         if (other.isTrigger) return;
-        if (IsOwner(other)) return; // Ignore owner trigger
+        if (ShouldIgnoreCollision(other)) return;
         
         HandleHit(other, transform.position, -transform.forward);
+    }
+
+    private bool ShouldIgnoreCollision(Collider other)
+    {
+        if (other.gameObject == gameObject) return true;
+        if (IsOwner(other)) return true;
+        if (other.TryGetComponent<DebrisTag>(out _)) return true;
+
+        bool isPlayerBullet = IsPlayerBullet();
+        bool isHitPlayer = other.CompareTag("Player") || other.GetComponentInParent<Player>() != null;
+        bool isHitEnemy = other.CompareTag("Enemy") || other.GetComponentInParent<EnemyManager>() != null;
+
+        // Player bullets should ignore player
+        if (isPlayerBullet && isHitPlayer) return true;
+
+        // Enemy bullets should ignore enemies
+        if (!isPlayerBullet && isHitEnemy) return true;
+
+        return false;
+    }
+
+    private bool IsPlayerBullet()
+    {
+        if (_owner != null)
+        {
+            if (_owner.CompareTag("Player") || _owner.GetComponent<Player>() != null) return true;
+        }
+        if (!string.IsNullOrEmpty(_ownerTag) && _ownerTag == "Player") return true;
+        return false;
     }
     
     private bool IsOwner(Collider other)

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6872142901966657378}
   - component: {fileID: 999040303848571500}
   m_Layer: 0
-  m_Name: BulletDrone
+  m_Name: BulletDrone 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
