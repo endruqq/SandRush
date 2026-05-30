@@ -89,7 +89,7 @@ public class Bullet : MonoBehaviour
             {
                 if (Player.Instance != null)
                 {
-                    damage = _baseDamage + Player.Instance.DamageBonus;
+                    damage = (_baseDamage + Player.Instance.DamageBonus) * Player.Instance.GetTotalDamageMultiplier();
                 }
             }
         }

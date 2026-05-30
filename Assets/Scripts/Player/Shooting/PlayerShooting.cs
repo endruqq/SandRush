@@ -148,7 +148,7 @@ public class PlayerShooting
 
         if (inputDetected && Time.time >= _nextFireTime && _currentAmmo > 0)
         {
-            _nextFireTime = Time.time + _fireRate;
+            _nextFireTime = Time.time + (_fireRate / (Player.Instance != null ? Player.Instance.GetTotalFireRateMultiplier() : 1f));
             _weapon.Fire(aimDir);
             
             // Play gunshot sound with random pitch variation

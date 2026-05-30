@@ -31,7 +31,12 @@ public class PlayerMovement
     public bool IsDashEnabled { get; set; } = true;
     public bool JustDashed { get; private set; }
     public int CurrentDashCharges => _currentDashCharges;
-    public float DashRechargeProgress => 1f - (_dashRechargeTimer / _dashRechargeTime); // 0..1
+    public float DashRechargeProgress => GetActualDashRechargeTime() > 0.001f ? 1f - (_dashRechargeTimer / GetActualDashRechargeTime()) : 1f; // 0..1
+    
+    private float GetActualDashRechargeTime()
+    {
+        return _dashRechargeTime * (Player.Instance != null ? Player.Instance.MaskCooldownMultiplier : 1f);
+    }
     public Vector3 WorldMoveDirection { get; private set; }
 
     public PlayerMovement(CharacterController controller, Transform cameraTransform, float moveSpeed, float accelerationTime)
@@ -74,7 +79,7 @@ public class PlayerMovement
             return;
         }
 
-        Vector3 targetVelocity = WorldMoveDirection * (_moveSpeed * SpeedMultiplier);
+        Vector3 targetVelocity = WorldMoveDirection * (_moveSpeed * SpeedMultiplier * (Player.Instance != null ? Player.Instance.MovementSpeedMultiplier : 1f));
         _currentMoveVelocity = Vector3.SmoothDamp(_currentMoveVelocity, targetVelocity, ref _velocityDamper, _accelerationTime);
         
         // Combine lateral movement with vertical gravity
@@ -120,7 +125,7 @@ public class PlayerMovement
                 // If we still have room for more charges, start next timer
                 if (_currentDashCharges < _maxDashCharges)
                 {
-                    _dashRechargeTimer = _dashRechargeTime;
+                    _dashRechargeTimer = GetActualDashRechargeTime();
                 }
                 else
                 {
@@ -131,7 +136,8 @@ public class PlayerMovement
 
         // 3. Handle Input
         // Must have charges, input direction, and not be currently dashing (optional, but prevents overlapping dashes)
-        if (IsDashEnabled && Input.GetKeyDown(KeyCode.Space) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
+        bool canDash = IsDashEnabled && (Player.Instance == null || !Player.Instance.IsDashBlocked);
+        if (canDash && Input.GetKeyDown(KeyCode.Space) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
         {
             JustDashed = true; 
             _isDashing = true;
@@ -143,7 +149,7 @@ public class PlayerMovement
             // If we were at full charges, start the recharge timer now
             if (_currentDashCharges == _maxDashCharges - 1) 
             {
-                _dashRechargeTimer = _dashRechargeTime;
+                _dashRechargeTimer = GetActualDashRechargeTime();
             }
         }
     }
