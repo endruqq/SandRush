@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BulletWeapon : WeaponBase
+public class BulletWeapon : WeaponBase, System.IDisposable
 {
     private readonly Transform _firePoint;
     private readonly float _bulletSpeed;
@@ -30,5 +30,11 @@ public class BulletWeapon : WeaponBase
         bullet.Init(_bulletPool, _hitEffectPool);
         bullet.SetOwner(Owner); // Prevents self-damage using Transform
         bullet.Fire(direction, _bulletSpeed);
+    }
+
+    public void Dispose()
+    {
+        if (_bulletPool != null) _bulletPool.Clear();
+        if (_hitEffectPool != null) _hitEffectPool.Clear();
     }
 }

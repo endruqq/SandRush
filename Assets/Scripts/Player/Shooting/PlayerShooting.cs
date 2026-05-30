@@ -73,6 +73,17 @@ public class PlayerShooting
 
     private void InitializeVFXPools()
     {
+        if (_vfxPools != null)
+        {
+            foreach (var pool in _vfxPools)
+            {
+                if (pool != null)
+                {
+                    pool.Clear();
+                }
+            }
+        }
+
         _vfxPools = new System.Collections.Generic.List<ObjectPool<Transform>>();
         if (_firePointVFXPrefabs != null)
         {
@@ -80,6 +91,15 @@ public class PlayerShooting
             {
                 if (prefab != null)
                 {
+                    // CRITICAL SAFEGUARD: If the developer mistakenly assigned the FirePoint itself
+                    // or any Player GameObject as the VFX prefab, skip it to prevent infinite recursion/RAM explosion!
+                    if (prefab == _firePoint.gameObject || prefab.transform.IsChildOf(_playerTransform))
+                    {
+                        Debug.LogWarning($"[PlayerShooting] Skipping invalid VFX prefab '{prefab.name}' because it is part of the player hierarchy. This prevents infinite recursion.");
+                        _vfxPools.Add(null);
+                        continue;
+                    }
+
                     _vfxPools.Add(new ObjectPool<Transform>(prefab.transform, 10, _firePoint));
                 }
                 else
@@ -247,6 +267,12 @@ public class PlayerShooting
         _recoilTrigger = recoilTrigger;
         _firePointVFXPrefabs = firePointVFX;
 
+        // Dispose of the old weapon to cleanup its pools and prevent GameObject leak
+        if (_weapon is System.IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(magazineSize * 2, 50));
         
         // Reinitialize VFX pools for the new weapon
@@ -263,6 +289,10 @@ public class PlayerShooting
 
     public void EquipWeapon(GameObject bulletPrefab)
     {
+        if (_weapon is System.IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(_magazineSize * 2, 50));
     }
 }

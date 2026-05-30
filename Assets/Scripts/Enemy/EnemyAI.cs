@@ -85,6 +85,11 @@ public class EnemyAI : MonoBehaviour
         
         _randomAngleOffset = Random.Range(0f, 360f);
         _speedVariance = Random.Range(0.85f, 1.25f); // 15-25% variation so they don't form identical lines!
+
+        if (_animator == null)
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
     }
 
     void Start()
@@ -222,20 +227,7 @@ public class EnemyAI : MonoBehaviour
             SeparateFromPeers();
         }
         
-        // --- DEBUG ---
-        if (_navAgent.pathPending)
-        {
-            Debug.Log($"{gameObject.name} is calculating a path...", this);
-        }
-        else if (_navAgent.hasPath)
-        {
-            // Debug.Log($"{gameObject.name} is moving along its path. Velocity: {_navAgent.velocity.magnitude}", this);
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} has no path. Is the destination reachable?", this);
-        }
-        // --- END DEBUG ---
+        // --- DEBUG REMOVED TO PREVENT RAM LEAKS FROM LOG SPAM ---
         
         if (_distanceToPlayer <= _attackRange)
         {
@@ -745,12 +737,11 @@ public class EnemyAI : MonoBehaviour
     {
         if (_animator != null && !string.IsNullOrEmpty(_isWalkingBool))
         {
-            _animator.SetBool(_isWalkingBool, isWalking);
-            Debug.Log($"{gameObject.name} SetWalking: {isWalking}", this);
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} SetWalking failed: Animator={_animator}, BoolName={_isWalkingBool}", this);
+            // Prevent spamming the animator and avoid Unity console logging every frame
+            if (_animator.GetBool(_isWalkingBool) != isWalking)
+            {
+                _animator.SetBool(_isWalkingBool, isWalking);
+            }
         }
     }
     

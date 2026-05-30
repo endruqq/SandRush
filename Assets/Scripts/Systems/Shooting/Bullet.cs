@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private LayerMask _hitLayers = -1; // Default to Everything
     private bool _hasHit = false;
     private float _baseDamage;
+    private bool _isDeactivated = false;
 
     private static readonly RaycastHit[] _raycastHits = new RaycastHit[16];
 
@@ -30,6 +31,7 @@ public class Bullet : MonoBehaviour
     {
         _lastPosition = transform.position;
         _hasHit = false;
+        _isDeactivated = false;
         damage = _baseDamage;
     }
 
@@ -254,6 +256,9 @@ public class Bullet : MonoBehaviour
 
     private void Deactivate()
     {
+        if (_isDeactivated) return;
+        _isDeactivated = true;
+
         if (_trail != null)
         {
             _trail.emitting = false;
@@ -282,19 +287,22 @@ public class PoolObjectCleanup : MonoBehaviour
     private ObjectPool<Transform> _pool;
     private float _lifetime;
     private float _timer;
+    private bool _isDeactivated = false;
 
     public void Init(ObjectPool<Transform> pool, float lifetime)
     {
         _pool = pool;
         _lifetime = lifetime;
         _timer = lifetime;
+        _isDeactivated = false;
     }
 
     private void Update()
     {
         _timer -= Time.deltaTime;
-        if (_timer <= 0)
+        if (_timer <= 0 && !_isDeactivated)
         {
+            _isDeactivated = true;
             if (_pool != null)
             {
                 _pool.ReturnObject(transform);
@@ -311,5 +319,6 @@ public class PoolObjectCleanup : MonoBehaviour
     {
         _timer = _lifetime;
         enabled = true;
+        _isDeactivated = false;
     }
 }
