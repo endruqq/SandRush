@@ -33,9 +33,14 @@ public class Bullet : MonoBehaviour
         damage = _baseDamage;
     }
 
-    public void Init(ObjectPool<Bullet> pool)
+    private ObjectPool<Transform> _hitEffectPool;
+
+    public GameObject HitEffectPrefab => _hitEffectPrefab;
+
+    public void Init(ObjectPool<Bullet> pool, ObjectPool<Transform> hitEffectPool)
     {
         _pool = pool;
+        _hitEffectPool = hitEffectPool;
     }
 
     public void Fire(Vector3 dir, float speed)
@@ -211,7 +216,33 @@ public class Bullet : MonoBehaviour
             other.SendMessageUpwards("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
         }
 
-        if (_hitEffectPrefab != null)
+        if (_hitEffectPool != null)
+        {
+            Transform hitFx = _hitEffectPool.GetObject();
+            hitFx.SetPositionAndRotation(point, Quaternion.LookRotation(normal));
+            
+            var ps = hitFx.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play(true);
+            else
+            {
+                foreach (var childPs in hitFx.GetComponentsInChildren<ParticleSystem>())
+                {
+                    childPs.Play(true);
+                }
+            }
+
+            PoolObjectCleanup cleanup = hitFx.GetComponent<PoolObjectCleanup>();
+            if (cleanup == null)
+            {
+                cleanup = hitFx.gameObject.AddComponent<PoolObjectCleanup>();
+                cleanup.Init(_hitEffectPool, 1f);
+            }
+            else
+            {
+                cleanup.ResetTimer();
+            }
+        }
+        else if (_hitEffectPrefab != null)
         {
             Quaternion rot = Quaternion.LookRotation(normal);
             GameObject hitFx = Instantiate(_hitEffectPrefab, point, rot);
@@ -243,5 +274,42 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+}
+
+public class PoolObjectCleanup : MonoBehaviour
+{
+    private ObjectPool<Transform> _pool;
+    private float _lifetime;
+    private float _timer;
+
+    public void Init(ObjectPool<Transform> pool, float lifetime)
+    {
+        _pool = pool;
+        _lifetime = lifetime;
+        _timer = lifetime;
+    }
+
+    private void Update()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0)
+        {
+            if (_pool != null)
+            {
+                _pool.ReturnObject(transform);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            enabled = false;
+        }
+    }
+
+    public void ResetTimer()
+    {
+        _timer = _lifetime;
+        enabled = true;
     }
 }

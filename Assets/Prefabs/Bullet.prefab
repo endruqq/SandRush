@@ -2338,7 +2338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d4587f38043f5488de710f40796db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  damage: 10
+  damage: 30
   _hitEffectPrefab: {fileID: 0}
   _trail: {fileID: -7537818326183604034}
   _hitLayers:

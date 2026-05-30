@@ -68882,7 +68882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &825676706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -70776,7 +70776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &850787728
 RectTransform:
   m_ObjectHideFlags: 0
@@ -212220,7 +212220,7 @@ MonoBehaviour:
   _loopVFXPrefab: {fileID: 7391532804098821751}
   _vfxSpawnPoint: {fileID: 2632345209654878478}
   _isOneTimeOnly: 1
-  _promptUI: {fileID: 0}
+  _promptUI: {fileID: 825676705}
   _promptShowDistance: 2
   OnActivated:
     m_PersistentCalls:

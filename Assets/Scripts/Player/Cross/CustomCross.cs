@@ -47,6 +47,15 @@ public class CursorCross : MonoBehaviour
             _currentScale = _baseScale;
             _targetScale = _baseScale;
 
+            // Optymalizacja UI: Dodanie sub-canvasu izoluje ciągłe obroty i ruch celownika od przebudowywania siatki (rebuilding) głównego Canvasu HUD
+            Canvas canvas = _cursorImage.GetComponent<Canvas>();
+            if (canvas == null)
+            {
+                canvas = _cursorImage.gameObject.AddComponent<Canvas>();
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = 999;
+            }
+
             // Disable raycastTarget so the crosshair doesn't block UI raycasts
             Image img = _cursorImage.GetComponent<Image>();
             if (img != null) img.raycastTarget = false;

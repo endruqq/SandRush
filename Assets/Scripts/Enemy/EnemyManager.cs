@@ -229,7 +229,7 @@ public class EnemyManager : MonoBehaviour
     private System.Collections.IEnumerator DisableAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
     
     /// <summary>

@@ -17,6 +17,7 @@ public class PlayerShooting
     private WeaponBase _weapon;
     private Animator _weaponAnimator;
     private string _recoilTrigger;
+    private System.Collections.Generic.List<ObjectPool<Transform>> _vfxPools;
     
     // --- Ammo System ---
     private int _magazineSize;
@@ -52,7 +53,7 @@ public class PlayerShooting
         _bulletSpeed = bulletSpeed;
         _fireRate = fireRate;
         _isAutomatic = isAutomatic;
-        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(magazineSize * 2, 50));
         _firePointVFXPrefabs = fireVFXPrefabs;
         _weaponAnimator = weaponAnimator;
         _recoilTrigger = recoilTrigger;
@@ -61,6 +62,32 @@ public class PlayerShooting
         _magazineSize = magazineSize;
         _reloadTime = reloadTime;
         _currentAmmo = _magazineSize;
+
+        // Initialize VFX pools
+        InitializeVFXPools();
+
+        // Preload gameplay critical FMOD events to prevent I/O lag spikes
+        FMODHelper.PreloadEvent("event:/Gun_Shot_Player");
+        FMODHelper.PreloadEvent("event:/Gun_Auto_Reload");
+    }
+
+    private void InitializeVFXPools()
+    {
+        _vfxPools = new System.Collections.Generic.List<ObjectPool<Transform>>();
+        if (_firePointVFXPrefabs != null)
+        {
+            foreach (var prefab in _firePointVFXPrefabs)
+            {
+                if (prefab != null)
+                {
+                    _vfxPools.Add(new ObjectPool<Transform>(prefab.transform, 10, _firePoint));
+                }
+                else
+                {
+                    _vfxPools.Add(null);
+                }
+            }
+        }
     }
 
     public void ModifyFireRate(float multiplier)
@@ -165,33 +192,47 @@ public class PlayerShooting
 
     private void SpawnVFX()
     {
-        if (_firePointVFXPrefabs == null) return;
+        if (_vfxPools == null || _firePointVFXPrefabs == null) return;
         
-        foreach (var prefab in _firePointVFXPrefabs)
+        for (int i = 0; i < _firePointVFXPrefabs.Length; i++)
         {
+            var prefab = _firePointVFXPrefabs[i];
             if (prefab == null) continue;
             
-            // Instantiate at fire point position with corrected rotation (180 flip) and parent to firePoint
-            Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
-            GameObject vfxInstance = UnityEngine.Object.Instantiate(prefab, _firePoint.position, correctedRotation, _firePoint);
-            
-            // Get root particle system and play with all children (true flag makes it play recursively)
-            ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
-            if (rootPS != null)
+            var pool = _vfxPools[i];
+            if (pool != null)
             {
-                rootPS.Play(true);
-            }
-            else
-            {
-                ParticleSystem childPS = vfxInstance.GetComponentInChildren<ParticleSystem>();
-                if (childPS != null)
+                Transform vfxInstance = pool.GetObject();
+                
+                // Position at fire point with corrected rotation
+                Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
+                vfxInstance.SetPositionAndRotation(_firePoint.position, correctedRotation);
+                
+                ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
+                if (rootPS != null)
                 {
-                    childPS.Play(true);
+                    rootPS.Play(true);
+                }
+                else
+                {
+                    ParticleSystem childPS = vfxInstance.GetComponentInChildren<ParticleSystem>();
+                    if (childPS != null)
+                    {
+                        childPS.Play(true);
+                    }
+                }
+                
+                PoolObjectCleanup cleanup = vfxInstance.GetComponent<PoolObjectCleanup>();
+                if (cleanup == null)
+                {
+                    cleanup = vfxInstance.gameObject.AddComponent<PoolObjectCleanup>();
+                    cleanup.Init(pool, 1.0f);
+                }
+                else
+                {
+                    cleanup.ResetTimer();
                 }
             }
-            
-            // Auto-destroy after VFX finishes (1.0 second is more than enough for a muzzle flash)
-            UnityEngine.Object.Destroy(vfxInstance, 1.0f);
         }
     }
 
@@ -206,8 +247,11 @@ public class PlayerShooting
         _recoilTrigger = recoilTrigger;
         _firePointVFXPrefabs = firePointVFX;
 
-        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(magazineSize * 2, 50));
         
+        // Reinitialize VFX pools for the new weapon
+        InitializeVFXPools();
+
         // Reset/Refill ammo
         _currentAmmo = _magazineSize;
         _isReloading = false;
@@ -219,6 +263,6 @@ public class PlayerShooting
 
     public void EquipWeapon(GameObject bulletPrefab)
     {
-        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(_magazineSize * 2, 50));
     }
 }

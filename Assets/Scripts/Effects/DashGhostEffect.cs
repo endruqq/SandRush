@@ -148,9 +148,10 @@ public class DashGhostEffect : MonoBehaviour
 
             foreach (var renderer in renderers)
             {
-                foreach (var mat in renderer.materials)
+                if (renderer == null) continue;
+                foreach (var mat in renderer.sharedMaterials)
                 {
-                    if (mat.HasProperty("_BaseColor"))
+                    if (mat != null && mat.HasProperty("_BaseColor"))
                     {
                         Color c = mat.GetColor("_BaseColor");
                         c.a = alpha;
@@ -160,6 +161,30 @@ public class DashGhostEffect : MonoBehaviour
             }
 
             yield return null;
+        }
+
+        // ZABEZPIECZENIE PRZED WYCIEKIEM SIATEK I MATERIAŁÓW:
+        foreach (var renderer in renderers)
+        {
+            if (renderer == null) continue;
+
+            // Zniszcz upieczoną siatkę (tylko dla GhostPart_Skinned)
+            if (renderer.gameObject.name == "GhostPart_Skinned" && renderer.TryGetComponent<MeshFilter>(out var mf))
+            {
+                if (mf.sharedMesh != null)
+                {
+                    Destroy(mf.sharedMesh);
+                }
+            }
+
+            // Zniszcz dynamicznie utworzone materiały
+            foreach (var mat in renderer.sharedMaterials)
+            {
+                if (mat != null)
+                {
+                    Destroy(mat);
+                }
+            }
         }
 
         Destroy(ghost);
