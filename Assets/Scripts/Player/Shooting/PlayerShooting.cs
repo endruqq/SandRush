@@ -294,5 +294,13 @@ public class PlayerShooting
             disposable.Dispose();
         }
         _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(_magazineSize * 2, 50));
+
+        // Refill ammo and notify listeners/UI
+        _currentAmmo = _magazineSize;
+        _isReloading = false;
+        _reloadTimer = 0f;
+        
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+        OnReloadStateChanged?.Invoke(false);
     }
 }

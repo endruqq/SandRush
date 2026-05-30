@@ -59,6 +59,12 @@ public class EnemyManager : MonoBehaviour
     {
         if (_isDead) return;
 
+        BossController boss = GetComponent<BossController>();
+        if (boss != null)
+        {
+            boss.TakeDamage(amount, hitDirection);
+        }
+
         _currentHealth -= amount;
         _lastHitDirection = hitDirection;
 

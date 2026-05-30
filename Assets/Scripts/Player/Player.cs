@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private TextMeshProUGUI _dashCooldownText;
     [SerializeField] private DashUI _dashUI;
+    [SerializeField] private DashUI _dashWhen2MasksActiveUI;
     [SerializeField] private HealthUI _healthUI;
     [SerializeField] private HealthUI _shieldUI;
     
@@ -386,6 +387,7 @@ public class Player : MonoBehaviour
         if (_healthUI == null || IsPrefab(_healthUI) || 
             _shieldUI == null || IsPrefab(_shieldUI) || 
             _dashUI == null || IsPrefab(_dashUI) || 
+            _dashWhen2MasksActiveUI == null || IsPrefab(_dashWhen2MasksActiveUI) || 
             _ammoUI == null || IsPrefab(_ammoUI))
         {
             HealthUI[] healthUIs = FindObjectsByType<HealthUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -408,9 +410,22 @@ public class Player : MonoBehaviour
                 DashUI[] dashUIs = FindObjectsByType<DashUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
                 foreach (DashUI ui in dashUIs)
                 {
-                    if (!IsPrefab(ui))
+                    if (!IsPrefab(ui) && !ui.gameObject.name.Contains("2Masks"))
                     {
                         _dashUI = ui;
+                        break;
+                    }
+                }
+            }
+
+            if (_dashWhen2MasksActiveUI == null || IsPrefab(_dashWhen2MasksActiveUI))
+            {
+                DashUI[] dashUIs = FindObjectsByType<DashUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (DashUI ui in dashUIs)
+                {
+                    if (!IsPrefab(ui) && ui.gameObject.name.Contains("2Masks"))
+                    {
+                        _dashWhen2MasksActiveUI = ui;
                         break;
                     }
                 }
@@ -527,6 +542,7 @@ public class Player : MonoBehaviour
         if (!_hasMask)
         {
             if (_dashUI != null) _dashUI.gameObject.SetActive(false);
+            if (_dashWhen2MasksActiveUI != null) _dashWhen2MasksActiveUI.gameObject.SetActive(false);
             if (_shieldUI != null) _shieldUI.gameObject.SetActive(false);
             if (_movement != null) _movement.IsDashEnabled = false;
         }
@@ -851,10 +867,20 @@ public class Player : MonoBehaviour
     
     private void UpdateDashCooldownUI()
     {
-        // Update new visual UI
-        if (_dashUI != null)
+        // Update correct visual UI based on mask synergy
+        if (HasMaskSynergy)
         {
-            _dashUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
+            if (_dashWhen2MasksActiveUI != null)
+            {
+                _dashWhen2MasksActiveUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
+            }
+        }
+        else
+        {
+            if (_dashUI != null)
+            {
+                _dashUI.UpdateDashUI(_movement.CurrentDashCharges, _movement.DashRechargeProgress);
+            }
         }
         
         // Update legacy text if assigned (optional fallback)
@@ -879,9 +905,13 @@ public class Player : MonoBehaviour
         _hasMask = true;
         
         // Ensure ability UI is correctly shown upon picking up the first mask
-        if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash);
-        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield);
-        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash) && !IsDashBlocked;
+        bool showStandardDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !HasMaskSynergy;
+        bool showSynergyDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && HasMaskSynergy;
+
+        if (_dashUI != null) _dashUI.gameObject.SetActive(showStandardDash);
+        if (_dashWhen2MasksActiveUI != null) _dashWhen2MasksActiveUI.gameObject.SetActive(showSynergyDash);
+        if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy);
+        if (_movement != null) _movement.IsDashEnabled = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !IsDashBlocked;
 
         OnMaskEquipped?.Invoke(true);
         Debug.Log("Mask Equipped: +10% Fire Rate active.");
@@ -922,7 +952,11 @@ public class Player : MonoBehaviour
         ActiveAbility = abilityType;
         
         // Toggle UI
-        if (_dashUI != null) _dashUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy);
+        bool showStandardDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && !HasMaskSynergy;
+        bool showSynergyDash = (ActiveAbility == MaskAbilityType.Dash || HasMaskSynergy) && HasMaskSynergy;
+
+        if (_dashUI != null) _dashUI.gameObject.SetActive(showStandardDash);
+        if (_dashWhen2MasksActiveUI != null) _dashWhen2MasksActiveUI.gameObject.SetActive(showSynergyDash);
         if (_shieldUI != null) _shieldUI.gameObject.SetActive(ActiveAbility == MaskAbilityType.Shield || HasMaskSynergy);
         
         // Toggle Logic

@@ -56,6 +56,15 @@ public class TutorialManager : MonoBehaviour
         _actionTimer = 0f;
         _waitingForSpawner = false;
 
+        // Initialize all to inactive first
+        for (int i = 0; i < _currentSteps.Length; i++)
+        {
+            if (_currentSteps[i].TutorialObject != null)
+            {
+                _currentSteps[i].TutorialObject.SetActive(false);
+            }
+        }
+
         if (_tutorialPanel != null)
         {
             _tutorialPanel.SetActive(true);
@@ -72,22 +81,16 @@ public class TutorialManager : MonoBehaviour
     {
         if (index < 0 || index >= _currentSteps.Length) return;
 
+        // Activate only the active step's TutorialObject and deactivate the rest
+        for (int i = 0; i < _currentSteps.Length; i++)
+        {
+            if (_currentSteps[i].TutorialObject != null)
+            {
+                _currentSteps[i].TutorialObject.SetActive(i == index);
+            }
+        }
+
         TutorialStep step = _currentSteps[index];
-
-        if (_contentTextField != null) 
-        {
-            _contentTextField.text = step.Text;
-            _contentTextField.gameObject.SetActive(!string.IsNullOrEmpty(step.Text));
-        }
-
-        if (_contentImageField != null)
-        {
-            _contentImageField.sprite = step.Image;
-            _contentImageField.gameObject.SetActive(step.Image != null);
-            
-            // Dopasowujemy rozmiar obrazka (opcjonalnie, zależy jak masz ustawiony RectTransform w Unity)
-            // if (step.Image != null) _contentImageField.SetNativeSize(); 
-        }
         
         _actionTimer = 0f;
         _waitingForSpawner = false;
@@ -277,6 +280,18 @@ public class TutorialManager : MonoBehaviour
     private void OnCloseAnimationComplete()
     {
         _isTutorialActive = false;
+
+        // Deactivate all tutorial objects on close
+        if (_currentSteps != null)
+        {
+            for (int i = 0; i < _currentSteps.Length; i++)
+            {
+                if (_currentSteps[i].TutorialObject != null)
+                {
+                    _currentSteps[i].TutorialObject.SetActive(false);
+                }
+            }
+        }
         _currentSteps = null;
 
         if (_tutorialPanel != null) _tutorialPanel.SetActive(false);
@@ -321,7 +336,6 @@ public enum TutorialActionType
 public struct TutorialStep
 {
     public TutorialActionType ActionType;
-    [TextArea(3, 10)] public string Text;
-    public Sprite Image;
+    public GameObject TutorialObject; // Drag step GameObjects from hierarchy here
     public EnemySpawner Spawner;
 }
