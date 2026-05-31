@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -32,6 +34,10 @@ public class EnemyManager : MonoBehaviour
         if (_bodyPartExploder == null) _bodyPartExploder = GetComponent<BodyPartExploder>();
 
         if (_healthBar == null) _healthBar = GetComponentInChildren<EnemyHealthBar>();
+        if (_healthBar == null)
+        {
+            CreateAutoHealthBar();
+        }
 
         if (_modelRenderers == null || _modelRenderers.Length == 0)
         {
@@ -52,6 +58,12 @@ public class EnemyManager : MonoBehaviour
     public void TakeDamage(float amount, Vector3 hitDirection)
     {
         if (_isDead) return;
+
+        BossController boss = GetComponent<BossController>();
+        if (boss != null)
+        {
+            boss.TakeDamage(amount, hitDirection);
+        }
 
         _currentHealth -= amount;
         _lastHitDirection = hitDirection;
@@ -223,7 +235,7 @@ public class EnemyManager : MonoBehaviour
     private System.Collections.IEnumerator DisableAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
     
     /// <summary>
@@ -233,5 +245,124 @@ public class EnemyManager : MonoBehaviour
     {
         _currentHealth = _maxHealth;
         _isDead = false;
+    }
+
+    private void CreateAutoHealthBar()
+    {
+        // 1. Create a WorldSpace Canvas GameObject for the Health Bar
+        GameObject canvasGo = new GameObject("EnemyHealthBar_Auto");
+        canvasGo.transform.SetParent(transform, false);
+
+        // Position it above the enemy
+        float height = 2.0f;
+        Collider col = GetComponent<Collider>();
+        if (col == null) col = GetComponentInChildren<Collider>();
+        if (col != null)
+        {
+            height = col.bounds.max.y - transform.position.y + 0.2f;
+        }
+        canvasGo.transform.localPosition = new Vector3(0f, height, 0f);
+
+        Canvas canvas = canvasGo.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        
+        RectTransform canvasRect = canvasGo.GetComponent<RectTransform>();
+        canvasRect.sizeDelta = new Vector2(100f, 15f); 
+        canvasRect.localScale = new Vector3(0.015f, 0.015f, 0.015f);
+
+        // 2. Add CanvasGroup
+        canvasGo.AddComponent<CanvasGroup>();
+
+        // 3. Create Slider
+        GameObject sliderGo = new GameObject("Slider");
+        sliderGo.transform.SetParent(canvasGo.transform, false);
+        
+        RectTransform sliderRect = sliderGo.AddComponent<RectTransform>();
+        sliderRect.anchorMin = Vector2.zero;
+        sliderRect.anchorMax = Vector2.one;
+        sliderRect.offsetMin = Vector2.zero;
+        sliderRect.offsetMax = Vector2.zero;
+
+        Slider slider = sliderGo.AddComponent<Slider>();
+
+        // Background
+        GameObject bgGo = new GameObject("Background");
+        bgGo.transform.SetParent(sliderGo.transform, false);
+        RectTransform bgRect = bgGo.AddComponent<RectTransform>();
+        bgRect.anchorMin = Vector2.zero;
+        bgRect.anchorMax = Vector2.one;
+        bgRect.offsetMin = Vector2.zero;
+        bgRect.offsetMax = Vector2.zero;
+        Image bgImage = bgGo.AddComponent<Image>();
+        bgImage.color = new Color(0.1f, 0.1f, 0.1f, 0.7f); // Dark translucent background
+
+        Outline bgOutline = bgGo.AddComponent<Outline>();
+        bgOutline.effectColor = new Color(0f, 0f, 0f, 0.8f);
+        bgOutline.effectDistance = new Vector2(1f, 1f);
+
+        // Fill Area
+        GameObject fillAreaGo = new GameObject("Fill Area");
+        fillAreaGo.transform.SetParent(sliderGo.transform, false);
+        RectTransform fillAreaRect = fillAreaGo.AddComponent<RectTransform>();
+        fillAreaRect.anchorMin = Vector2.zero;
+        fillAreaRect.anchorMax = Vector2.one;
+        fillAreaRect.offsetMin = Vector2.zero;
+        fillAreaRect.offsetMax = Vector2.zero;
+
+        // Fill
+        GameObject fillGo = new GameObject("Fill");
+        fillGo.transform.SetParent(fillAreaGo.transform, false);
+        RectTransform fillRect = fillGo.AddComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.offsetMin = Vector2.zero;
+        fillRect.offsetMax = Vector2.zero;
+        Image fillImage = fillGo.AddComponent<Image>();
+        fillImage.color = new Color(0.85f, 0.15f, 0.15f, 0.9f); // Bright red health fill
+
+        slider.targetGraphic = fillImage;
+        slider.fillRect = fillRect;
+        slider.minValue = 0f;
+        slider.maxValue = _maxHealth;
+        slider.value = _maxHealth;
+
+        // 4. Create optional Kill Markers
+        // Large Cross
+        GameObject largeCrossGo = new GameObject("LargeCross");
+        largeCrossGo.transform.SetParent(canvasGo.transform, false);
+        RectTransform largeCrossRect = largeCrossGo.AddComponent<RectTransform>();
+        largeCrossRect.anchorMin = Vector2.zero;
+        largeCrossRect.anchorMax = Vector2.one;
+        largeCrossRect.offsetMin = Vector2.zero;
+        largeCrossRect.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI largeCrossText = largeCrossGo.AddComponent<TextMeshProUGUI>();
+        largeCrossText.text = "✕";
+        largeCrossText.color = new Color(0.9f, 0.1f, 0.1f, 0.9f);
+        largeCrossText.fontSize = 24f;
+        largeCrossText.alignment = TextAlignmentOptions.Center;
+        largeCrossGo.SetActive(false);
+
+        // Small Cross
+        GameObject smallCrossGo = new GameObject("SmallCross");
+        smallCrossGo.transform.SetParent(canvasGo.transform, false);
+        RectTransform smallCrossRect = smallCrossGo.AddComponent<RectTransform>();
+        smallCrossRect.anchorMin = Vector2.zero;
+        smallCrossRect.anchorMax = Vector2.one;
+        smallCrossRect.offsetMin = Vector2.zero;
+        smallCrossRect.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI smallCrossText = smallCrossGo.AddComponent<TextMeshProUGUI>();
+        smallCrossText.text = "✕";
+        smallCrossText.color = new Color(0.9f, 0.1f, 0.1f, 0.9f);
+        smallCrossText.fontSize = 20f;
+        smallCrossText.alignment = TextAlignmentOptions.Center;
+        smallCrossGo.SetActive(false);
+
+        // 5. Add EnemyHealthBar script
+        EnemyHealthBar healthBarComponent = canvasGo.AddComponent<EnemyHealthBar>();
+        healthBarComponent.SetCrosses(largeCrossGo, smallCrossGo);
+
+        _healthBar = healthBarComponent;
     }
 }

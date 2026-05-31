@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _attackType: 1
   _playerTransform: {fileID: 0}
-  _detectionRadius: 10
+  _detectionRadius: 16
   _attackRange: 2
   _attackRate: 0.5
   _bulletPrefab: {fileID: 0}
@@ -1201,7 +1201,7 @@ MonoBehaviour:
   _bodyPartExploder: {fileID: 5479659328628253299}
   _modelRenderers: []
   _deathSound: event:/Scarab_Death
-  _healthBar: {fileID: 7468879568050991435}
+  _healthBar: {fileID: 0}
 --- !u!114 &5479659328628253299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,7 +1344,7 @@ RectTransform:
   m_Father: {fileID: 9207605109511199418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2242,7 +2242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7081178754197344158
 RectTransform:
   m_ObjectHideFlags: 0

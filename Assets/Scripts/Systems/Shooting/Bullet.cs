@@ -17,6 +17,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private LayerMask _hitLayers = -1; // Default to Everything
     private bool _hasHit = false;
     private float _baseDamage;
+    private bool _isDeactivated = false;
+
+    private static readonly RaycastHit[] _raycastHits = new RaycastHit[16];
 
     private void Awake()
     {
@@ -28,12 +31,18 @@ public class Bullet : MonoBehaviour
     {
         _lastPosition = transform.position;
         _hasHit = false;
+        _isDeactivated = false;
         damage = _baseDamage;
     }
 
-    public void Init(ObjectPool<Bullet> pool)
+    private ObjectPool<Transform> _hitEffectPool;
+
+    public GameObject HitEffectPrefab => _hitEffectPrefab;
+
+    public void Init(ObjectPool<Bullet> pool, ObjectPool<Transform> hitEffectPool)
     {
         _pool = pool;
+        _hitEffectPool = hitEffectPool;
     }
 
     public void Fire(Vector3 dir, float speed)
@@ -80,7 +89,7 @@ public class Bullet : MonoBehaviour
             {
                 if (Player.Instance != null)
                 {
-                    damage = _baseDamage + Player.Instance.DamageBonus;
+                    damage = (_baseDamage + Player.Instance.DamageBonus) * Player.Instance.GetTotalDamageMultiplier();
                 }
             }
         }
@@ -110,25 +119,32 @@ public class Bullet : MonoBehaviour
 
         if (distance > 0)
         {
-            // Use SphereCastAll to get ALL hits, then pick the first valid one
-            // This prevents the bullet from stopping on the Shooter's collider
-            RaycastHit[] hits = Physics.SphereCastAll(_lastPosition, 0.1f, direction.normalized, distance, _hitLayers);
+            // Use SphereCastNonAlloc to avoid garbage collector allocations (GC pressure)
+            int hitCount = Physics.SphereCastNonAlloc(_lastPosition, 0.1f, direction.normalized, _raycastHits, distance, _hitLayers);
             
-            // Sort by distance to process closest hits first
-            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-            
-            foreach (RaycastHit hit in hits)
-            {
-                if (hit.collider.gameObject == gameObject) continue; // Ignore self
+            RaycastHit closestHit = default;
+            float closestDistance = float.MaxValue;
+            bool foundValidHit = false;
 
-                // Check if we hit the owner
-                if (IsOwner(hit.collider)) continue; // Ignore owner and KEEO GOING
+            for (int i = 0; i < hitCount; i++)
+            {
+                RaycastHit hit = _raycastHits[i];
+                if (ShouldIgnoreCollision(hit.collider)) continue;
                 
-                // If we got here, it's a valid hit (wall, enemy, another player)
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    closestHit = hit;
+                    foundValidHit = true;
+                }
+            }
+
+            if (foundValidHit)
+            {
                 _hasHit = true;
-                HandleHit(hit.collider, hit.point, hit.normal);
-                transform.position = hit.point;
-                return; // Stop processing after first valid hit
+                HandleHit(closestHit.collider, closestHit.point, closestHit.normal);
+                transform.position = closestHit.point;
+                return; // Stop processing after finding the closest valid hit
             }
         }
 
@@ -138,7 +154,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (_hasHit) return;
-        if (IsOwner(collision.collider)) return; // Ignore owner collision
+        if (ShouldIgnoreCollision(collision.collider)) return;
 
         HandleHit(collision.collider, collision.contacts[0].point, collision.contacts[0].normal);
     }
@@ -147,9 +163,38 @@ public class Bullet : MonoBehaviour
     {
         if (_hasHit) return;
         if (other.isTrigger) return;
-        if (IsOwner(other)) return; // Ignore owner trigger
+        if (ShouldIgnoreCollision(other)) return;
         
         HandleHit(other, transform.position, -transform.forward);
+    }
+
+    private bool ShouldIgnoreCollision(Collider other)
+    {
+        if (other.gameObject == gameObject) return true;
+        if (IsOwner(other)) return true;
+        if (other.TryGetComponent<DebrisTag>(out _)) return true;
+
+        bool isPlayerBullet = IsPlayerBullet();
+        bool isHitPlayer = other.CompareTag("Player") || other.GetComponentInParent<Player>() != null;
+        bool isHitEnemy = other.CompareTag("Enemy") || other.GetComponentInParent<EnemyManager>() != null;
+
+        // Player bullets should ignore player
+        if (isPlayerBullet && isHitPlayer) return true;
+
+        // Enemy bullets should ignore enemies
+        if (!isPlayerBullet && isHitEnemy) return true;
+
+        return false;
+    }
+
+    private bool IsPlayerBullet()
+    {
+        if (_owner != null)
+        {
+            if (_owner.CompareTag("Player") || _owner.GetComponent<Player>() != null) return true;
+        }
+        if (!string.IsNullOrEmpty(_ownerTag) && _ownerTag == "Player") return true;
+        return false;
     }
     
     private bool IsOwner(Collider other)
@@ -180,22 +225,28 @@ public class Bullet : MonoBehaviour
         
         string hitTag = other.tag;
         string hitName = other.name;
-        
-        // Log valid hit
-        Debug.Log($"Bullet HIT VALID: {hitName} (Tag: {hitTag})");
 
         EnemyManager enemy = other.GetComponentInParent<EnemyManager>();
         bool isPlayer = other.CompareTag("Player") || other.GetComponentInParent<Player>() != null;
 
         if (enemy != null)
         {
-            Debug.Log($"Dealing {damage} damage to ENEMY: {enemy.name}");
             // Pass the bullet's current forward direction as the hit direction
             enemy.TakeDamage(damage, transform.forward);
+
+            // Apply Lifesteal (Vampirism) if the bullet belongs to the player and the active mask is Lifesteal
+            if (!string.IsNullOrEmpty(_ownerTag) && _ownerTag == "Player")
+            {
+                Player player = Player.Instance;
+                if (player != null && player.ActiveAbility == Player.MaskAbilityType.Lifesteal)
+                {
+                    int healAmount = Mathf.Max(1, Mathf.RoundToInt(damage * 0.1f)); // 10% lifesteal (min 1 HP)
+                    Player.Heal(healAmount);
+                }
+            }
         }
         else if (isPlayer)
         {
-            Debug.Log($"Dealing {damage} damage to PLAYER");
             Player.TakeDamage((int)damage);
         }
         else
@@ -204,7 +255,33 @@ public class Bullet : MonoBehaviour
             other.SendMessageUpwards("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
         }
 
-        if (_hitEffectPrefab != null)
+        if (_hitEffectPool != null)
+        {
+            Transform hitFx = _hitEffectPool.GetObject();
+            hitFx.SetPositionAndRotation(point, Quaternion.LookRotation(normal));
+            
+            var ps = hitFx.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play(true);
+            else
+            {
+                foreach (var childPs in hitFx.GetComponentsInChildren<ParticleSystem>())
+                {
+                    childPs.Play(true);
+                }
+            }
+
+            PoolObjectCleanup cleanup = hitFx.GetComponent<PoolObjectCleanup>();
+            if (cleanup == null)
+            {
+                cleanup = hitFx.gameObject.AddComponent<PoolObjectCleanup>();
+                cleanup.Init(_hitEffectPool, 1f);
+            }
+            else
+            {
+                cleanup.ResetTimer();
+            }
+        }
+        else if (_hitEffectPrefab != null)
         {
             Quaternion rot = Quaternion.LookRotation(normal);
             GameObject hitFx = Instantiate(_hitEffectPrefab, point, rot);
@@ -216,6 +293,15 @@ public class Bullet : MonoBehaviour
 
     private void Deactivate()
     {
+        if (_isDeactivated) return;
+        _isDeactivated = true;
+
+        if (_trail != null)
+        {
+            _trail.emitting = false;
+            _trail.Clear();
+        }
+
         if (_rb != null)
         {
             _rb.linearVelocity = Vector3.zero;
@@ -230,5 +316,46 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+}
+
+public class PoolObjectCleanup : MonoBehaviour
+{
+    private ObjectPool<Transform> _pool;
+    private float _lifetime;
+    private float _timer;
+    private bool _isDeactivated = false;
+
+    public void Init(ObjectPool<Transform> pool, float lifetime)
+    {
+        _pool = pool;
+        _lifetime = lifetime;
+        _timer = lifetime;
+        _isDeactivated = false;
+    }
+
+    private void Update()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0 && !_isDeactivated)
+        {
+            _isDeactivated = true;
+            if (_pool != null)
+            {
+                _pool.ReturnObject(transform);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            enabled = false;
+        }
+    }
+
+    public void ResetTimer()
+    {
+        _timer = _lifetime;
+        enabled = true;
+        _isDeactivated = false;
     }
 }

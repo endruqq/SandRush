@@ -16,12 +16,36 @@ public class AmmoUI : MonoBehaviour
     {
         _shooting = shooting;
         
+        if (_ammoText == null)
+        {
+            Debug.LogWarning("[AmmoUI] _ammoText is null! Please assign a TextMeshProUGUI component in the Inspector.", this);
+            return;
+        }
+
         // Subscribe to events
         _shooting.OnAmmoChanged += UpdateAmmoDisplay;
         _shooting.OnReloadStateChanged += OnReloadStateChanged;
         
         // Initial display
         UpdateAmmoDisplay(_shooting.CurrentAmmo, _shooting.MagazineSize);
+        Debug.Log($"[AmmoUI] Initialized successfully. Current ammo: {_shooting.CurrentAmmo}/{_shooting.MagazineSize}");
+    }
+
+    private void Start()
+    {
+        // Fallback: If not initialized by Player (e.g. references missing or order of execution issue), auto-initialize
+        if (_shooting == null)
+        {
+            Player player = FindFirstObjectByType<Player>();
+            if (player != null && player.Shooting != null)
+            {
+                Initialize(player.Shooting);
+            }
+            else
+            {
+                Debug.LogWarning("[AmmoUI] Fallback initialization failed: Player or PlayerShooting not found in scene.");
+            }
+        }
     }
     
     private void OnDestroy()

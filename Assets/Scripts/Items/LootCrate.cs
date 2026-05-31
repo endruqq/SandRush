@@ -40,14 +40,58 @@ public class LootCrate : MonoBehaviour
 
     private bool _isOpened = false;
 
+    private string GetCrateUniqueKey()
+    {
+        var culture = System.Globalization.CultureInfo.InvariantCulture;
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Replace(",", "_").Replace(";", "_").Replace("|", "_");
+        string objectName = gameObject.name.Replace(",", "_").Replace(";", "_").Replace("|", "_");
+        return $"Crate_{sceneName}_{objectName}_{transform.position.x.ToString("F1", culture)}_{transform.position.y.ToString("F1", culture)}_{transform.position.z.ToString("F1", culture)}";
+    }
+
     private void Start()
     {
-        if (_crateLid != null)
+        string key = GetCrateUniqueKey();
+        if (PlayerPrefs.GetInt(key, 0) == 1)
         {
-            Vector3 rot = _crateLid.localEulerAngles;
-            rot.x = -55.82f;
-            _crateLid.localEulerAngles = rot;
+            _isOpened = true;
+            if (_closedCrateModel != null) _closedCrateModel.SetActive(false);
+            if (_openCrateModel != null) _openCrateModel.SetActive(true);
+            
+            if (_crateLid != null)
+            {
+                Vector3 rot = _crateLid.localEulerAngles;
+                rot.x = 4.171f; // Target open angle
+                _crateLid.localEulerAngles = rot;
+            }
+            
+            Collider col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
         }
+        else
+        {
+            if (_crateLid != null)
+            {
+                Vector3 rot = _crateLid.localEulerAngles;
+                rot.x = -55.82f;
+                _crateLid.localEulerAngles = rot;
+            }
+        }
+    }
+
+    public static void ResetOpenedCrates()
+    {
+        string openedCratesList = PlayerPrefs.GetString("OpenedCratesList", "");
+        if (!string.IsNullOrEmpty(openedCratesList))
+        {
+            string[] keys = openedCratesList.Split(new char[] { ',', ';', '|' }, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (string key in keys)
+            {
+                PlayerPrefs.DeleteKey(key);
+            }
+        }
+        PlayerPrefs.DeleteKey("OpenedCratesList");
+        PlayerPrefs.Save();
+        Debug.Log("[LootCrate] Opened crates reset.");
     }
 
     private System.Collections.IEnumerator RotateLidCoroutine()
@@ -90,6 +134,17 @@ public class LootCrate : MonoBehaviour
     private void OpenCrate()
     {
         _isOpened = true;
+
+        string key = GetCrateUniqueKey();
+        PlayerPrefs.SetInt(key, 1);
+        
+        string openedCratesList = PlayerPrefs.GetString("OpenedCratesList", "");
+        if (!openedCratesList.Contains(key))
+        {
+            openedCratesList = string.IsNullOrEmpty(openedCratesList) ? key : openedCratesList + "|" + key;
+            PlayerPrefs.SetString("OpenedCratesList", openedCratesList);
+        }
+        PlayerPrefs.Save();
 
         if (!string.IsNullOrEmpty(_breakSoundEvent))
             FMODHelper.PlayOneShot(_breakSoundEvent, transform.position);

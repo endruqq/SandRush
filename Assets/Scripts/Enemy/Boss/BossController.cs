@@ -4,6 +4,7 @@ using System.Collections;
 public class BossController : MonoBehaviour
 {
     [Header("Boss Stats")]
+    [SerializeField] private string _bossName = "Anubis, the Dune Binder";
     [SerializeField] private float _maxHealth = 1000f;
     private float _currentHealth;
 
@@ -27,6 +28,7 @@ public class BossController : MonoBehaviour
     [Tooltip("Mechanika samego piorunu (przeciągnij swój utworzony Prefab LightningStrike)")]
     [SerializeField] private GameObject _lightningStrikePrefab;
     [SerializeField] private HitFlash _hitFlash;
+    [SerializeField] private BodyPartExploder _bodyPartExploder;
     [Tooltip("Nazwa parametru Triggera w Twoim Animatorze (np. Attack)")]
     [SerializeField] private string _attackAnimTrigger = "Attack";
 
@@ -39,14 +41,17 @@ public class BossController : MonoBehaviour
     private float _idleTimer;
     private bool _isAttacking = false;
     private Player _cachedPlayer;
+    private Vector3 _lastHitDirection;
 
     public float HealthPercent => _maxHealth > 0 ? _currentHealth / _maxHealth : 0;
+    public bool IsDead => _isDead;
 
     private void Awake()
     {
         _currentHealth = _maxHealth;
         _idleTimer = _idleDuration;
         if (_hitFlash == null) _hitFlash = GetComponent<HitFlash>();
+        if (_bodyPartExploder == null) _bodyPartExploder = GetComponent<BodyPartExploder>();
     }
 
     private void Update()
@@ -66,6 +71,8 @@ public class BossController : MonoBehaviour
                 {
                     _isActivated = true;
                     Debug.Log("BOSS FIGHT STARTED!");
+                    BossHealthUI ui = gameObject.AddComponent<BossHealthUI>();
+                    ui.Initialize(_maxHealth, _bossName);
                 }
             }
             return; // Kończymy pętlę dopóki nie zostanie aktywowany
@@ -167,10 +174,18 @@ public class BossController : MonoBehaviour
         if (_isDead) return;
 
         _currentHealth -= amount;
+        _lastHitDirection = hitDirection;
+        Debug.Log($"[BossController] Took {amount} damage. Current HP: {_currentHealth}/{_maxHealth}");
 
         // Feedback wizualny trafienia
         if (_hitFlash != null) _hitFlash.Flash();
         if (ScreenFlash.Instance != null) ScreenFlash.Instance.Flash();
+
+        BossHealthUI ui = GetComponent<BossHealthUI>();
+        if (ui != null)
+        {
+            ui.UpdateHealth(_currentHealth);
+        }
 
         if (_currentHealth <= 0)
         {
@@ -181,9 +196,22 @@ public class BossController : MonoBehaviour
     private void Die()
     {
         _isDead = true;
+        Debug.Log("[BossController] Die() called. Disabling boss behavior.");
+
+        if (_bodyPartExploder != null)
+        {
+            if (_hitFlash != null) _hitFlash.RestoreMaterials();
+            _bodyPartExploder.Explode(_lastHitDirection);
+        }
 
         // Przerywa w locie ataki i burze jeśli zdechł w trackie 
         StopAllCoroutines();
+
+        BossHealthUI ui = GetComponent<BossHealthUI>();
+        if (ui != null)
+        {
+            ui.StartFadeOut();
+        }
 
         if (HitStopManager.Instance != null)
         {
@@ -197,6 +225,9 @@ public class BossController : MonoBehaviour
         {
             FMODHelper.PlayOneShot(_deathSound, transform.position);
         }
+
+        Animator anim = GetComponent<Animator>();
+        if (anim != null) anim.enabled = false;
 
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;

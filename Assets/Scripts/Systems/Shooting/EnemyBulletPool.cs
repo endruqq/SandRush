@@ -12,6 +12,7 @@ public class EnemyBulletPool : MonoBehaviour
     [SerializeField] private int _poolSize = 50;
     
     private ObjectPool<Bullet> _pool;
+    private ObjectPool<Transform> _hitEffectPool;
     
     private void Awake()
     {
@@ -28,6 +29,12 @@ public class EnemyBulletPool : MonoBehaviour
             if (bulletComp != null)
             {
                 _pool = new ObjectPool<Bullet>(bulletComp, _poolSize, transform);
+
+                if (bulletComp.HitEffectPrefab != null)
+                {
+                    Transform hitFxPrefab = bulletComp.HitEffectPrefab.transform;
+                    _hitEffectPool = new ObjectPool<Transform>(hitFxPrefab, _poolSize, transform);
+                }
             }
         }
     }
@@ -45,7 +52,7 @@ public class EnemyBulletPool : MonoBehaviour
         
         Bullet bullet = _pool.GetObject();
         bullet.transform.SetPositionAndRotation(position, Quaternion.LookRotation(direction));
-        bullet.Init(_pool);
+        bullet.Init(_pool, _hitEffectPool);
         bullet.SetDamage(damage); 
         bullet.SetOwner(owner); // Set owner transform
         bullet.Fire(direction, speed);

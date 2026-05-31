@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
 using FMOD.Studio;
@@ -28,12 +29,35 @@ public class PauseMenuManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
+
+    [Header("Hover Image Swap Settings")]
+    [SerializeField] private Image[] _backButtonImages;
+    [SerializeField] private Sprite _backButtonHoverSprite;
+    [SerializeField] private Image _resetButtonImage;
+    [SerializeField] private Sprite _resetButtonHoverSprite;
     
     private bool isPaused = false;
     private Resolution[] _resolutions;
 
     private System.Collections.IEnumerator Start()
     {
+        // Hook up hover swaps
+        if (_backButtonImages != null && _backButtonHoverSprite != null)
+        {
+            foreach (var img in _backButtonImages)
+            {
+                if (img != null)
+                {
+                    SetupHoverEvent(img, img.sprite, _backButtonHoverSprite);
+                }
+            }
+        }
+
+        if (_resetButtonImage != null && _resetButtonHoverSprite != null)
+        {
+            SetupHoverEvent(_resetButtonImage, _resetButtonImage.sprite, _resetButtonHoverSprite);
+        }
+
         // Make sure menus are hidden at start
         if (pauseMenuCanvas != null) pauseMenuCanvas.SetActive(false);
         if (optionsMenuCanvas != null) optionsMenuCanvas.SetActive(false);
@@ -103,9 +127,11 @@ public class PauseMenuManager : MonoBehaviour
         else
         {
             // 6. --- NORMAL LOAD (From PlayerPrefs) ---
-            // Load saved volume (default = full volume)
-            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
-            if (savedVol <= 0.01f) savedVol = 1f; // Fix corrupted save from previous bug
+            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 0.5f);
+            if (!PlayerPrefs.HasKey(PREF_MASTER_VOL))
+            {
+                savedVol = 0.5f;
+            }
             
             FMOD.RESULT result = _masterBus.setVolume(savedVol);
             Debug.Log($"[PauseMenu] FMOD Master Bus setVolume({savedVol}) result: {result}");
@@ -292,11 +318,11 @@ public class PauseMenuManager : MonoBehaviour
         // 1. Reset Volume
         if (_masterVolumeSlider != null) 
         {
-            _masterVolumeSlider.value = 1f; // This will trigger OnValueChanged -> SetMasterVolume(1f)
+            _masterVolumeSlider.value = 0.5f; // This will trigger OnValueChanged -> SetMasterVolume(0.5f)
         }
         else
         {
-            SetMasterVolume(1f); // Fallback if slider missing
+            SetMasterVolume(0.5f); // Fallback if slider missing
         }
 
         // 3. Reset Fullscreen (Default true)
@@ -346,6 +372,10 @@ public class PauseMenuManager : MonoBehaviour
         PlayerPrefs.DeleteKey("TutorialCompleted");
         PlayerPrefs.DeleteKey("MaskCollected");
         PlayerPrefs.DeleteKey("HasCustomSave");
+        
+        Player.ResetPersistentUpgrades();
+        LootCrate.ResetOpenedCrates();
+        
         PlayerPrefs.Save();
         
         // Reset Time
@@ -366,5 +396,32 @@ public class PauseMenuManager : MonoBehaviour
     private void OnDestroy()
     {
         Time.timeScale = 1f;
+    }
+
+    private void SetupHoverEvent(Image targetImage, Sprite normalSprite, Sprite hoverSprite)
+    {
+        if (targetImage == null) return;
+
+        EventTrigger trigger = targetImage.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = targetImage.gameObject.AddComponent<EventTrigger>();
+        }
+
+        // Pointer Enter
+        EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+        entryEnter.eventID = EventTriggerType.PointerEnter;
+        entryEnter.callback.AddListener((data) => {
+            if (hoverSprite != null) targetImage.sprite = hoverSprite;
+        });
+        trigger.triggers.Add(entryEnter);
+
+        // Pointer Exit
+        EventTrigger.Entry entryExit = new EventTrigger.Entry();
+        entryExit.eventID = EventTriggerType.PointerExit;
+        entryExit.callback.AddListener((data) => {
+            if (normalSprite != null) targetImage.sprite = normalSprite;
+        });
+        trigger.triggers.Add(entryExit);
     }
 }

@@ -6,22 +6,23 @@ public class PlayerShooting
     private readonly Transform _playerTransform;
     private readonly Transform _firePoint;
     private float _fireRate = 0.25f;
-    private readonly float _bulletSpeed;
-    private readonly GameObject[] _firePointVFXPrefabs;
-    private readonly bool _isAutomatic;
+    private float _bulletSpeed;
+    private GameObject[] _firePointVFXPrefabs;
+    private bool _isAutomatic;
 
     private float _nextFireTime = 0f;
     
     private readonly float _maxShootAngle = 60f;
 
     private WeaponBase _weapon;
-    private readonly Animator _weaponAnimator;
-    private readonly string _recoilTrigger;
+    private Animator _weaponAnimator;
+    private string _recoilTrigger;
+    private System.Collections.Generic.List<ObjectPool<Transform>> _vfxPools;
     
     // --- Ammo System ---
-    private readonly int _magazineSize;
+    private int _magazineSize;
     private int _currentAmmo;
-    private readonly float _reloadTime;
+    private float _reloadTime;
     private float _reloadTimer;
     private bool _isReloading;
     
@@ -52,7 +53,7 @@ public class PlayerShooting
         _bulletSpeed = bulletSpeed;
         _fireRate = fireRate;
         _isAutomatic = isAutomatic;
-        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(magazineSize * 2, 50));
         _firePointVFXPrefabs = fireVFXPrefabs;
         _weaponAnimator = weaponAnimator;
         _recoilTrigger = recoilTrigger;
@@ -61,6 +62,52 @@ public class PlayerShooting
         _magazineSize = magazineSize;
         _reloadTime = reloadTime;
         _currentAmmo = _magazineSize;
+
+        // Initialize VFX pools
+        InitializeVFXPools();
+
+        // Preload gameplay critical FMOD events to prevent I/O lag spikes
+        FMODHelper.PreloadEvent("event:/Gun_Shot_Player");
+        FMODHelper.PreloadEvent("event:/Gun_Auto_Reload");
+    }
+
+    private void InitializeVFXPools()
+    {
+        if (_vfxPools != null)
+        {
+            foreach (var pool in _vfxPools)
+            {
+                if (pool != null)
+                {
+                    pool.Clear();
+                }
+            }
+        }
+
+        _vfxPools = new System.Collections.Generic.List<ObjectPool<Transform>>();
+        if (_firePointVFXPrefabs != null)
+        {
+            foreach (var prefab in _firePointVFXPrefabs)
+            {
+                if (prefab != null)
+                {
+                    // CRITICAL SAFEGUARD: If the developer mistakenly assigned the FirePoint itself
+                    // or any Player GameObject as the VFX prefab, skip it to prevent infinite recursion/RAM explosion!
+                    if (prefab == _firePoint.gameObject || prefab.transform.IsChildOf(_playerTransform))
+                    {
+                        Debug.LogWarning($"[PlayerShooting] Skipping invalid VFX prefab '{prefab.name}' because it is part of the player hierarchy. This prevents infinite recursion.");
+                        _vfxPools.Add(null);
+                        continue;
+                    }
+
+                    _vfxPools.Add(new ObjectPool<Transform>(prefab.transform, 10, _firePoint));
+                }
+                else
+                {
+                    _vfxPools.Add(null);
+                }
+            }
+        }
     }
 
     public void ModifyFireRate(float multiplier)
@@ -101,7 +148,7 @@ public class PlayerShooting
 
         if (inputDetected && Time.time >= _nextFireTime && _currentAmmo > 0)
         {
-            _nextFireTime = Time.time + _fireRate;
+            _nextFireTime = Time.time + (_fireRate / (Player.Instance != null ? Player.Instance.GetTotalFireRateMultiplier() : 1f));
             _weapon.Fire(aimDir);
             
             // Play gunshot sound with random pitch variation
@@ -165,49 +212,95 @@ public class PlayerShooting
 
     private void SpawnVFX()
     {
-        if (_firePointVFXPrefabs == null) return;
+        if (_vfxPools == null || _firePointVFXPrefabs == null) return;
         
-        foreach (var prefab in _firePointVFXPrefabs)
+        for (int i = 0; i < _firePointVFXPrefabs.Length; i++)
         {
+            var prefab = _firePointVFXPrefabs[i];
             if (prefab == null) continue;
             
-            // Instantiate at fire point position with corrected rotation (180 flip) and parent to firePoint
-            Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
-            GameObject vfxInstance = UnityEngine.Object.Instantiate(prefab, _firePoint.position, correctedRotation, _firePoint);
-            
-            // Get root particle system and play with all children
-            ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
-            if (rootPS != null)
+            var pool = _vfxPools[i];
+            if (pool != null)
             {
-                // Stop everything first, then play all together
-                rootPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                rootPS.Play(true); // true = play all children simultaneously
-            }
-            else
-            {
-                // No root PS, play each child individually
-                foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
+                Transform vfxInstance = pool.GetObject();
+                
+                // Position at fire point with corrected rotation
+                Quaternion correctedRotation = _firePoint.rotation * Quaternion.Euler(0, 180, 0);
+                vfxInstance.SetPositionAndRotation(_firePoint.position, correctedRotation);
+                
+                ParticleSystem rootPS = vfxInstance.GetComponent<ParticleSystem>();
+                if (rootPS != null)
                 {
-                    ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                    ps.Play(true);
+                    rootPS.Play(true);
+                }
+                else
+                {
+                    ParticleSystem childPS = vfxInstance.GetComponentInChildren<ParticleSystem>();
+                    if (childPS != null)
+                    {
+                        childPS.Play(true);
+                    }
+                }
+                
+                PoolObjectCleanup cleanup = vfxInstance.GetComponent<PoolObjectCleanup>();
+                if (cleanup == null)
+                {
+                    cleanup = vfxInstance.gameObject.AddComponent<PoolObjectCleanup>();
+                    cleanup.Init(pool, 1.0f);
+                }
+                else
+                {
+                    cleanup.ResetTimer();
                 }
             }
-            
-            // Calculate max duration for auto-destroy
-            float maxDuration = 0f;
-            foreach (var ps in vfxInstance.GetComponentsInChildren<ParticleSystem>())
-            {
-                float duration = ps.main.duration + ps.main.startLifetime.constantMax;
-                if (duration > maxDuration) maxDuration = duration;
-            }
-            
-            // Auto-destroy after VFX finishes (with small buffer)
-            UnityEngine.Object.Destroy(vfxInstance, maxDuration + 0.5f);
         }
+    }
+
+    public void UpdateWeaponStats(GameObject bulletPrefab, float fireRate, float bulletSpeed, int magazineSize, float reloadTime, bool isAutomatic, Animator weaponAnimator, string recoilTrigger, GameObject[] firePointVFX)
+    {
+        _fireRate = fireRate;
+        _bulletSpeed = bulletSpeed;
+        _magazineSize = magazineSize;
+        _reloadTime = reloadTime;
+        _isAutomatic = isAutomatic;
+        _weaponAnimator = weaponAnimator;
+        _recoilTrigger = recoilTrigger;
+        _firePointVFXPrefabs = firePointVFX;
+
+        // Dispose of the old weapon to cleanup its pools and prevent GameObject leak
+        if (_weapon is System.IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(magazineSize * 2, 50));
+        
+        // Reinitialize VFX pools for the new weapon
+        InitializeVFXPools();
+
+        // Reset/Refill ammo
+        _currentAmmo = _magazineSize;
+        _isReloading = false;
+        _reloadTimer = 0f;
+        
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+        OnReloadStateChanged?.Invoke(false);
     }
 
     public void EquipWeapon(GameObject bulletPrefab)
     {
-        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed);
+        if (_weapon is System.IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+        _weapon = new BulletWeapon(_playerTransform, _firePoint, bulletPrefab, _bulletSpeed, Mathf.Max(_magazineSize * 2, 50));
+
+        // Refill ammo and notify listeners/UI
+        _currentAmmo = _magazineSize;
+        _isReloading = false;
+        _reloadTimer = 0f;
+        
+        OnAmmoChanged?.Invoke(_currentAmmo, _magazineSize);
+        OnReloadStateChanged?.Invoke(false);
     }
 }

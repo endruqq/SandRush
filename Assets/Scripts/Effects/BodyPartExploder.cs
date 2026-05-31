@@ -51,6 +51,7 @@ public class BodyPartExploder : MonoBehaviour
             debris.transform.position = r.transform.position;
             debris.transform.rotation = r.transform.rotation;
             debris.layer = r.gameObject.layer;
+            debris.AddComponent<DebrisTag>();
             
             Mesh meshToUse = null;
             Material[] matsToUse = r.sharedMaterials;
@@ -127,7 +128,16 @@ public class BodyPartExploder : MonoBehaviour
                 }
                 
                 // Cleanup debris
-                Destroy(debris, _partLifetime);
+                if (r is SkinnedMeshRenderer)
+                {
+                    DebrisCleanup cleanup = debris.AddComponent<DebrisCleanup>();
+                    cleanup.bakedMesh = meshToUse;
+                    cleanup.lifetime = _partLifetime;
+                }
+                else
+                {
+                    Destroy(debris, _partLifetime);
+                }
             }
             
             // Hide original part
@@ -135,3 +145,24 @@ public class BodyPartExploder : MonoBehaviour
         }
     }
 }
+
+public class DebrisCleanup : MonoBehaviour
+{
+    public Mesh bakedMesh;
+    public float lifetime;
+
+    private void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
+
+    private void OnDestroy()
+    {
+        if (bakedMesh != null)
+        {
+            Destroy(bakedMesh);
+        }
+    }
+}
+
+public class DebrisTag : MonoBehaviour {}

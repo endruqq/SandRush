@@ -124,36 +124,11 @@ public class CardUpgradeManager : MonoBehaviour
         containerRect.offsetMax = Vector2.zero;
 
         List<RectTransform> cardsList = new List<RectTransform>();
+        List<UpgradeCard> randomUpgrades = GetRandomUpgrades();
 
-        // 1. Life Card
-        cardsList.Add(CreateCard(container.transform, "LIFE CARD", "+10 Max Health\nHeals instantly", () =>
+        for (int i = 0; i < randomUpgrades.Count; i++)
         {
-            Player.IncreaseMaxHealth(10);
-        }));
-
-        // 2. Damage Card
-        cardsList.Add(CreateCard(container.transform, "DAMAGE CARD", "+10 Bullet Damage\nHeavy impact bullets", () =>
-        {
-            Player.IncreaseDamage(10f);
-        }));
-
-        // 3. Weapon or Speed Card
-        if (Player.Instance != null && Player.Instance.HasAlternativeWeapons())
-        {
-            cardsList.Add(CreateCard(container.transform, "WEAPON CARD", "Equip next special\nweapon prototype", () =>
-            {
-                Player.Instance.EquipNextAlternativeWeapon();
-            }));
-        }
-        else
-        {
-            cardsList.Add(CreateCard(container.transform, "SPEED CARD", "+20% Fire Rate\nShoot faster", () =>
-            {
-                if (Player.Instance != null && Player.Instance.Shooting != null)
-                {
-                    Player.Instance.Shooting.ModifyFireRate(1.2f);
-                }
-            }));
+            cardsList.Add(CreateCard(container.transform, randomUpgrades[i].Name, randomUpgrades[i].Description, randomUpgrades[i].Action));
         }
 
         // Start Entry Animation
@@ -172,35 +147,10 @@ public class CardUpgradeManager : MonoBehaviour
             return false;
         }
 
-        // Configure Life Card
-        ConfigureCustomCard(cardButtons[0], "LIFE CARD", "+10 Max Health\nHeals instantly", () =>
+        List<UpgradeCard> randomUpgrades = GetRandomUpgrades();
+        for (int i = 0; i < 3; i++)
         {
-            Player.IncreaseMaxHealth(10);
-        });
-
-        // Configure Damage Card
-        ConfigureCustomCard(cardButtons[1], "DAMAGE CARD", "+10 Bullet Damage\nHeavy impact bullets", () =>
-        {
-            Player.IncreaseDamage(10f);
-        });
-
-        // Configure Weapon or Speed Card
-        if (Player.Instance != null && Player.Instance.HasAlternativeWeapons())
-        {
-            ConfigureCustomCard(cardButtons[2], "WEAPON CARD", "Equip next special\nweapon prototype", () =>
-            {
-                Player.Instance.EquipNextAlternativeWeapon();
-            });
-        }
-        else
-        {
-            ConfigureCustomCard(cardButtons[2], "SPEED CARD", "+20% Fire Rate\nShoot faster", () =>
-            {
-                if (Player.Instance != null && Player.Instance.Shooting != null)
-                {
-                    Player.Instance.Shooting.ModifyFireRate(1.2f);
-                }
-            });
+            ConfigureCustomCard(cardButtons[i], randomUpgrades[i].Name, randomUpgrades[i].Description, randomUpgrades[i].Action);
         }
 
         // Find parent container to attach particle emitter if enabled
@@ -381,5 +331,99 @@ public class CardUpgradeManager : MonoBehaviour
         float c1 = 1.70158f;
         float c3 = c1 + 1f;
         return 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+    }
+
+    private class UpgradeCard
+    {
+        public string Name;
+        public string Description;
+        public System.Action Action;
+
+        public UpgradeCard(string name, string description, System.Action action)
+        {
+            Name = name;
+            Description = description;
+            Action = action;
+        }
+    }
+
+    private List<UpgradeCard> GetRandomUpgrades()
+    {
+        List<UpgradeCard> allPool = new List<UpgradeCard>();
+
+        // Add always available cards
+        allPool.Add(new UpgradeCard("LIFE CARD", "+10 Max Health\nHeals instantly", () => Player.IncreaseMaxHealth(10)));
+        allPool.Add(new UpgradeCard("DAMAGE CARD", "+10 Bullet Damage\nHeavy impact bullets", () => Player.IncreaseDamage(10f)));
+        allPool.Add(new UpgradeCard("LIGHTWEIGHT BOOTS", "+20% Movement Speed\nRun faster", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeMovementSpeed(0.2f);
+        }));
+        allPool.Add(new UpgradeCard("RAPID FIRE", "+10% Fire Rate\nShoot faster", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeFireRate(0.1f);
+        }));
+        allPool.Add(new UpgradeCard("OVERLOAD", "-25% Mask Cooldown\nAbilities recharge faster", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeMaskCooldownReduction(0.25f);
+        }));
+        allPool.Add(new UpgradeCard("EMERALD TABLET", "+10% Damage per active mask\nPower of the pharaohs", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeEmeraldTablet();
+        }));
+        allPool.Add(new UpgradeCard("GLASS SARCOPHAGUS", "+50% Damage\n-25% Max Health", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeGlassSarcophagus();
+        }));
+        allPool.Add(new UpgradeCard("WRATH OF SETH", "+100% Fire Rate\n+50% Damage Taken", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeWrathOfSeth();
+        }));
+        allPool.Add(new UpgradeCard("MUMMY SHELL", "+60% Shield Capacity\nDash ability blocked", () => {
+            if (Player.Instance != null) Player.Instance.UpgradeMummyShell();
+        }));
+        if (Player.Instance == null || !Player.Instance.HasMaskSynergy)
+        {
+            allPool.Add(new UpgradeCard("DUAL ALIGNMENT", "Equip both Dash and Shield\nmasks at the same time", () => {
+                if (Player.Instance != null) Player.Instance.UpgradeMaskSynergy();
+            }));
+        }
+
+        // Shuffle the pool using Fisher-Yates
+        for (int i = 0; i < allPool.Count; i++)
+        {
+            int rnd = Random.Range(i, allPool.Count);
+            UpgradeCard temp = allPool[i];
+            allPool[i] = allPool[rnd];
+            allPool[rnd] = temp;
+        }
+
+        List<UpgradeCard> selected = new List<UpgradeCard>();
+
+        // Force Weapon Card if available
+        if (Player.Instance != null && Player.Instance.HasRifleUpgradeAvailable())
+        {
+            selected.Add(new UpgradeCard("WEAPON CARD", "Equip automatic\nRifle prototype", () => {
+                if (Player.Instance != null) Player.Instance.EquipRifle();
+            }));
+            
+            // Fill the remaining 2 slots from the shuffled pool
+            for (int i = 0; i < 2; i++)
+            {
+                selected.Add(allPool[i]);
+            }
+        }
+        else
+        {
+            // Select 3 random cards from the shuffled pool
+            for (int i = 0; i < 3; i++)
+            {
+                selected.Add(allPool[i]);
+            }
+        }
+
+        // Shuffle the selected list so the Weapon Card isn't always in slot 0
+        for (int i = 0; i < selected.Count; i++)
+        {
+            int rnd = Random.Range(i, selected.Count);
+            UpgradeCard temp = selected[i];
+            selected[i] = selected[rnd];
+            selected[rnd] = temp;
+        }
+
+        return selected;
     }
 }

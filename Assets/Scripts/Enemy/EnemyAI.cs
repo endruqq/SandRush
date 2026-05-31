@@ -85,6 +85,11 @@ public class EnemyAI : MonoBehaviour
         
         _randomAngleOffset = Random.Range(0f, 360f);
         _speedVariance = Random.Range(0.85f, 1.25f); // 15-25% variation so they don't form identical lines!
+
+        if (_animator == null)
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
     }
 
     void Start()
@@ -127,7 +132,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                if(_navAgent.isOnNavMesh) _navAgent.isStopped = true;
+                SetAgentStopped(true);
                 return;
             }
         }
@@ -203,7 +208,7 @@ public class EnemyAI : MonoBehaviour
             _lastSeenPosition = _playerTransform.position;
             _navAgent.SetDestination(_playerTransform.position);
             SetWalking(true);
-            _navAgent.isStopped = false;
+            SetAgentStopped(false);
         }
         else
         {
@@ -211,7 +216,7 @@ public class EnemyAI : MonoBehaviour
             _searchTimer = _searchDuration;
             _navAgent.SetDestination(_lastSeenPosition);
             SetWalking(true);
-            _navAgent.isStopped = false;
+            SetAgentStopped(false);
             return;
         }
         
@@ -222,20 +227,7 @@ public class EnemyAI : MonoBehaviour
             SeparateFromPeers();
         }
         
-        // --- DEBUG ---
-        if (_navAgent.pathPending)
-        {
-            Debug.Log($"{gameObject.name} is calculating a path...", this);
-        }
-        else if (_navAgent.hasPath)
-        {
-            // Debug.Log($"{gameObject.name} is moving along its path. Velocity: {_navAgent.velocity.magnitude}", this);
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} has no path. Is the destination reachable?", this);
-        }
-        // --- END DEBUG ---
+        // --- DEBUG REMOVED TO PREVENT RAM LEAKS FROM LOG SPAM ---
         
         if (_distanceToPlayer <= _attackRange)
         {
@@ -254,6 +246,16 @@ public class EnemyAI : MonoBehaviour
     private void SeparateFromPeers()
     {
         if (!_navAgent.isOnNavMesh) return;
+        
+        // Detect if the enemy is on stairs or a slope to avoid pushing them off/under
+        bool isOnSlope = false;
+        if (UnityEngine.AI.NavMesh.SamplePosition(transform.position, out UnityEngine.AI.NavMeshHit navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            if (navHit.normal.y < 0.95f) // Slope angle is greater than ~18 degrees
+            {
+                isOnSlope = true;
+            }
+        }
         
         // Find nearby enemies to push away from
         Collider[] nearby = Physics.OverlapSphere(transform.position, 2.0f);
@@ -278,7 +280,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
         
-        if (count > 0)
+        if (count > 0 && !isOnSlope)
         {
             // Manually shove the agent so they slide apart while chasing.
             // Reduced by ~80% for a much more subtle, natural shift rather than an aggressive slide.
@@ -288,7 +290,7 @@ public class EnemyAI : MonoBehaviour
         // Close-range Encirclement
         // Only start wrapping around when they get close to the player (e.g., within 6 units)
         // This ensures they always charge forward from far away, but fan out wide when closing in for the kill
-        if (_distanceToPlayer < 6.0f && _distanceToPlayer > _attackRange * 0.5f)
+        if (!isOnSlope && _distanceToPlayer < 6.0f && _distanceToPlayer > _attackRange * 0.5f)
         {
             Vector3 dirFromPlayer = (transform.position - _playerTransform.position).normalized;
             dirFromPlayer.y = 0;
@@ -316,7 +318,7 @@ public class EnemyAI : MonoBehaviour
             _currentState = State.Searching;
             _searchTimer = _searchDuration;
             _navAgent.SetDestination(_lastSeenPosition);
-            _navAgent.isStopped = false;
+            SetAgentStopped(false);
             SetWalking(true);
             if (_attackType == AttackType.Exploder)
             {
@@ -329,11 +331,12 @@ public class EnemyAI : MonoBehaviour
 
         if (_attackType == AttackType.Ranged)
         {
-            
-            if (_enableStrafing)
+            // Only strafe if the player is at a reasonable distance (more than 4 units away)
+            // If they are too close, strafing laterally might cause them to path off stairs or run away weirdly
+            if (_enableStrafing && _distanceToPlayer > 4f)
             {
                 _navAgent.updateRotation = false; // Manually look at player while moving sideways
-                _navAgent.isStopped = false;
+                SetAgentStopped(false);
                 _navAgent.speed = _strafeSpeed;
                 SetWalking(true);
                 
@@ -345,13 +348,15 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                _navAgent.isStopped = true;
+                // Stand ground and shoot when close or when strafing is disabled
+                SetAgentStopped(true);
+                _navAgent.updateRotation = true;
                 SetWalking(false);
             }
         }
         else
         {
-            _navAgent.isStopped = true;
+            SetAgentStopped(true);
             SetWalking(false);
         }
 
@@ -406,9 +411,13 @@ public class EnemyAI : MonoBehaviour
         // Attempt to find a valid navmesh point 4 units in the strafe direction
         Vector3 targetPos = transform.position + strafeDir * 4f;
         
-        if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out UnityEngine.AI.NavMeshHit hit, 4f, UnityEngine.AI.NavMesh.AllAreas))
+        // Restrict sampling range to 1.5 units and verify elevation is similar to avoid snapping to a floor under the stairs
+        if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out UnityEngine.AI.NavMeshHit hit, 1.5f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            _navAgent.SetDestination(hit.position);
+            if (Mathf.Abs(hit.position.y - transform.position.y) < 1.5f)
+            {
+                _navAgent.SetDestination(hit.position);
+            }
         }
     }
 
@@ -515,7 +524,7 @@ public class EnemyAI : MonoBehaviour
         float lungeTime = 0.25f; // Slightly longer for a smoother feel
         float maxLungeSpeed = 12f;
         
-        _navAgent.isStopped = false;
+        SetAgentStopped(false);
         _navAgent.acceleration = 100f; // High acceleration for instant response
         
         float timer = 0f;
@@ -530,11 +539,17 @@ public class EnemyAI : MonoBehaviour
                 
                 // Ease-out the speed so it smoothly halts instead of stopping abruptly
                 float easeOut = 1f - (timer / lungeTime); 
-                _navAgent.velocity = dir * (maxLungeSpeed * easeOut);
+                if (_navAgent != null && _navAgent.isActiveAndEnabled && _navAgent.isOnNavMesh)
+                {
+                    _navAgent.velocity = dir * (maxLungeSpeed * easeOut);
+                }
             }
             else
             {
-                _navAgent.velocity = Vector3.zero;
+                if (_navAgent != null && _navAgent.isActiveAndEnabled && _navAgent.isOnNavMesh)
+                {
+                    _navAgent.velocity = Vector3.zero;
+                }
             }
             
             timer += Time.deltaTime;
@@ -542,10 +557,13 @@ public class EnemyAI : MonoBehaviour
         }
         
         // Restore settings
-        _navAgent.velocity = Vector3.zero;
-        _navAgent.speed = originalSpeed;
-        _navAgent.acceleration = originalAccel;
-        _navAgent.isStopped = true;
+        if (_navAgent != null && _navAgent.isActiveAndEnabled && _navAgent.isOnNavMesh)
+        {
+            _navAgent.velocity = Vector3.zero;
+            _navAgent.speed = originalSpeed;
+            _navAgent.acceleration = originalAccel;
+        }
+        SetAgentStopped(true);
     }
     
     private System.Collections.IEnumerator MeleeHitCoroutine()
@@ -664,20 +682,20 @@ public class EnemyAI : MonoBehaviour
 
         if (!_navAgent.pathPending && _navAgent.remainingDistance <= 1.2f)
         {
-            _navAgent.isStopped = true;
+            SetAgentStopped(true);
             SetWalking(false);
 
             _searchTimer -= Time.deltaTime;
             if (_searchTimer <= 0f)
             {
                 _currentState = State.ReturningToOrigin;
-                _navAgent.isStopped = false;
+                SetAgentStopped(false);
                 _navAgent.SetDestination(_originalPosition);
             }
         }
         else
         {
-            _navAgent.isStopped = false;
+            SetAgentStopped(false);
             SetWalking(true);
             if (_navAgent.destination != _lastSeenPosition)
             {
@@ -701,13 +719,13 @@ public class EnemyAI : MonoBehaviour
 
         if (!_navAgent.pathPending && _navAgent.remainingDistance <= 1.2f)
         {
-            _navAgent.isStopped = true;
+            SetAgentStopped(true);
             SetWalking(false);
             _currentState = State.Idle;
         }
         else
         {
-            _navAgent.isStopped = false;
+            SetAgentStopped(false);
             SetWalking(true);
             if (_navAgent.destination != _originalPosition)
             {
@@ -728,12 +746,11 @@ public class EnemyAI : MonoBehaviour
     {
         if (_animator != null && !string.IsNullOrEmpty(_isWalkingBool))
         {
-            _animator.SetBool(_isWalkingBool, isWalking);
-            Debug.Log($"{gameObject.name} SetWalking: {isWalking}", this);
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} SetWalking failed: Animator={_animator}, BoolName={_isWalkingBool}", this);
+            // Prevent spamming the animator and avoid Unity console logging every frame
+            if (_animator.GetBool(_isWalkingBool) != isWalking)
+            {
+                _animator.SetBool(_isWalkingBool, isWalking);
+            }
         }
     }
     
@@ -745,6 +762,19 @@ public class EnemyAI : MonoBehaviour
         if (lookDirection != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    private void SetAgentStopped(bool stopped)
+    {
+        if (_navAgent != null && _navAgent.isActiveAndEnabled && _navAgent.isOnNavMesh)
+        {
+            _navAgent.isStopped = stopped;
         }
     }
 }

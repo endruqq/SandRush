@@ -35,4 +35,24 @@ public static class FMODHelper
         instance.start();
         instance.release();
     }
+
+    /// <summary>
+    /// Preloads sample data for a given FMOD event to prevent lag spikes on first playback.
+    /// </summary>
+    public static void PreloadEvent(string eventPath)
+    {
+        if (string.IsNullOrEmpty(eventPath)) return;
+        try
+        {
+            var eventDescription = FMODUnity.RuntimeManager.GetEventDescription(eventPath);
+            if (eventDescription.isValid())
+            {
+                eventDescription.loadSampleData();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[FMODHelper] Failed to preload event '{eventPath}': {e.Message}");
+        }
+    }
 }
