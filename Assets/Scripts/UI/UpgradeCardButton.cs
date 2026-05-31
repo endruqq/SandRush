@@ -13,4 +13,11 @@ public class UpgradeCardButton : MonoBehaviour
 
     [Tooltip("The text component displaying the card description.")]
     public TextMeshProUGUI DescriptionText;
+
+    [Header("Hover Sprite Customization")]
+    [Tooltip("Optional: The background Image component of the card.")]
+    public Image CardBackgroundImage;
+
+    [Tooltip("Optional: The background Sprite to display on hover.")]
+    public Sprite HoverBackgroundSprite;
 }

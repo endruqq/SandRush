@@ -138,7 +138,9 @@ public class CardUpgradeManager : MonoBehaviour
     private bool SetupCustomUpgradeUI(GameObject prefab)
     {
         _canvasObject = Instantiate(prefab);
-        UpgradeCardButton[] cardButtons = _canvasObject.GetComponentsInChildren<UpgradeCardButton>();
+        _canvasObject.SetActive(true); // Force active in case prefab was saved disabled
+        
+        UpgradeCardButton[] cardButtons = _canvasObject.GetComponentsInChildren<UpgradeCardButton>(true);
 
         if (cardButtons == null || cardButtons.Length < 3)
         {
@@ -150,6 +152,7 @@ public class CardUpgradeManager : MonoBehaviour
         List<UpgradeCard> randomUpgrades = GetRandomUpgrades();
         for (int i = 0; i < 3; i++)
         {
+            cardButtons[i].gameObject.SetActive(true); // Force active in case cards were disabled
             ConfigureCustomCard(cardButtons[i], randomUpgrades[i].Name, randomUpgrades[i].Description, randomUpgrades[i].Action);
         }
 
@@ -285,10 +288,20 @@ public class CardUpgradeManager : MonoBehaviour
         float[] delays = new float[] { 0f, 0.12f, 0.24f };
         float duration = 0.45f;
 
-        // Initialize scales to zero
+        // Cache original scales
+        Vector3[] originalScales = new Vector3[cards.Length];
         for (int i = 0; i < cards.Length; i++)
         {
-            if (cards[i] != null) cards[i].localScale = Vector3.zero;
+            if (cards[i] != null)
+            {
+                originalScales[i] = cards[i].localScale;
+                // If it is 0 (should not be on Awake, but as a fallback), default to Vector3.one
+                if (originalScales[i].sqrMagnitude < 0.001f)
+                {
+                    originalScales[i] = Vector3.one;
+                }
+                cards[i].localScale = Vector3.zero;
+            }
         }
 
         float startTime = Time.realtimeSinceStartup;
@@ -312,12 +325,12 @@ public class CardUpgradeManager : MonoBehaviour
                 else if (cardTime < duration)
                 {
                     float t = cardTime / duration;
-                    cards[i].localScale = Vector3.one * EvaluateOvershoot(t);
+                    cards[i].localScale = originalScales[i] * EvaluateOvershoot(t);
                     allDone = false;
                 }
                 else
                 {
-                    cards[i].localScale = Vector3.one;
+                    cards[i].localScale = originalScales[i];
                 }
             }
 
