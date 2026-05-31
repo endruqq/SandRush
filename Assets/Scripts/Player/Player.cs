@@ -297,10 +297,12 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetInt("Upgrade_ActiveAbility", (int)ActiveAbility);
         PlayerPrefs.SetInt("Upgrade_HasRifle", _hasRifle ? 1 : 0);
         PlayerPrefs.Save();
+        Debug.Log($"[Player] Saved Upgrades: BaseMaxHealth={_baseMaxHealth}, FireRate={FireRateMultiplier}, Speed={MovementSpeedMultiplier}, HasRifle={_hasRifle}, Synergy={HasMaskSynergy}");
     }
 
     public void LoadUpgrades()
     {
+        Debug.Log($"[Player] LoadUpgrades checking key Upgrade_BaseMaxHealth: {PlayerPrefs.HasKey("Upgrade_BaseMaxHealth")}");
         if (PlayerPrefs.HasKey("Upgrade_BaseMaxHealth"))
         {
             _baseMaxHealth = PlayerPrefs.GetInt("Upgrade_BaseMaxHealth");
@@ -347,7 +349,7 @@ public class Player : MonoBehaviour
                 UpdateShieldUI();
             }
             
-            Debug.Log("[Player] Persistent upgrades loaded successfully.");
+            Debug.Log($"[Player] Persistent upgrades loaded successfully: BaseMaxHealth={_baseMaxHealth}, FireRate={FireRateMultiplier}, Speed={MovementSpeedMultiplier}, HasRifle={_hasRifle}, Synergy={HasMaskSynergy}");
         }
     }
 

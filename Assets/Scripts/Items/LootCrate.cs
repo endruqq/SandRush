@@ -42,7 +42,10 @@ public class LootCrate : MonoBehaviour
 
     private string GetCrateUniqueKey()
     {
-        return $"Crate_{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}_{gameObject.name}_{transform.position.x:F1}_{transform.position.y:F1}_{transform.position.z:F1}";
+        var culture = System.Globalization.CultureInfo.InvariantCulture;
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Replace(",", "_").Replace(";", "_").Replace("|", "_");
+        string objectName = gameObject.name.Replace(",", "_").Replace(";", "_").Replace("|", "_");
+        return $"Crate_{sceneName}_{objectName}_{transform.position.x.ToString("F1", culture)}_{transform.position.y.ToString("F1", culture)}_{transform.position.z.ToString("F1", culture)}";
     }
 
     private void Start()
@@ -80,7 +83,7 @@ public class LootCrate : MonoBehaviour
         string openedCratesList = PlayerPrefs.GetString("OpenedCratesList", "");
         if (!string.IsNullOrEmpty(openedCratesList))
         {
-            string[] keys = openedCratesList.Split(',');
+            string[] keys = openedCratesList.Split(new char[] { ',', ';', '|' }, System.StringSplitOptions.RemoveEmptyEntries);
             foreach (string key in keys)
             {
                 PlayerPrefs.DeleteKey(key);
@@ -138,7 +141,7 @@ public class LootCrate : MonoBehaviour
         string openedCratesList = PlayerPrefs.GetString("OpenedCratesList", "");
         if (!openedCratesList.Contains(key))
         {
-            openedCratesList = string.IsNullOrEmpty(openedCratesList) ? key : openedCratesList + "," + key;
+            openedCratesList = string.IsNullOrEmpty(openedCratesList) ? key : openedCratesList + "|" + key;
             PlayerPrefs.SetString("OpenedCratesList", openedCratesList);
         }
         PlayerPrefs.Save();

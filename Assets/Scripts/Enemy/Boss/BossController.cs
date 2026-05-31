@@ -28,6 +28,7 @@ public class BossController : MonoBehaviour
     [Tooltip("Mechanika samego piorunu (przeciągnij swój utworzony Prefab LightningStrike)")]
     [SerializeField] private GameObject _lightningStrikePrefab;
     [SerializeField] private HitFlash _hitFlash;
+    [SerializeField] private BodyPartExploder _bodyPartExploder;
     [Tooltip("Nazwa parametru Triggera w Twoim Animatorze (np. Attack)")]
     [SerializeField] private string _attackAnimTrigger = "Attack";
 
@@ -40,6 +41,7 @@ public class BossController : MonoBehaviour
     private float _idleTimer;
     private bool _isAttacking = false;
     private Player _cachedPlayer;
+    private Vector3 _lastHitDirection;
 
     public float HealthPercent => _maxHealth > 0 ? _currentHealth / _maxHealth : 0;
     public bool IsDead => _isDead;
@@ -49,6 +51,7 @@ public class BossController : MonoBehaviour
         _currentHealth = _maxHealth;
         _idleTimer = _idleDuration;
         if (_hitFlash == null) _hitFlash = GetComponent<HitFlash>();
+        if (_bodyPartExploder == null) _bodyPartExploder = GetComponent<BodyPartExploder>();
     }
 
     private void Update()
@@ -171,6 +174,7 @@ public class BossController : MonoBehaviour
         if (_isDead) return;
 
         _currentHealth -= amount;
+        _lastHitDirection = hitDirection;
         Debug.Log($"[BossController] Took {amount} damage. Current HP: {_currentHealth}/{_maxHealth}");
 
         // Feedback wizualny trafienia
@@ -193,6 +197,12 @@ public class BossController : MonoBehaviour
     {
         _isDead = true;
         Debug.Log("[BossController] Die() called. Disabling boss behavior.");
+
+        if (_bodyPartExploder != null)
+        {
+            if (_hitFlash != null) _hitFlash.RestoreMaterials();
+            _bodyPartExploder.Explode(_lastHitDirection);
+        }
 
         // Przerywa w locie ataki i burze jeśli zdechł w trackie 
         StopAllCoroutines();

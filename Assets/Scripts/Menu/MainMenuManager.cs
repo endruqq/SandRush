@@ -33,6 +33,10 @@ public class MainMenuManager : MonoBehaviour
 
     private System.Collections.IEnumerator Start()
     {
+        // Force unlock and show cursor in Main Menu
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         // 1. --- PLAY MUSIC ---
         // Check if MusicManager exists (from gameplay) to avoid double music
         if (MusicManager.Instance != null)
@@ -110,8 +114,11 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             // 7. --- NORMAL LOAD (From PlayerPrefs) ---
-            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 1f);
-            if (savedVol <= 0.01f) savedVol = 1f;
+            float savedVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 0.5f);
+            if (!PlayerPrefs.HasKey(PREF_MASTER_VOL))
+            {
+                savedVol = 0.5f;
+            }
             
             _masterBus.setVolume(savedVol);
             
@@ -163,6 +170,7 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.DeleteKey("RespawnPosX");
         PlayerPrefs.DeleteKey("RespawnPosY");
         PlayerPrefs.DeleteKey("RespawnPosZ");
+        PlayerPrefs.DeleteKey("GameCompleted");
         
         Player.ResetPersistentUpgrades();
         LootCrate.ResetOpenedCrates();
@@ -173,8 +181,16 @@ public class MainMenuManager : MonoBehaviour
 
     public void ContinueGame()
     {
-        // Just load the scene, existing prefs will determine state
-        LoadScene(_gameplaySceneName);
+        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
+        {
+            Debug.Log("[MainMenu] Game was completed previously. Treating Continue as New Game.");
+            NewGame();
+        }
+        else
+        {
+            // Just load the scene, existing prefs will determine state
+            LoadScene(_gameplaySceneName);
+        }
     }
 
     public void ExitGame()
@@ -270,9 +286,9 @@ public class MainMenuManager : MonoBehaviour
     {
         // 1. Reset Volume
         if (_masterVolumeSlider != null) 
-            _masterVolumeSlider.value = 1f; 
+            _masterVolumeSlider.value = 0.5f; 
         else
-            SetMasterVolume(1f);
+            SetMasterVolume(0.5f);
 
         // 2. Reset Fullscreen
         SetFullscreen(true);

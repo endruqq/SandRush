@@ -137,7 +137,7 @@ public class PlayerMovement
         // 3. Handle Input
         // Must have charges, input direction, and not be currently dashing (optional, but prevents overlapping dashes)
         bool canDash = IsDashEnabled && (Player.Instance == null || !Player.Instance.IsDashBlocked);
-        if (canDash && Input.GetKeyDown(KeyCode.Space) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
+        if (canDash && Input.GetKeyDown(KeyCode.LeftShift) && !_isDashing && _currentDashCharges > 0 && moveDirection.sqrMagnitude > 0.1f)
         {
             JustDashed = true; 
             _isDashing = true;

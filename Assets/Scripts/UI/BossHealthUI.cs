@@ -70,56 +70,41 @@ public class BossHealthUI : MonoBehaviour
         _dynamicSprite = Sprite.Create(_dynamicTexture, new Rect(0, 0, 2, 2), new Vector2(0.5f, 0.5f));
         Sprite uiSprite = _dynamicSprite;
 
-        // 2. Main Container (Top-Center)
+        // 2. Main Container (Top-Center) - shorter height since name is removed
         GameObject containerGo = new GameObject("MainContainer");
         containerGo.transform.SetParent(_canvasObject.transform, false);
         _mainContainer = containerGo.AddComponent<RectTransform>();
         _mainContainer.anchorMin = new Vector2(0.5f, 1f);
         _mainContainer.anchorMax = new Vector2(0.5f, 1f);
         _mainContainer.pivot = new Vector2(0.5f, 1f);
-        _mainContainer.anchoredPosition = new Vector2(0f, -50f);
-        _mainContainer.sizeDelta = new Vector2(600f, 70f);
+        _mainContainer.anchoredPosition = new Vector2(0f, -40f); // Sits closer to top
+        _mainContainer.sizeDelta = new Vector2(600f, 40f);
         _originalContainerPos = _mainContainer.anchoredPosition;
 
-        // 3. Outer Border (Egyptian Sand Gold Panel)
-        GameObject outerBorderGo = new GameObject("OuterBorder");
-        outerBorderGo.transform.SetParent(_mainContainer, false);
-        RectTransform outerBorderRect = outerBorderGo.AddComponent<RectTransform>();
-        outerBorderRect.anchorMin = new Vector2(0.5f, 0.5f);
-        outerBorderRect.anchorMax = new Vector2(0.5f, 0.5f);
-        outerBorderRect.pivot = new Vector2(0.5f, 0.5f);
-        outerBorderRect.anchoredPosition = Vector2.zero;
-        outerBorderRect.sizeDelta = new Vector2(604f, 26f);
-        
-        Image outerBorderImage = outerBorderGo.AddComponent<Image>();
-        outerBorderImage.sprite = uiSprite;
-        outerBorderImage.type = Image.Type.Simple;
-        outerBorderImage.color = new Color(0.85f, 0.65f, 0.2f, 1f); // Metallic sand gold
-
-        // 4. Inner Background Panel (Translucent Charcoal Black)
+        // 3. Inner Background Panel (Translucent Charcoal Black - Minimalist Strip, no border)
         GameObject innerPanelGo = new GameObject("InnerPanel");
-        innerPanelGo.transform.SetParent(outerBorderGo.transform, false);
+        innerPanelGo.transform.SetParent(_mainContainer.transform, false);
         RectTransform innerPanelRect = innerPanelGo.AddComponent<RectTransform>();
         innerPanelRect.anchorMin = new Vector2(0.5f, 0.5f);
         innerPanelRect.anchorMax = new Vector2(0.5f, 0.5f);
         innerPanelRect.pivot = new Vector2(0.5f, 0.5f);
         innerPanelRect.anchoredPosition = Vector2.zero;
-        innerPanelRect.sizeDelta = new Vector2(600f, 22f);
+        innerPanelRect.sizeDelta = new Vector2(600f, 16f); // Minimalist bar height
         
         Image innerPanelImage = innerPanelGo.AddComponent<Image>();
         innerPanelImage.sprite = uiSprite;
         innerPanelImage.type = Image.Type.Simple;
-        innerPanelImage.color = new Color(0.08f, 0.08f, 0.08f, 0.95f);
+        innerPanelImage.color = new Color(0.04f, 0.04f, 0.04f, 0.6f); // Clean semi-transparent charcoal
 
-        // 5. LEFT BAR GROUP (Anchored at X = -5, Pivot = Right)
+        // 4. LEFT BAR GROUP (Anchored at X = 0, Pivot = Right)
         GameObject leftBarGo = new GameObject("LeftBarGroup");
         leftBarGo.transform.SetParent(innerPanelGo.transform, false);
         RectTransform leftBarRect = leftBarGo.AddComponent<RectTransform>();
         leftBarRect.anchorMin = new Vector2(0.5f, 0.5f);
         leftBarRect.anchorMax = new Vector2(0.5f, 0.5f);
         leftBarRect.pivot = new Vector2(1f, 0.5f);
-        leftBarRect.anchoredPosition = new Vector2(-5f, 0f);
-        leftBarRect.sizeDelta = new Vector2(290f, 16f);
+        leftBarRect.anchoredPosition = Vector2.zero;
+        leftBarRect.sizeDelta = new Vector2(300f, 16f);
 
         // Left Background Fill (Dark Crimson)
         GameObject leftBgGo = new GameObject("BG");
@@ -165,15 +150,15 @@ public class BossHealthUI : MonoBehaviour
         _leftRedBar.fillOrigin = (int)Image.OriginHorizontal.Right;
         _leftRedBar.fillAmount = 0f;
 
-        // 6. RIGHT BAR GROUP (Anchored at X = 5, Pivot = Left)
+        // 5. RIGHT BAR GROUP (Anchored at X = 0, Pivot = Left)
         GameObject rightBarGo = new GameObject("RightBarGroup");
         rightBarGo.transform.SetParent(innerPanelGo.transform, false);
         RectTransform rightBarRect = rightBarGo.AddComponent<RectTransform>();
         rightBarRect.anchorMin = new Vector2(0.5f, 0.5f);
         rightBarRect.anchorMax = new Vector2(0.5f, 0.5f);
         rightBarRect.pivot = new Vector2(0f, 0.5f);
-        rightBarRect.anchoredPosition = new Vector2(5f, 0f);
-        rightBarRect.sizeDelta = new Vector2(290f, 16f);
+        rightBarRect.anchoredPosition = Vector2.zero;
+        rightBarRect.sizeDelta = new Vector2(300f, 16f);
 
         // Right Background Fill (Dark Crimson)
         GameObject rightBgGo = new GameObject("BG");
@@ -219,82 +204,14 @@ public class BossHealthUI : MonoBehaviour
         _rightRedBar.fillOrigin = (int)Image.OriginHorizontal.Left;
         _rightRedBar.fillAmount = 0f;
 
-        // 7. Decorative Center Jewel (Amber/Gold Diamond)
-        GameObject centerJewelGo = new GameObject("CenterJewel");
-        centerJewelGo.transform.SetParent(innerPanelGo.transform, false);
-        RectTransform jewelRect = centerJewelGo.AddComponent<RectTransform>();
-        jewelRect.anchorMin = new Vector2(0.5f, 0.5f);
-        jewelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        jewelRect.pivot = new Vector2(0.5f, 0.5f);
-        jewelRect.anchoredPosition = Vector2.zero;
-        jewelRect.sizeDelta = new Vector2(14f, 14f);
-        jewelRect.localRotation = Quaternion.Euler(0f, 0f, 45f);
-        Image jewelImg = centerJewelGo.AddComponent<Image>();
-        jewelImg.sprite = uiSprite;
-        jewelImg.color = new Color(1f, 0.7f, 0.1f, 1f);
-
-        // 8. End Caps (Gold Diamond tips)
-        GameObject leftCapGo = new GameObject("LeftEndCap");
-        leftCapGo.transform.SetParent(innerPanelGo.transform, false);
-        RectTransform leftCapRect = leftCapGo.AddComponent<RectTransform>();
-        leftCapRect.anchorMin = new Vector2(0.5f, 0.5f);
-        leftCapRect.anchorMax = new Vector2(0.5f, 0.5f);
-        leftCapRect.pivot = new Vector2(0.5f, 0.5f);
-        leftCapRect.anchoredPosition = new Vector2(-300f, 0f);
-        leftCapRect.sizeDelta = new Vector2(8f, 8f);
-        leftCapRect.localRotation = Quaternion.Euler(0f, 0f, 45f);
-        Image leftCapImg = leftCapGo.AddComponent<Image>();
-        leftCapImg.sprite = uiSprite;
-        leftCapImg.color = new Color(0.85f, 0.65f, 0.2f, 1f);
-
-        GameObject rightCapGo = new GameObject("RightEndCap");
-        rightCapGo.transform.SetParent(innerPanelGo.transform, false);
-        RectTransform rightCapRect = rightCapGo.AddComponent<RectTransform>();
-        rightCapRect.anchorMin = new Vector2(0.5f, 0.5f);
-        rightCapRect.anchorMax = new Vector2(0.5f, 0.5f);
-        rightCapRect.pivot = new Vector2(0.5f, 0.5f);
-        rightCapRect.anchoredPosition = new Vector2(300f, 0f);
-        rightCapRect.sizeDelta = new Vector2(8f, 8f);
-        rightCapRect.localRotation = Quaternion.Euler(0f, 0f, 45f);
-        Image rightCapImg = rightCapGo.AddComponent<Image>();
-        rightCapImg.sprite = uiSprite;
-        rightCapImg.color = new Color(0.85f, 0.65f, 0.2f, 1f);
-
-        // 9. Boss Name Text (Gradient Gold, centered above)
-        GameObject nameTextGo = new GameObject("BossNameText");
-        nameTextGo.transform.SetParent(_mainContainer, false);
-        RectTransform nameRect = nameTextGo.AddComponent<RectTransform>();
-        nameRect.anchorMin = new Vector2(0f, 1f);
-        nameRect.anchorMax = new Vector2(1f, 1f);
-        nameRect.pivot = new Vector2(0.5f, 0f);
-        nameRect.anchoredPosition = new Vector2(0f, 8f);
-        nameRect.sizeDelta = new Vector2(600f, 30f);
-
-        _bossNameText = nameTextGo.AddComponent<TextMeshProUGUI>();
-        _bossNameText.text = _bossName.ToUpper();
-        _bossNameText.fontSize = 18f;
-        _bossNameText.alignment = TextAlignmentOptions.Center;
-        _bossNameText.fontStyle = FontStyles.Bold;
-        
-        // Stylish outline & vertical gradient
-        _bossNameText.outlineColor = Color.black;
-        _bossNameText.outlineWidth = 0.22f;
-        _bossNameText.enableVertexGradient = true;
-        _bossNameText.colorGradient = new VertexGradient(
-            new Color(1f, 0.88f, 0.45f, 1f), // Top Left
-            new Color(1f, 0.88f, 0.45f, 1f), // Top Right
-            new Color(0.85f, 0.55f, 0.1f, 1f), // Bottom Left
-            new Color(0.85f, 0.55f, 0.1f, 1f)  // Bottom Right
-        );
-
-        // 10. Health Status Text (Centered below)
+        // 6. Health Status Text (Centered below the bar)
         GameObject healthTextGo = new GameObject("HealthText");
-        healthTextGo.transform.SetParent(_mainContainer, false);
+        healthTextGo.transform.SetParent(_mainContainer.transform, false);
         RectTransform healthRect = healthTextGo.AddComponent<RectTransform>();
         healthRect.anchorMin = new Vector2(0f, 0f);
         healthRect.anchorMax = new Vector2(1f, 0f);
         healthRect.pivot = new Vector2(0.5f, 1f);
-        healthRect.anchoredPosition = new Vector2(0f, -8f);
+        healthRect.anchoredPosition = new Vector2(0f, -6f); // Positioned closely below the bar
         healthRect.sizeDelta = new Vector2(600f, 20f);
 
         _healthText = healthTextGo.AddComponent<TextMeshProUGUI>();

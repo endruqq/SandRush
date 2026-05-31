@@ -27,7 +27,7 @@ public class Solarcore : MonoBehaviour, IInteractable
     [Header("UI Prompt")]
     [SerializeField] private GameObject _promptUI;
     [SerializeField] private float _promptShowDistance = 2.5f;
-    [SerializeField] private string _promptText = "SHUT DOWN CORE";
+    [SerializeField] private string _promptText = "DEACTIVATE";
 
     [Header("Events")]
     public UnityEvent OnActivated;
@@ -42,6 +42,8 @@ public class Solarcore : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        _promptText = "DEACTIVATE";
+
         // Spawn looping VFX locally if assigned
         if (_loopVFXPrefab != null)
         {
@@ -52,6 +54,15 @@ public class Solarcore : MonoBehaviour, IInteractable
         if (_promptUI == null)
         {
             CreateAutoPromptUI();
+        }
+        else
+        {
+            // If the prompt UI was assigned in the inspector, find its TextMeshProUGUI component and override it
+            var txt = _promptUI.GetComponentInChildren<TextMeshProUGUI>();
+            if (txt != null)
+            {
+                txt.text = _promptText;
+            }
         }
 
         if (_promptUI != null)
@@ -160,6 +171,34 @@ public class Solarcore : MonoBehaviour, IInteractable
 
         Debug.Log($"[Solarcore] Activated: {gameObject.name}");
         OnActivated?.Invoke();
+
+        StartCoroutine(ShutdownSequence());
+    }
+
+    private System.Collections.IEnumerator ShutdownSequence()
+    {
+        // Slow down game by 50%
+        Time.timeScale = 0.5f;
+
+        // Set game completed flag so that next continue acts as new game
+        PlayerPrefs.SetInt("GameCompleted", 1);
+        PlayerPrefs.Save();
+
+        // Wait for 2 real-world seconds
+        yield return new WaitForSecondsRealtime(2f);
+
+        // Restore timescale before scene transition
+        Time.timeScale = 1f;
+
+        // Fade and load Main Menu scene
+        if (FadeScreener.Instance != null)
+        {
+            FadeScreener.Instance.FadeAndLoadScene("MainMenu");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
     }
 
     private void CreateAutoPromptUI()

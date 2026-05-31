@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   _attackType: 1
   _playerTransform: {fileID: 0}
-  _detectionRadius: 10
+  _detectionRadius: 16
   _attackRange: 2
   _attackRate: 0.5
   _bulletPrefab: {fileID: 0}
